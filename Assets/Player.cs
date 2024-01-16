@@ -15,16 +15,24 @@ public class Player : MonoBehaviour
     public PlayerStateMove stateMove { get; private set; }
     public PlayerStateJump stateJump { get; private set; }
     public PlayerStateAir stateAir { get; private set; }
+    public PlayerStateDash stateDash { get; private set; }
+    public PlayerStateWallSlide stateWallSlide { get; private set; }
 
     [Header("Move info")]
     [SerializeField] public float moveSpeed;
     [SerializeField] public float jumpForce;
     public float faceDir = 1;
 
+    [Header("Dash info")]
+    [SerializeField] public float dashSpeed;
+    [SerializeField] public float dashTime;
+
     [Header("Collisions")]
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundCheckDistance;
     [SerializeField] private LayerMask whatIsGround;
+    [SerializeField] private Transform wallCheck;
+    [SerializeField] private float wallCheckDistance;
     
     public Vector2 moveVector {  get; private set; }
     
@@ -36,6 +44,8 @@ public class Player : MonoBehaviour
         stateMove = new PlayerStateMove(this, stateMachine, "Move");
         stateJump = new PlayerStateJump(this, stateMachine, "Air");
         stateAir = new PlayerStateAir(this, stateMachine, "Air");
+        stateDash = new PlayerStateDash(this, stateMachine, "Dash");
+        stateWallSlide = new PlayerStateWallSlide(this, stateMachine, "WallSlide");
         
         moveVector = new Vector2(0, 0);
     }
@@ -56,6 +66,14 @@ public class Player : MonoBehaviour
         FlipController();
     }
 
+    void OnDash(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            stateMachine.ChangeState(stateDash);
+        }
+    }
+
     void OnMove(InputValue value)
     {
         moveVector = value.Get<Vector2>();
@@ -74,7 +92,7 @@ public class Player : MonoBehaviour
         }
     }
 
-   void Flip()
+   public void Flip()
    {
        faceDir = -faceDir;
        transform.Rotate(0, 180, 0);
@@ -83,10 +101,16 @@ public class Player : MonoBehaviour
    private void OnDrawGizmos()
    {
        Gizmos.DrawLine(groundCheck.position, new Vector3(groundCheck.position.x, groundCheck.position.y - groundCheckDistance));
+       Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance*faceDir, wallCheck.position.y));
    }
 
    public bool IsGroundDetected()
    {
        return Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckDistance, whatIsGround);
+   }
+
+   public bool IsWallDetected()
+   {
+       return Physics2D.Raycast(wallCheck.position, Vector2.right, wallCheckDistance*faceDir, whatIsGround);
    }
 }

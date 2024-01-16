@@ -15,6 +15,7 @@ public class PlayerState
         player = _player;
         stateMachine = _stateMachine;
         anim = _anim;
+        stateTime = 0;
     }
     
     public virtual void Enter()
@@ -24,7 +25,10 @@ public class PlayerState
     
     public virtual void Update()
     {
-        
+        if (stateTime >= 0)
+        {
+            stateTime -= Time.deltaTime;
+        }
     }
 
     public virtual void Exit()

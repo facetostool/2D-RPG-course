@@ -19,7 +19,7 @@ public class PlayerStateJump : PlayerState
     {
         base.Update();
 
-        if (player.IsGroundDetected())
+        if (!player.IsGroundDetected())
         {
             stateMachine.ChangeState(player.stateAir);
         }

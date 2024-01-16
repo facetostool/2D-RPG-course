@@ -22,7 +22,16 @@ public class PlayerStateAir : PlayerState
         if (player.IsGroundDetected())
         {
             stateMachine.ChangeState(player.stateIdle);
+            return;
         }
+
+        if (player.IsWallDetected())
+        {
+            stateMachine.ChangeState(player.stateWallSlide);
+            return;
+        }
+        
+        player.rb.velocity = new Vector2(player.moveVector.x * player.moveSpeed * 0.8f, player.rb.velocity.y);
     }
 
     public override void Exit()

@@ -17,6 +17,12 @@ public class PlayerStateGrounded : PlayerState
     {
         base.Update();
 
+        if (player.input.actions["attack"].triggered && player.IsGroundDetected())
+        {
+            stateMachine.ChangeState(player.StateAttack);
+            return;
+        }
+        
         if (player.input.actions["jump"].triggered && player.IsGroundDetected())
         {
             stateMachine.ChangeState(player.stateJump);

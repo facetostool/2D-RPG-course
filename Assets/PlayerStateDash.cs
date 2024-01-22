@@ -27,6 +27,7 @@ public class PlayerStateDash : PlayerState
         
         if (stateTime <= 0)
         {
+            player.SetVelocity(0, 0);
             stateMachine.ChangeState(player.stateIdle);
             return;
         }

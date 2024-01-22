@@ -8,7 +8,6 @@ Assets/Plugins/Editor/JetBrains*
 # Visual Studio Code
 .vscode/
 
-
 ### Unity ###
 [Ll]ibrary/
 [Tt]emp/
@@ -38,6 +37,7 @@ ExportedObj/
 *.pdb
 *.opendb
 *.VC.db
+*.log
 
 # Unity3D generated meta files
 *.pidb.meta

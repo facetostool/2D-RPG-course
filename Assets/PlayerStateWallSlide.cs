@@ -17,6 +17,12 @@ public class PlayerStateWallSlide : PlayerState
     {
         base.Update();
 
+        if (player.input.actions["jump"].triggered)
+        {
+            stateMachine.ChangeState(player.stateWallJump);
+            return;
+        }
+        
         if (player.moveVector.x > 0 && player.faceDir < 0 || player.moveVector.x < 0 && player.faceDir > 0)
         {
             player.Flip();

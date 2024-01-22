@@ -20,14 +20,14 @@ public class PlayerStateMove : PlayerStateGrounded
 
         if (player.moveVector.x == 0)
         {
-            player.rb.velocity = new Vector2(0, player.rb.velocity.y);
+            player.SetVelocity(0, player.rb.velocity.y);
             stateMachine.ChangeState(player.stateIdle);
             return;
         }
-        
-        player.rb.velocity = new Vector2(player.moveVector.x * player.moveSpeed, player.rb.velocity.y);
+
+        player.SetVelocity(player.moveVector.x * player.moveSpeed, player.rb.velocity.y);
     }
-    
+
     public override void Exit()
     {
         base.Exit();

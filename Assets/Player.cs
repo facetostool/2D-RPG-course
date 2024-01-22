@@ -17,15 +17,20 @@ public class Player : MonoBehaviour
     public PlayerStateAir stateAir { get; private set; }
     public PlayerStateDash stateDash { get; private set; }
     public PlayerStateWallSlide stateWallSlide { get; private set; }
+    public PlayerStateWallJump stateWallJump { get; private set; }
+    public PlayerStateAttack StateAttack { get; private set; }
 
     [Header("Move info")]
     [SerializeField] public float moveSpeed;
     [SerializeField] public float jumpForce;
+    [SerializeField] public Vector2 wallJumpForce;
     public float faceDir = 1;
 
     [Header("Dash info")]
     [SerializeField] public float dashSpeed;
     [SerializeField] public float dashTime;
+    [SerializeField] public float dashCooldown;
+    private float lastDashTime = 0;
 
     [Header("Collisions")]
     [SerializeField] private Transform groundCheck;
@@ -46,6 +51,8 @@ public class Player : MonoBehaviour
         stateAir = new PlayerStateAir(this, stateMachine, "Air");
         stateDash = new PlayerStateDash(this, stateMachine, "Dash");
         stateWallSlide = new PlayerStateWallSlide(this, stateMachine, "WallSlide");
+        stateWallJump = new PlayerStateWallJump(this, stateMachine, "Air");
+        StateAttack = new PlayerStateAttack(this, stateMachine, "Attack");
         
         moveVector = new Vector2(0, 0);
     }
@@ -68,8 +75,9 @@ public class Player : MonoBehaviour
 
     void OnDash(InputValue value)
     {
-        if (value.isPressed)
+        if (value.isPressed && ((Time.time - lastDashTime) > dashCooldown || Time.time < dashCooldown))
         {
+            lastDashTime = Time.time;
             stateMachine.ChangeState(stateDash);
         }
     }
@@ -112,5 +120,10 @@ public class Player : MonoBehaviour
    public bool IsWallDetected()
    {
        return Physics2D.Raycast(wallCheck.position, Vector2.right, wallCheckDistance*faceDir, whatIsGround);
+   }
+   
+   public void SetVelocity(float x, float y)
+   {
+       rb.velocity = new Vector2(x, y);
    }
 }

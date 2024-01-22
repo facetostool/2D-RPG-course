@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 448470146}
   - component: {fileID: 448470148}
   - component: {fileID: 448470147}
+  - component: {fileID: 448470149}
   m_Layer: 0
   m_Name: Animator
   m_TagString: Untagged
@@ -229,6 +230,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &448470149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 448470145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da57bb706040afc49877c893fa6ef59d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -503,9 +516,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 10
   jumpForce: 17
+  wallJumpForce: {x: 10, y: 15}
   faceDir: 1
   dashSpeed: 17
   dashTime: 0.2
+  dashCooldown: 3
   groundCheck: {fileID: 1703522162}
   groundCheckDistance: 0.2
   whatIsGround:

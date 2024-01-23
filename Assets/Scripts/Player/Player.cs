@@ -38,8 +38,14 @@ public class Player : MonoBehaviour
     [SerializeField] private LayerMask whatIsGround;
     [SerializeField] private Transform wallCheck;
     [SerializeField] private float wallCheckDistance;
+
+    [Header("Attack info")]
+    [SerializeField] public Vector2[] attackEnterForce;
+    [SerializeField] public float comboTimer;
     
     public Vector2 moveVector {  get; private set; }
+    
+    public bool IsBusy {  get; private set; }
     
     void Awake()
     {
@@ -71,6 +77,13 @@ public class Player : MonoBehaviour
         stateMachine.currentState.Update();
 
         FlipController();
+    }
+
+    public IEnumerator BusyFor(float _time)
+    {
+        IsBusy = true;
+        yield return new WaitForSeconds(_time);
+        IsBusy = false;
     }
 
     void OnDash(InputValue value)

@@ -18,7 +18,7 @@ public class PlayerStateIdle : PlayerStateGrounded
     {
         base.Update();
         
-        if (player.moveVector.x != 0)
+        if (player.moveVector.x != 0 && !player.IsBusy)
         {
             stateMachine.ChangeState(player.stateMove);
         }

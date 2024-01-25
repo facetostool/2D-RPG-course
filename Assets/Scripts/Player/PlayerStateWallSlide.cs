@@ -16,7 +16,13 @@ public class PlayerStateWallSlide : PlayerState
     public override void Update()
     {
         base.Update();
-
+        
+        if (player.IsGroundDetected() || !player.IsWallDetected())
+        {
+            stateMachine.ChangeState(player.stateIdle);
+            return;
+        }
+        
         if (player.input.actions["jump"].triggered)
         {
             stateMachine.ChangeState(player.stateWallJump);
@@ -39,11 +45,7 @@ public class PlayerStateWallSlide : PlayerState
             player.rb.velocity = new Vector2(player.rb.velocity.x, 0.5f * player.rb.velocity.y);
         }
 
-        if (player.IsGroundDetected())
-        {
-            stateMachine.ChangeState(player.stateIdle);
-            return;
-        }
+
     }
 
     public override void Exit()

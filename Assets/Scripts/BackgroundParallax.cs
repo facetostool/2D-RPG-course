@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class BackgroundParallax : MonoBehaviour
 {
-    private GameObject cam;
+    
     private float xPositionStart;
 
     [SerializeField] public float parallaxEffect;
-    
+    [SerializeField] private GameObject cam;
     void Start()
     {
-        cam = GameObject.Find("Main Camera");
         xPositionStart = cam.transform.position.x;
     }
     
@@ -19,6 +18,5 @@ public class BackgroundParallax : MonoBehaviour
     {
         float movedDistance = cam.transform.position.x + xPositionStart;
         transform.position = new Vector3(movedDistance * parallaxEffect, 0);
-        // transform.position = cam.transform.position;
-    } 
+    }
 }

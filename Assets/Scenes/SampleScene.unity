@@ -123,6 +123,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!4 &160020974 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8435122365141388999, guid: 286cca9d0e3e56b42b097bfc2ec3ca7b, type: 3}
+  m_PrefabInstance: {fileID: 9055007916874637337}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &202558840
 GameObject:
   m_ObjectHideFlags: 0
@@ -4408,6 +4413,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &484009683 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5921918680483488028, guid: 286cca9d0e3e56b42b097bfc2ec3ca7b, type: 3}
+  m_PrefabInstance: {fileID: 9055007916874637337}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &484009687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 484009683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c90fc0d322bdb844d9af21ac35c35d18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &493693904
 GameObject:
   m_ObjectHideFlags: 0
@@ -15191,10 +15213,33 @@ PrefabInstance:
       propertyPath: m_Name
       value: Skeleton
       objectReference: {fileID: 0}
+    - target: {fileID: 5514779880226924369, guid: 286cca9d0e3e56b42b097bfc2ec3ca7b, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1061613530}
+    - target: {fileID: 5514779880226924369, guid: 286cca9d0e3e56b42b097bfc2ec3ca7b, type: 3}
+      propertyPath: playerCheck
+      value: 
+      objectReference: {fileID: 160020974}
+    - target: {fileID: 5514779880226924369, guid: 286cca9d0e3e56b42b097bfc2ec3ca7b, type: 3}
+      propertyPath: attackDistance
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5514779880226924369, guid: 286cca9d0e3e56b42b097bfc2ec3ca7b, type: 3}
+      propertyPath: whatIsPlayer.m_Bits
+      value: 64
+      objectReference: {fileID: 0}
+    - target: {fileID: 5514779880226924369, guid: 286cca9d0e3e56b42b097bfc2ec3ca7b, type: 3}
+      propertyPath: moveBattleMultiplayer
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5921918680483488028, guid: 286cca9d0e3e56b42b097bfc2ec3ca7b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 484009687}
   m_SourcePrefab: {fileID: 100100000, guid: 286cca9d0e3e56b42b097bfc2ec3ca7b, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

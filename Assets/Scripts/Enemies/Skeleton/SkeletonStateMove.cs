@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkeletonStateMove : SkeletonState
+public class SkeletonStateMove : SkeletonStateGrounded
 {
     public SkeletonStateMove(Enemy _enemy, EnemyStateMachine _stateMachine, string _anim, Skeleton _skeleton) : base(_enemy, _stateMachine, _anim, _skeleton)
     {
@@ -20,7 +20,6 @@ public class SkeletonStateMove : SkeletonState
         
         if (!skeleton.IsGroundDetected())
         {
-            skeleton.SetVelocity(0,0);
             stateMachine.ChangeState(skeleton.stateIdle);
             return;
         }

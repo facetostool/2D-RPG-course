@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkeletonStateIdle : SkeletonState
+public class SkeletonStateIdle : SkeletonStateGrounded
 {
     public SkeletonStateIdle(Enemy _enemy, EnemyStateMachine _stateMachine, string _anim, Skeleton _skeleton) : base(_enemy, _stateMachine, _anim, _skeleton)
     {
@@ -12,12 +12,14 @@ public class SkeletonStateIdle : SkeletonState
     {
         base.Enter();
 
-        stateTime = 2;
+        stateTime = skeleton.idleStateTime;
+        skeleton.SetVelocity(0,0);
     }
 
     public override void Update()
     {
         base.Update();
+        skeleton.SetVelocity(0,0);
         
         if (stateTime <= 0)
         {

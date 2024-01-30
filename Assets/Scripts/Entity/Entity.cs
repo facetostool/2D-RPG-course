@@ -12,11 +12,11 @@ public class Entity : MonoBehaviour
     public float faceDir = 1;
     
     [Header("Collisions")]
-    [SerializeField] private Transform groundCheck;
-    [SerializeField] private float groundCheckDistance;
-    [SerializeField] private LayerMask whatIsGround;
-    [SerializeField] private Transform wallCheck;
-    [SerializeField] private float wallCheckDistance;
+    [SerializeField] public Transform groundCheck;
+    [SerializeField] public float groundCheckDistance;
+    [SerializeField] public LayerMask whatIsGround;
+    [SerializeField] public Transform wallCheck;
+    [SerializeField] public float wallCheckDistance;
 
     public virtual void Awake()
     {
@@ -40,7 +40,7 @@ public class Entity : MonoBehaviour
         transform.Rotate(0, 180, 0);
     }
     
-    private void OnDrawGizmos()
+    public virtual void OnDrawGizmos()
     {
         Gizmos.DrawLine(groundCheck.position, new Vector3(groundCheck.position.x, groundCheck.position.y - groundCheckDistance));
         Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance*faceDir, wallCheck.position.y));

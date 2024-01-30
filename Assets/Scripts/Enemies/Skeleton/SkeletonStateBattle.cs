@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Vector2 = System.Numerics.Vector2;
 
 public class SkeletonStateBattle : SkeletonState
 {
@@ -18,10 +19,14 @@ public class SkeletonStateBattle : SkeletonState
         base.Update();
 
         RaycastHit2D hit = skeleton.PlayerDetectionRaycast();
-        if (hit.collider != null && hit.distance <= skeleton.attackDistance)
+        if (hit.collider != null)
         {
-            stateMachine.ChangeState(skeleton.stateAttack);
-            return;
+            stateTime = skeleton.battleNoDetectionTime;
+            if (hit.distance <= skeleton.attackDistance)
+            {
+                stateMachine.ChangeState(skeleton.stateAttack);
+                return;
+            }
         }
         
         if (IsNeedToFlip())
@@ -30,6 +35,11 @@ public class SkeletonStateBattle : SkeletonState
         }
         
         skeleton.SetVelocity(skeleton.moveSpeed*skeleton.moveBattleMultiplayer * skeleton.faceDir, skeleton.rb.velocity.y);
+
+        if (stateTime <= 0)
+        {
+            stateMachine.ChangeState(skeleton.stateIdle);
+        }
     }
 
     public override void Exit()

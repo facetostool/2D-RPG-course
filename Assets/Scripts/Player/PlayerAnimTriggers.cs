@@ -20,4 +20,17 @@ public class PlayerAnimTriggers : MonoBehaviour
     {
         _player.stateMachine.currentState.StopAnimationsTrigger();
     }
+
+    public void OnHitAttackTrigger()
+    {
+        Collider2D[] hits = Physics2D.OverlapCircleAll(_player.attackCheck.position, _player.attackCheckRadius);
+        foreach (var hit in hits)
+        {
+            Skeleton skeleton = hit.GetComponent<Skeleton>();
+            if (skeleton)
+            {
+                skeleton.Damage();
+            }
+        }
+    }
 }

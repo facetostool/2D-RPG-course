@@ -7,7 +7,8 @@ public class Skeleton : Enemy
 
     #region Movement
     [SerializeField] public float idleStateTime;
-
+    [SerializeField] public float battleNoDetectionTime;
+    
     #endregion
     
     #region States
@@ -60,4 +61,5 @@ public class Skeleton : Enemy
     {
         return Physics2D.Raycast(playerCheck.position, Vector2.right, detectionDistance*faceDir, whatIsPlayer);
     }
+    
 }

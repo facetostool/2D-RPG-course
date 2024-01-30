@@ -67,6 +67,7 @@ Transform:
   - {fileID: 997549697650532085}
   - {fileID: 8110983619546914289}
   - {fileID: 8435122365141388999}
+  - {fileID: 2381595259068037652}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &2512051020168118074
@@ -162,8 +163,18 @@ MonoBehaviour:
     m_Bits: 8
   wallCheck: {fileID: 8110983619546914289}
   wallCheckDistance: 0.5
+  attackCheck: {fileID: 2381595259068037652}
+  attackCheckRadius: 1.01
   idleStateTime: 2
+  battleNoDetectionTime: 3
   detectionDistance: 5
+  whatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 64
+  playerCheck: {fileID: 8435122365141388999}
+  moveBattleMultiplayer: 2
+  player: {fileID: 0}
+  attackDistance: 2
 --- !u!1 &5921918680483488028
 GameObject:
   m_ObjectHideFlags: 0
@@ -175,6 +186,8 @@ GameObject:
   - component: {fileID: 398805583582836575}
   - component: {fileID: 1360988378428465145}
   - component: {fileID: 7232421235745600592}
+  - component: {fileID: 6187917969267075504}
+  - component: {fileID: 6197877552508044500}
   m_Layer: 7
   m_Name: Animator
   m_TagString: Untagged
@@ -270,6 +283,63 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6187917969267075504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5921918680483488028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c90fc0d322bdb844d9af21ac35c35d18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6197877552508044500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5921918680483488028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c324ad54546536b4ba28b302f98766d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashMaterial: {fileID: 2100000, guid: 126c72f5e9798d24e9a40681e489a8cc, type: 2}
+  flashTime: 0.15
+--- !u!1 &6531631745547401278
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2381595259068037652}
+  m_Layer: 7
+  m_Name: AttackCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2381595259068037652
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6531631745547401278}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.21, y: -0.36, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 92388031637486388}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8461760985119680907
 GameObject:
   m_ObjectHideFlags: 0

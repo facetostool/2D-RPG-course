@@ -20,4 +20,9 @@ public class EnemyAnimTriggers : MonoBehaviour
     {
         _enemy.stateMachine.currentState.StopAnimationsTrigger();
     }
+    
+    public void OnHitAttackTrigger()
+    {
+        _enemy.OnHitAttackTrigger();
+    }
 }

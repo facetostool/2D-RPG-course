@@ -17,4 +17,17 @@ public class Enemy : Entity
         
         stateMachine.currentState.Update();
     }
+
+    public void OnHitAttackTrigger()
+    {
+        Collider2D[] hits = Physics2D.OverlapCircleAll(this.attackCheck.position, this.attackCheckRadius);
+        foreach (var hit in hits)
+        {
+            Player player = hit.GetComponent<Player>();
+            if (player)
+            {
+                player.Damage();
+            }
+        }
+    } 
 }

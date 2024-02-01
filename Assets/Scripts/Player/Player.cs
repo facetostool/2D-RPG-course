@@ -16,13 +16,15 @@ public class Player : Entity
     public PlayerStateDash stateDash { get; private set; }
     public PlayerStateWallSlide stateWallSlide { get; private set; }
     public PlayerStateWallJump stateWallJump { get; private set; }
-    public PlayerStateAttack StateAttack { get; private set; }
+    public PlayerStateAttack stateAttack { get; private set; }
+    public PlayerStateCounterAttack stateCounterAttack { get; private set;}
 
     [Header("Move info")]
-   
     [SerializeField] public float jumpForce;
     [SerializeField] public Vector2 wallJumpForce;
 
+    [Header("CounterAttackInfo")]
+    [SerializeField] public float counterAttackDuration;
 
     [Header("Dash info")]
     [SerializeField] public float dashSpeed;
@@ -50,12 +52,13 @@ public class Player : Entity
         stateDash = new PlayerStateDash(this, stateMachine, "Dash");
         stateWallSlide = new PlayerStateWallSlide(this, stateMachine, "WallSlide");
         stateWallJump = new PlayerStateWallJump(this, stateMachine, "Air");
-        StateAttack = new PlayerStateAttack(this, stateMachine, "Attack");
+        stateAttack = new PlayerStateAttack(this, stateMachine, "Attack");
+        stateCounterAttack = new PlayerStateCounterAttack(this, stateMachine, "CounterAttack");
         
         moveVector = new Vector2(0, 0);
     }
     
-    public override void Start()
+    protected override void Start()
     {
         base.Start();
         input = GetComponent<PlayerInput>();
@@ -63,10 +66,11 @@ public class Player : Entity
         stateMachine.Initialize(stateIdle);
     }
     
-    void Update()
+    protected override void Update()
     {
-        stateMachine.currentState.Update();
+        base.Update();
 
+        stateMachine.currentState.Update();
         FlipController();
     }
 

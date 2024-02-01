@@ -17,13 +17,19 @@ public class PlayerStateGrounded : PlayerState
     {
         base.Update();
 
-        if (player.input.actions["attack"].triggered && player.IsGroundDetected())
+        if (player.input.actions["CounterAttack"].triggered && player.IsGroundDetected())
         {
-            stateMachine.ChangeState(player.StateAttack);
+            stateMachine.ChangeState(player.stateCounterAttack);
+            return;
+        }
+
+        if (player.input.actions["Attack"].triggered && player.IsGroundDetected())
+        {
+            stateMachine.ChangeState(player.stateAttack);
             return;
         }
         
-        if (player.input.actions["jump"].triggered && player.IsGroundDetected())
+        if (player.input.actions["Jump"].triggered && player.IsGroundDetected())
         {
             stateMachine.ChangeState(player.stateJump);
             return;

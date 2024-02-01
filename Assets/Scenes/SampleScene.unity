@@ -4622,6 +4622,11 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!212 &584554030 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 5811706273705911894, guid: 286cca9d0e3e56b42b097bfc2ec3ca7b, type: 3}
+  m_PrefabInstance: {fileID: 9055007916874637337}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &990703172
 GameObject:
   m_ObjectHideFlags: 0
@@ -4956,6 +4961,7 @@ MonoBehaviour:
   attackCheckRadius: 0.8
   jumpForce: 17
   wallJumpForce: {x: 10, y: 15}
+  counterAttackDuration: 0.2
   dashSpeed: 20
   dashTime: 0.2
   dashCooldown: 2
@@ -14820,7 +14826,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 6200000, guid: dbd2ce4984f567042b2ac5f96dd38b26, type: 2}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -15224,6 +15230,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1648548169908758228, guid: 286cca9d0e3e56b42b097bfc2ec3ca7b, type: 3}
+      propertyPath: m_Name
+      value: CounterAttackIndicator
+      objectReference: {fileID: 0}
     - target: {fileID: 4785073657890167191, guid: 286cca9d0e3e56b42b097bfc2ec3ca7b, type: 3}
       propertyPath: m_Name
       value: Skeleton
@@ -15232,6 +15242,18 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1061613530}
+    - target: {fileID: 5514779880226924369, guid: 286cca9d0e3e56b42b097bfc2ec3ca7b, type: 3}
+      propertyPath: counterAttackIndicator
+      value: 
+      objectReference: {fileID: 584554030}
+    - target: {fileID: 5811706273705911894, guid: 286cca9d0e3e56b42b097bfc2ec3ca7b, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5811706273705911894, guid: 286cca9d0e3e56b42b097bfc2ec3ca7b, type: 3}
+      propertyPath: m_SortingOrder
+      value: -1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

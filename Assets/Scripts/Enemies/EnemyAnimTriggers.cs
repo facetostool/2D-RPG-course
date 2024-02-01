@@ -25,4 +25,14 @@ public class EnemyAnimTriggers : MonoBehaviour
     {
         _enemy.OnHitAttackTrigger();
     }
+
+    public void OpenCounterAttackWindow()
+    {
+        _enemy.OpenCounterAttackWindow();
+    }
+    
+    public void CloseCounterAttackWindow()
+    {
+        _enemy.CloseCounterAttackWindow();
+    }
 }

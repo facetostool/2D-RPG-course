@@ -32,7 +32,13 @@ public class PlayerStateDash : PlayerState
             return;
         }
         
-        player.rb.velocity = new Vector2(player.dashSpeed*player.faceDir, 0);
+        float dashDir = player.faceDir;
+        if (player.moveVector.x != 0)
+        {
+            dashDir = player.moveVector.x;
+        }
+        
+        player.rb.velocity = new Vector2(player.dashSpeed*dashDir, 0);
     }
 
     public override void Exit()

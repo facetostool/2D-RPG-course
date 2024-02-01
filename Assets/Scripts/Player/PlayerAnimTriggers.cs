@@ -29,6 +29,7 @@ public class PlayerAnimTriggers : MonoBehaviour
             Skeleton skeleton = hit.GetComponent<Skeleton>();
             if (skeleton)
             {
+                skeleton.StartCoroutine("Knockout");
                 skeleton.Damage();
             }
         }

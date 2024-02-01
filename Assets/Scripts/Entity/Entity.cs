@@ -24,12 +24,12 @@ public class Entity : MonoBehaviour
     [SerializeField] public float attackCheckRadius;
     
     
-    public virtual void Awake()
+    protected virtual void Awake()
     {
         
     }
 
-    public virtual void Start()
+    protected virtual void Start()
     {
         fx = GetComponentInChildren<EntityFlashFX>();
         animator = GetComponentInChildren<Animator>();
@@ -47,7 +47,7 @@ public class Entity : MonoBehaviour
         transform.Rotate(0, 180, 0);
     }
     
-    public void SetVelocity(float x, float y)
+    public virtual void SetVelocity(float x, float y)
     {
         rb.velocity = new Vector2(x, y);
     }

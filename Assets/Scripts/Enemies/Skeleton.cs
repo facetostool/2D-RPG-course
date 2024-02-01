@@ -6,9 +6,9 @@ public class Skeleton : Enemy
 {
 
     #region Movement
+    [Header("Skeleton info")]
     [SerializeField] public float idleStateTime;
     [SerializeField] public float battleNoDetectionTime;
-    
     #endregion
     
     #region States
@@ -17,6 +17,7 @@ public class Skeleton : Enemy
     public SkeletonStateMove stateMove { get; private set; }
     public SkeletonStateBattle stateBattle { get; private set; }
     public SkeletonStateAttack stateAttack { get; private set; }
+    public SkeletonStateStunned stateStunned { get; private set; }
 
     #endregion
 
@@ -32,7 +33,7 @@ public class Skeleton : Enemy
     
     #endregion
 
-    public override void Awake()
+    protected override void Awake()
     {
         base.Awake();
 
@@ -41,13 +42,24 @@ public class Skeleton : Enemy
         stateMove = new SkeletonStateMove(this, stateMachine, "Move", this);
         stateBattle = new SkeletonStateBattle(this, stateMachine, "Battle", this);
         stateAttack = new SkeletonStateAttack(this, stateMachine, "Attack", this);
+        stateStunned = new SkeletonStateStunned(this, stateMachine, "Stunned", this);
     }
 
-    public override void Start()
+    protected override void Start()
     {
         base.Start();
         
         stateMachine.Initialize(stateIdle);
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            stateMachine.ChangeState(stateStunned);
+        }
     }
 
     public override void OnDrawGizmos()
@@ -61,5 +73,11 @@ public class Skeleton : Enemy
     {
         return Physics2D.Raycast(playerCheck.position, Vector2.right, detectionDistance*faceDir, whatIsPlayer);
     }
-    
+
+    public override void Stun()
+    {
+        base.Stun();
+        
+        stateMachine.ChangeState(stateStunned);
+    }
 }

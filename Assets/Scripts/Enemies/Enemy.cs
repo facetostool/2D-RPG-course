@@ -1,12 +1,24 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Enemy : Entity
 {
     public EnemyStateMachine stateMachine;
     
-    public override void Start()
+    [Header("Knocked info")]
+    [SerializeField] private Vector2 knockedDirection;
+    [SerializeField] private float knockedDuration;
+    private bool isKnocked;
+    
+    [Header("Stunned info")]
+    [SerializeField] public Vector2 stunnedDirection;
+    [SerializeField] public float stunnedDuration;
+    [SerializeField] public SpriteRenderer counterAttackIndicator;
+    
+    public bool canBeStunned;
+    
+    protected override void Start()
     {
         base.Start();
     }
@@ -16,6 +28,15 @@ public class Enemy : Entity
         base.Update();
         
         stateMachine.currentState.Update();
+    }
+    
+    public IEnumerator Knockout()
+    {
+        isKnocked = true;
+        rb.velocity = new Vector2(knockedDirection.x * -faceDir, knockedDirection.y);
+        yield return new WaitForSeconds(knockedDuration);
+        isKnocked = false;
+        base.SetVelocity(0, 0);
     }
 
     public void OnHitAttackTrigger()
@@ -29,5 +50,30 @@ public class Enemy : Entity
                 player.Damage();
             }
         }
-    } 
+    }
+
+    public override void SetVelocity(float x, float y)
+    {
+        if (!isKnocked)
+        {
+            base.SetVelocity(x, y);
+        }
+    }
+
+    public void OpenCounterAttackWindow()
+    {
+        canBeStunned = true;
+        counterAttackIndicator.enabled = true;
+    }
+    
+    public void CloseCounterAttackWindow()
+    {
+        canBeStunned = false;
+        counterAttackIndicator.enabled = false;
+    }
+
+    public virtual void Stun()
+    {
+        CloseCounterAttackWindow();
+    }
 }

@@ -28,7 +28,6 @@ public class Skeleton : Enemy
     [SerializeField] public LayerMask whatIsPlayer;
     [SerializeField] public Transform playerCheck;
     [SerializeField] public float moveBattleMultiplayer;
-    [SerializeField] public Player player;
     [SerializeField] public float attackDistance;
     
     #endregion

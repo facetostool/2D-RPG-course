@@ -11,7 +11,7 @@ public class PlayerStateCounterAttack : PlayerState
     public override void Enter()
     {
         base.Enter();
-
+        
         stateTime = player.counterAttackDuration;
         player.animator.SetBool("SuccessCounterAttack", false);
     }
@@ -19,7 +19,8 @@ public class PlayerStateCounterAttack : PlayerState
     public override void Update()
     {
         base.Update();
-
+        player.SetVelocity(0,0);
+        
         if (stateTime <= 0 || stopAnimations) 
         {
             stateMachine.ChangeState(player.stateIdle);
@@ -34,6 +35,7 @@ public class PlayerStateCounterAttack : PlayerState
             {
                 if (enemy.canBeStunned)
                 {
+                    stateTime = 10;
                     enemy.Stun();
                     player.animator.SetBool("SuccessCounterAttack", true);
                 }

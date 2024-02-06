@@ -49,7 +49,7 @@ public class SkeletonStateBattle : SkeletonState
 
     private bool IsNeedToFlip()
     {
-        var playerPosition = skeleton.player.transform.position;
+        var playerPosition = PlayerManager.instance.player.transform.position;
         var skeletonPosition = skeleton.transform.position;
         return (skeletonPosition.x > playerPosition.x && skeleton.faceDir > 0) ||
                (skeletonPosition.x < playerPosition.x && skeleton.faceDir < 0);

@@ -16,6 +16,12 @@ public class PlayerStateGrounded : PlayerState
     public override void Update()
     {
         base.Update();
+        
+        if (Input.GetKeyDown(KeyCode.Mouse1) && player.IsGroundDetected())
+        {
+            stateMachine.ChangeState(player.stateAimSword);
+            return;
+        }
 
         if (player.input.actions["CounterAttack"].triggered && player.IsGroundDetected())
         {

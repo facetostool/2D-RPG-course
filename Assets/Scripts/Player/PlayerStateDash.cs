@@ -12,7 +12,8 @@ public class PlayerStateDash : PlayerState
     {
         base.Enter();
 
-        stateTime = player.dashTime;
+        stateTime = player.skills.dash.dashTime;
+        player.skills.dash.Use();
     }
 
     public override void Update()
@@ -38,7 +39,7 @@ public class PlayerStateDash : PlayerState
             dashDir = player.moveVector.x;
         }
         
-        player.rb.velocity = new Vector2(player.dashSpeed*dashDir, 0);
+        player.rb.velocity = new Vector2(player.skills.dash.dashSpeed*dashDir, 0);
     }
 
     public override void Exit()

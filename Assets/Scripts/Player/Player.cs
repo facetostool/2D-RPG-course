@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 public class Player : Entity
 {
     public PlayerInput input { get; private set; }
+    public SkillManager skills { get; private set; }
     
     public PlayerStateMachine stateMachine { get; private set; }
     public PlayerStateIdle stateIdle { get; private set; }
@@ -18,20 +19,15 @@ public class Player : Entity
     public PlayerStateWallJump stateWallJump { get; private set; }
     public PlayerStateAttack stateAttack { get; private set; }
     public PlayerStateCounterAttack stateCounterAttack { get; private set;}
-
+    public PlayerStateAimSword stateAimSword  { get; private set;}
+    public PlayerStateCatchSword stateCatchSword  { get; private set;}
+    
     [Header("Move info")]
     [SerializeField] public float jumpForce;
     [SerializeField] public Vector2 wallJumpForce;
 
     [Header("CounterAttackInfo")]
     [SerializeField] public float counterAttackDuration;
-
-    [Header("Dash info")]
-    [SerializeField] public float dashSpeed;
-    [SerializeField] public float dashTime;
-    [SerializeField] public float dashCooldown;
-    private float lastDashTime = 0;
-    
 
     [Header("Attack info")]
     [SerializeField] public Vector2[] attackEnterForce;
@@ -41,7 +37,7 @@ public class Player : Entity
     
     public bool IsBusy {  get; private set; }
     
-    void Awake()
+    protected override void Awake()
     {
         stateMachine = new PlayerStateMachine();
 
@@ -54,6 +50,8 @@ public class Player : Entity
         stateWallJump = new PlayerStateWallJump(this, stateMachine, "Air");
         stateAttack = new PlayerStateAttack(this, stateMachine, "Attack");
         stateCounterAttack = new PlayerStateCounterAttack(this, stateMachine, "CounterAttack");
+        stateAimSword = new PlayerStateAimSword(this, stateMachine, "AimSword");
+        stateCatchSword = new PlayerStateCatchSword(this, stateMachine, "CatchSword");
         
         moveVector = new Vector2(0, 0);
     }
@@ -62,6 +60,8 @@ public class Player : Entity
     {
         base.Start();
         input = GetComponent<PlayerInput>();
+        
+        skills = SkillManager.instance;
         
         stateMachine.Initialize(stateIdle);
     }
@@ -83,9 +83,8 @@ public class Player : Entity
 
     void OnDash(InputValue value)
     {
-        if (value.isPressed && ((Time.time - lastDashTime) > dashCooldown || Time.time < dashCooldown))
+        if (value.isPressed && skills.dash.CanUse())
         {
-            lastDashTime = Time.time;
             stateMachine.ChangeState(stateDash);
         }
     }

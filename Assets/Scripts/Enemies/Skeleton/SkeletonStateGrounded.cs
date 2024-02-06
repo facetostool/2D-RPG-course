@@ -17,7 +17,7 @@ public class SkeletonStateGrounded : SkeletonState
     {
         base.Update();
         
-        if (skeleton.PlayerDetectionRaycast() || Vector3.Distance(skeleton.transform.position, skeleton.player.transform.position) < 2)
+        if (skeleton.PlayerDetectionRaycast() || Vector3.Distance(skeleton.transform.position, PlayerManager.instance.player.transform.position) < 2)
         {
             stateMachine.ChangeState(skeleton.stateBattle);
         }

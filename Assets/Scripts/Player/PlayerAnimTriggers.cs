@@ -26,11 +26,11 @@ public class PlayerAnimTriggers : MonoBehaviour
         Collider2D[] hits = Physics2D.OverlapCircleAll(_player.attackCheck.position, _player.attackCheckRadius);
         foreach (var hit in hits)
         {
-            Skeleton skeleton = hit.GetComponent<Skeleton>();
-            if (skeleton)
+            Enemy enemy = hit.GetComponent<Enemy>();
+            if (enemy)
             {
-                skeleton.StartCoroutine("Knockout");
-                skeleton.Damage();
+                enemy.StartCoroutine("Knockout");
+                enemy.Damage();
             }
         }
     }

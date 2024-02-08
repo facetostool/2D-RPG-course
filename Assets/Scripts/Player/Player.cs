@@ -8,6 +8,7 @@ public class Player : Entity
 {
     public PlayerInput input { get; private set; }
     public SkillManager skills { get; private set; }
+    public GameObject sword { get; private set; }
     
     public PlayerStateMachine stateMachine { get; private set; }
     public PlayerStateIdle stateIdle { get; private set; }
@@ -54,6 +55,16 @@ public class Player : Entity
         stateCatchSword = new PlayerStateCatchSword(this, stateMachine, "CatchSword");
         
         moveVector = new Vector2(0, 0);
+    }
+    
+    public void SetSword(GameObject _sword)
+    {
+        sword = _sword;
+    }
+    
+    public void ClearSword()
+    {
+        Destroy(sword);
     }
     
     protected override void Start()

@@ -17,7 +17,7 @@ public class PlayerStateGrounded : PlayerState
     {
         base.Update();
         
-        if (Input.GetKeyDown(KeyCode.Mouse1) && player.IsGroundDetected())
+        if (Input.GetKeyDown(KeyCode.Mouse1) && player.IsGroundDetected() && !player.sword)
         {
             stateMachine.ChangeState(player.stateAimSword);
             return;

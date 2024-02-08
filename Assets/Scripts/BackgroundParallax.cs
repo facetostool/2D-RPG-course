@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BackgroundParallax : MonoBehaviour
 {
-    
     private float xPositionStart;
 
     [SerializeField] public float parallaxEffect;

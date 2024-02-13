@@ -12,6 +12,8 @@ public class SkeletonStateBattle : SkeletonState
     public override void Enter()
     {
         base.Enter();
+        
+        stateTime = skeleton.battleNoDetectionTime;
     }
 
     public override void Update()

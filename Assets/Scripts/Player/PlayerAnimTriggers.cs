@@ -29,7 +29,6 @@ public class PlayerAnimTriggers : MonoBehaviour
             Enemy enemy = hit.GetComponent<Enemy>();
             if (enemy)
             {
-                enemy.StartCoroutine("Knockout");
                 enemy.Damage();
             }
         }

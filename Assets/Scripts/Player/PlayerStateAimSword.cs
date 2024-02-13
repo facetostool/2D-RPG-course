@@ -11,11 +11,25 @@ public class PlayerStateAimSword : PlayerState
     public override void Enter()
     {
         base.Enter();
+        
+        player.skills.throwSword.EnablePoints();
     }
 
     public override void Update()
     {
         base.Update();
+        
+        player.skills.throwSword.UpdateDotsPosition();
+        
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (player.transform.position.x > mousePosition.x && player.faceDir == 1)
+        {
+            player.Flip();
+        }
+        else if (player.transform.position.x < mousePosition.x && player.faceDir == -1)
+        {
+            player.Flip();
+        }
         
         player.SetVelocity(0,0);
         
@@ -30,5 +44,6 @@ public class PlayerStateAimSword : PlayerState
     public override void Exit()
     {
         base.Exit();
+        player.skills.throwSword.DisablePoints();
     }
 }

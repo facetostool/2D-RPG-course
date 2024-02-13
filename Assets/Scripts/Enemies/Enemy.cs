@@ -76,4 +76,10 @@ public class Enemy : Entity
     {
         CloseCounterAttackWindow();
     }
+
+    public override void Damage()
+    {
+        base.Damage();
+        StartCoroutine("Knockout");
+    }
 }

@@ -54,11 +54,6 @@ public class Skeleton : Enemy
     protected override void Update()
     {
         base.Update();
-
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            stateMachine.ChangeState(stateStunned);
-        }
     }
 
     public override void OnDrawGizmos()
@@ -78,5 +73,12 @@ public class Skeleton : Enemy
         base.Stun();
         
         stateMachine.ChangeState(stateStunned);
+    }
+
+    public override void Damage()
+    {
+        base.Damage();
+        
+        // stateMachine.ChangeState(stateBattle);
     }
 }

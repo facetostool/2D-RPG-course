@@ -7,7 +7,8 @@ enum SwordThrowType
 {
     Normal,
     Bounce,
-    Pierce
+    Pierce,
+    Hover,
 }
 
 public class SkillThrowSword : Skill
@@ -38,7 +39,32 @@ public class SkillThrowSword : Skill
     [SerializeField] private int pierceNumber;
     [SerializeField] private float pierceGravityScale;
     
+    [Header("Hover info")]
+    [SerializeField] private float hoverGravityScale;
+    [SerializeField] private float hoverMaxDistance;
+    [SerializeField] private float hoverTime;
+    [SerializeField] private float hoverHitTime;
     private float gravityScale;
+    
+    private static void EnableController(GameObject obj, SwordThrowType _swordThrowType)
+    {
+        switch (_swordThrowType)
+        {
+            case SwordThrowType.Normal:
+                obj.GetComponent<NormalSwordController>().enabled = true;
+                break;
+            // case SwordThrowType.Bounce:
+            //     obj.GetComponent<BounceSwordController>().enabled = true;
+            //     break;
+            // case SwordThrowType.Pierce:
+            //     obj.GetComponent<PierceSwordController>().enabled = true;
+            //     break;
+            // case SwordThrowType.Hover:
+            //     obj.GetComponent<HoverSwordController>().enabled = true;
+            //     break;
+        }
+    }
+    
     protected override void Start()
     {
         base.Start();
@@ -49,7 +75,7 @@ public class SkillThrowSword : Skill
     protected override void Update()
     {
         base.Update();
-
+        
         SetupGravityScale();
     }
 
@@ -97,16 +123,22 @@ public class SkillThrowSword : Skill
         
         GameObject swordObject = Instantiate(swordPrefab, player.transform.position, Quaternion.identity);
         Vector2 throwVector = CalculateThrowVector();
-        swordObject.GetComponent<SwordController>().Setup(throwVector, gravityScale, returnSpeed);
+        
+        // swordObject.GetComponent<SwordController>().Setup(throwVector, gravityScale, returnSpeed);
+        // EnableController(swordObject, swordThrowType);
         switch (swordThrowType)
         {
             case SwordThrowType.Normal:
+                swordObject.AddComponent<NormalSwordController>().Setup(throwVector, gravityScale, returnSpeed);
                 break;
-            case SwordThrowType.Bounce:
-                swordObject.GetComponent<SwordController>().SetupBounce(bounceNumber, bounceRadius, bounceSpeed);
-                break;
-            case SwordThrowType.Pierce:
-                swordObject.GetComponent<SwordController>().SetupPierce(pierceNumber);
+            // case SwordThrowType.Bounce:
+            //     swordObject.GetComponent<SwordController>().SetupBounce(bounceNumber, bounceRadius, bounceSpeed);
+            //     break;
+            // case SwordThrowType.Pierce:
+            //     swordObject.GetComponent<SwordController>().SetupPierce(pierceNumber);
+            //     break;
+            case SwordThrowType.Hover:
+                swordObject.AddComponent<HoverSwordController>().Setup(throwVector, gravityScale, returnSpeed, hoverMaxDistance, hoverTime, hoverHitTime);
                 break;
         }
     }
@@ -131,6 +163,9 @@ public class SkillThrowSword : Skill
                 break;
             case SwordThrowType.Pierce:
                 gravityScale = pierceGravityScale;
+                break;
+            case SwordThrowType.Hover:
+                gravityScale = hoverGravityScale;
                 break;
         }
     }

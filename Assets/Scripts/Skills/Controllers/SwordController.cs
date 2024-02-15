@@ -26,6 +26,19 @@ public class SwordController : MonoBehaviour
     private List<Transform> bouncesEnemies = new List<Transform>();
     
     #endregion
+
+    #region hover
+
+    private bool isHovering;
+    private bool isStopped;
+    private float hoverGravityScale;
+    private float hoverMaxDistance;
+    private float hoverTime;
+    private float hoverTimer;
+    private float hoverHitTime;
+    private float hoverHitTimer;
+
+    #endregion
     
     private bool isPierce;
     private int pierceNumber;
@@ -59,7 +72,18 @@ public class SwordController : MonoBehaviour
         
         animator.SetBool("Spin", false);
     }
- 
+    
+    public void SetupHover(float _hoverGravityScale, float _hoverMaxDistance, float _hoverTime, float _hoverHitTime)
+    {
+        isNormal = false;
+        isHovering = true;
+        hoverGravityScale = _hoverGravityScale;
+        hoverMaxDistance = _hoverMaxDistance;
+        hoverTime = _hoverTime;
+        hoverHitTime = _hoverHitTime;
+        isStopped = false;
+    }
+    
     void Awake()
     {
         animator = GetComponentInChildren<Animator>();
@@ -89,29 +113,7 @@ public class SwordController : MonoBehaviour
         
         if (isBouncing)
         {
-            if (bouncesEnemies.Count > 0)
-            {
-                transform.position = Vector2.MoveTowards(
-                    transform.position, 
-                    bouncesEnemies[currentBounceTargetNumber].position,
-                    bounceSpeed * Time.deltaTime
-                );
-                
-                if (Vector2.Distance(transform.position, bouncesEnemies[currentBounceTargetNumber].position) < 0.1f)
-                {
-                    currentBounceTargetNumber++;
-                    bounceNumber--;
-                    if (currentBounceTargetNumber >= bouncesEnemies.Count)
-                    {
-                        currentBounceTargetNumber = 0;
-                    }
-                    if (bounceNumber <= 0)
-                    {
-                        isBouncing = false;
-                        isReturning = true;
-                    }
-                }
-            }
+            BouncingLogic();
         }
         
         if (isReturning)
@@ -127,10 +129,90 @@ public class SwordController : MonoBehaviour
                 player.ClearSword();
             }
         }
+
+        if (isHovering)
+        {
+            HoveringLog();
+        }
     }
-    
+
+    private void HoveringLog()
+    {
+        if (isStopped)
+        {
+            hoverTimer -= Time.deltaTime;
+            if (hoverTimer <= 0)
+            {
+                collider2D.enabled = false;
+                isReturning = true;
+                isStopped = false;
+                return;
+            }
+
+            if (hoverHitTimer <= 0)
+            {
+                Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, 1);
+                foreach (var hit in hits)
+                {
+                    Enemy enemy = hit.GetComponent<Enemy>();
+                    if (enemy)
+                    {
+                        enemy.Damage();
+                    }
+                }
+                hoverHitTimer = hoverHitTime;
+                return;
+            }
+            hoverHitTimer -= Time.deltaTime;
+            return;
+        }
+        
+        if (Vector2.Distance(player.transform.position, transform.position) >= hoverMaxDistance)
+        {
+            hoverTimer = hoverTime;
+            isStopped = true;
+            rb.bodyType = RigidbodyType2D.Kinematic;
+            rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        }
+    }
+
+    private void BouncingLogic()
+    {
+        if (bouncesEnemies.Count > 0)
+        {
+            transform.position = Vector2.MoveTowards(
+                transform.position, 
+                bouncesEnemies[currentBounceTargetNumber].position,
+                bounceSpeed * Time.deltaTime
+            );
+                
+            if (Vector2.Distance(transform.position, bouncesEnemies[currentBounceTargetNumber].position) < 0.1f)
+            {
+                currentBounceTargetNumber++;
+                bounceNumber--;
+                if (currentBounceTargetNumber >= bouncesEnemies.Count)
+                {
+                    currentBounceTargetNumber = 0;
+                }
+                if (bounceNumber <= 0)
+                {
+                    isBouncing = false;
+                    isReturning = true;
+                }
+            }
+        }
+    }
+
     void OnTriggerEnter2D(Collider2D other)
     {
+        if (isHovering)
+        {
+            isStopped = true;
+            rb.bodyType = RigidbodyType2D.Kinematic;
+            rb.constraints = RigidbodyConstraints2D.FreezeAll;
+            return;
+        }
+        
         if (isPierce)
         {
             Enemy enemy = other.GetComponent<Enemy>();

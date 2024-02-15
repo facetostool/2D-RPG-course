@@ -148,13 +148,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3423446267482880187}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b44e992bf781c3b4889de27ae065f72c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPierce: 1
-  pierceNumber: 2
 --- !u!50 &5287893486845307770
 Rigidbody2D:
   serializedVersion: 4

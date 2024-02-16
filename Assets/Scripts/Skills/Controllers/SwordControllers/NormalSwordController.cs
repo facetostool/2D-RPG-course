@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class NormalSwordController : BaseSwordController
 {
+    public void Setup(Vector2 _throwForce, float _gravityScale, float _returnSpeed)
+    {
+        SetupBase(_throwForce, _gravityScale, _returnSpeed);
+    }
+    
     protected override void Start()
     {
         base.Start();
@@ -16,20 +21,12 @@ public class NormalSwordController : BaseSwordController
 
     protected override void OnTriggerEnter2D(Collider2D other)
     {
+        if (!enabled) return;
+        
         base.OnTriggerEnter2D(other);
         
         other.GetComponent<Enemy>()?.Damage();
 
-        animator.SetBool("Spin", false);
-        transform.parent = other.transform;
-        collider2D.enabled = false;
-        rb.bodyType = RigidbodyType2D.Kinematic;
-        rb.constraints = RigidbodyConstraints2D.FreezeAll;
-        isSpinning = false;
-    }
-
-    public void Setup(Vector2 _throwForce, float _gravityScale, float _returnSpeed)
-    {
-        SetupBase(_throwForce, _gravityScale, _returnSpeed);
+        StuckSword(other);
     }
 }

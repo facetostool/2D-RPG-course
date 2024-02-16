@@ -14,6 +14,8 @@ public class BaseSwordController : MonoBehaviour
     protected bool isReturning;
     protected float returnSpeed;
     
+    protected static readonly int Spin = Animator.StringToHash("Spin");
+    
     protected void Awake()
     {
         animator = GetComponentInChildren<Animator>();
@@ -62,16 +64,28 @@ public class BaseSwordController : MonoBehaviour
     
     protected virtual void OnTriggerEnter2D(Collider2D other)
     {
-        
+
     }
     
     protected void SetupBase(Vector2 _throwForce, float _gravityScale, float _returnSpeed)
     {
+        enabled = true;
+        
         rb.velocity = new Vector2(_throwForce.x, _throwForce.y);
         rb.gravityScale = _gravityScale;
         player.SetSword(gameObject);
         returnSpeed = _returnSpeed;
         
         animator.SetBool("Spin", true);
+    }
+    
+    protected void StuckSword(Collider2D other)
+    {
+        animator.SetBool(Spin, false);
+        transform.parent = other.transform;
+        collider2D.enabled = false;
+        rb.bodyType = RigidbodyType2D.Kinematic;
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        isSpinning = false;
     }
 }

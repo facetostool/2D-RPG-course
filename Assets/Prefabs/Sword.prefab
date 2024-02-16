@@ -115,9 +115,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1477321874757571010}
-  - component: {fileID: 4638166568846940859}
   - component: {fileID: 5287893486845307770}
   - component: {fileID: 4100727454755030092}
+  - component: {fileID: 4703201260543600100}
+  - component: {fileID: 1095608466189192091}
+  - component: {fileID: 591773755006079551}
+  - component: {fileID: 7674657497551159372}
   m_Layer: 8
   m_Name: Sword
   m_TagString: Untagged
@@ -141,18 +144,6 @@ Transform:
   - {fileID: 8413146481129516807}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4638166568846940859
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3423446267482880187}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b44e992bf781c3b4889de27ae065f72c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!50 &5287893486845307770
 Rigidbody2D:
   serializedVersion: 4
@@ -215,3 +206,51 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.34315014
+--- !u!114 &4703201260543600100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3423446267482880187}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3b3d3ce04709a748b81e19d39099842, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1095608466189192091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3423446267482880187}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89af32bf7df4b1448834c076048a62b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &591773755006079551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3423446267482880187}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9daf7be773660444d915666003cbaeac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7674657497551159372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3423446267482880187}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a81732483d3e304eb15f82679514b67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

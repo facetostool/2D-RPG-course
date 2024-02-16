@@ -13,6 +13,23 @@ public class HoverSwordController : BaseSwordController
     private float hoverHitTime;
     private float hoverHitTimer;
     
+    public void Setup(
+        Vector2 _throwForce,
+        float _gravityScale, 
+        float _returnSpeed, 
+        float _hoverMaxDistance, 
+        float _hoverTime, 
+        float _hoverHitTime
+    )
+    {
+        SetupBase(_throwForce, _gravityScale, _returnSpeed);
+        
+        hoverMaxDistance = _hoverMaxDistance;
+        hoverTime = _hoverTime;
+        hoverHitTime = _hoverHitTime;
+        isStopped = false;
+    }
+    
     protected override void Start()
     {
         base.Start();
@@ -59,8 +76,15 @@ public class HoverSwordController : BaseSwordController
 
     protected override void OnTriggerEnter2D(Collider2D other)
     {
+        if (!enabled) return;
+        
         base.OnTriggerEnter2D(other);
 
+        if (other.GetComponent<Enemy>() == null)
+        {
+            StuckSword(other);
+            return;
+        }
         StopSword();
     }
 
@@ -71,22 +95,4 @@ public class HoverSwordController : BaseSwordController
         rb.bodyType = RigidbodyType2D.Kinematic;
         rb.constraints = RigidbodyConstraints2D.FreezeAll;
     }
-
-    public void Setup(
-        Vector2 _throwForce,
-        float _gravityScale, 
-        float _returnSpeed, 
-        float _hoverMaxDistance, 
-        float _hoverTime, 
-        float _hoverHitTime
-        )
-    {
-        SetupBase(_throwForce, _gravityScale, _returnSpeed);
-        
-        hoverMaxDistance = _hoverMaxDistance;
-        hoverTime = _hoverTime;
-        hoverHitTime = _hoverHitTime;
-        isStopped = false;
-    }
-    
 }

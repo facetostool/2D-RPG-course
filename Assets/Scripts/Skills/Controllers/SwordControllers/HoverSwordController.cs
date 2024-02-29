@@ -17,12 +17,13 @@ public class HoverSwordController : BaseSwordController
         Vector2 _throwForce,
         float _gravityScale, 
         float _returnSpeed, 
+        float _freezeTime,
         float _hoverMaxDistance, 
         float _hoverTime, 
         float _hoverHitTime
     )
     {
-        SetupBase(_throwForce, _gravityScale, _returnSpeed);
+        SetupBase(_throwForce, _gravityScale, _returnSpeed, _freezeTime);
         
         hoverMaxDistance = _hoverMaxDistance;
         hoverTime = _hoverTime;
@@ -58,7 +59,7 @@ public class HoverSwordController : BaseSwordController
                     Enemy enemy = hit.GetComponent<Enemy>();
                     if (enemy)
                     {
-                        enemy.Damage();
+                        RegisterDamage(enemy);
                     }
                 }
                 hoverHitTimer = hoverHitTime;

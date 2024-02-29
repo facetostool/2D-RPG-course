@@ -14,12 +14,13 @@ public class BounceSwordController : BaseSwordController
         Vector2 _throwForce,
         float _gravityScale,
         float _returnSpeed,
+        float _freezeTime,
         int _bounceNumber,
         float _bounceRadius,
         float _bounceSpeed
     )
     {
-        SetupBase(_throwForce, _gravityScale, _returnSpeed);
+        SetupBase(_throwForce, _gravityScale, _returnSpeed, _freezeTime);
         
         bounceNumber = _bounceNumber;
         bounceRadius = _bounceRadius;
@@ -37,7 +38,7 @@ public class BounceSwordController : BaseSwordController
 
         if (bouncesEnemies.Count == 1 && !isReturning)
         {
-            bouncesEnemies[currentBounceTargetNumber].GetComponent<Enemy>().Damage();
+            RegisterDamage(bouncesEnemies[currentBounceTargetNumber].GetComponent<Enemy>());
             isReturning = true;
             bounceNumber = 0;
         }
@@ -54,7 +55,7 @@ public class BounceSwordController : BaseSwordController
             {
                 currentBounceTargetNumber++;
                 bounceNumber--;
-                bouncesEnemies[currentBounceTargetNumber].GetComponent<Enemy>().Damage();
+                RegisterDamage(bouncesEnemies[currentBounceTargetNumber].GetComponent<Enemy>());
                 if (currentBounceTargetNumber >= (bouncesEnemies.Count - 1))
                 {
                     currentBounceTargetNumber = 0;
@@ -80,7 +81,7 @@ public class BounceSwordController : BaseSwordController
             return;
         }
 
-        enemy.Damage();
+        RegisterDamage(enemy);
         
         bouncesEnemies = new List<Transform>();
         Collider2D[] hits = Physics2D.OverlapCircleAll(enemy.transform.position, bounceRadius);

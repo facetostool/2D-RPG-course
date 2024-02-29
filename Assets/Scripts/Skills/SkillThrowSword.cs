@@ -18,6 +18,7 @@ public class SkillThrowSword : Skill
     [SerializeField] private Vector2 throwForce;
     [SerializeField] private float normalGravityScale;
     [SerializeField] private float returnSpeed;
+    [SerializeField] private float freezeTime;
     
     [Header("Trajectory Settings")]
     [SerializeField] private int trajectoryPointsNumber;
@@ -46,25 +47,6 @@ public class SkillThrowSword : Skill
     [SerializeField] private float hoverHitTime;
     private float gravityScale;
     
-    // private static void EnableController(GameObject obj, SwordThrowType _swordThrowType)
-    // {
-    //     switch (_swordThrowType)
-    //     {
-    //         case SwordThrowType.Normal:
-    //             obj.GetComponent<NormalSwordController>().enabled = true;
-    //             break;
-    //         case SwordThrowType.Hover:
-    //             obj.GetComponent<HoverSwordController>().enabled = true;
-    //             break;
-    //         case SwordThrowType.Bounce:
-    //             obj.GetComponent<BounceSwordController>().enabled = true;
-    //             break;
-    //         case SwordThrowType.Pierce:
-    //             obj.GetComponent<PierceSwordController>().enabled = true;
-    //             break;
-    //     }
-    // }
-    //
     protected override void Start()
     {
         base.Start();
@@ -128,16 +110,16 @@ public class SkillThrowSword : Skill
         switch (swordThrowType)
         {
             case SwordThrowType.Normal:
-                swordObject.GetComponent<NormalSwordController>().Setup(throwVector, gravityScale, returnSpeed);
+                swordObject.GetComponent<NormalSwordController>().Setup(throwVector, gravityScale, returnSpeed, freezeTime);
                 break;
             case SwordThrowType.Hover:
-                swordObject.GetComponent<HoverSwordController>().Setup(throwVector, gravityScale, returnSpeed, hoverMaxDistance, hoverTime, hoverHitTime);
+                swordObject.GetComponent<HoverSwordController>().Setup(throwVector, gravityScale, returnSpeed, freezeTime, hoverMaxDistance, hoverTime, hoverHitTime);
                 break;
             case SwordThrowType.Bounce:
-                swordObject.GetComponent<BounceSwordController>().Setup(throwVector, gravityScale, returnSpeed, bounceNumber, bounceRadius, bounceSpeed);
+                swordObject.GetComponent<BounceSwordController>().Setup(throwVector, gravityScale, returnSpeed, freezeTime, bounceNumber, bounceRadius, bounceSpeed);
                 break;
             case SwordThrowType.Pierce:
-                swordObject.GetComponent<PierceSwordController>().Setup(throwVector, gravityScale, returnSpeed, pierceNumber);
+                swordObject.GetComponent<PierceSwordController>().Setup(throwVector, gravityScale, returnSpeed, freezeTime, pierceNumber);
                 break;
         }
     }

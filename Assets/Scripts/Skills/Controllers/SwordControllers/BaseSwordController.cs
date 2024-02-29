@@ -13,6 +13,7 @@ public class BaseSwordController : MonoBehaviour
     protected bool isSpinning;
     protected bool isReturning;
     protected float returnSpeed;
+    protected float freezeTime;
     
     protected static readonly int Spin = Animator.StringToHash("Spin");
     
@@ -67,7 +68,7 @@ public class BaseSwordController : MonoBehaviour
 
     }
     
-    protected void SetupBase(Vector2 _throwForce, float _gravityScale, float _returnSpeed)
+    protected void SetupBase(Vector2 _throwForce, float _gravityScale, float _returnSpeed, float _freezeTime)
     {
         enabled = true;
         
@@ -75,6 +76,7 @@ public class BaseSwordController : MonoBehaviour
         rb.gravityScale = _gravityScale;
         player.SetSword(gameObject);
         returnSpeed = _returnSpeed;
+        freezeTime = _freezeTime;
         
         animator.SetBool("Spin", true);
     }
@@ -87,5 +89,11 @@ public class BaseSwordController : MonoBehaviour
         rb.bodyType = RigidbodyType2D.Kinematic;
         rb.constraints = RigidbodyConstraints2D.FreezeAll;
         isSpinning = false;
+    }
+
+    protected void RegisterDamage(Enemy enemy)
+    {
+        enemy.Damage();
+        enemy.StartCoroutine(nameof(Enemy.FreezeFor), freezeTime);
     }
 }

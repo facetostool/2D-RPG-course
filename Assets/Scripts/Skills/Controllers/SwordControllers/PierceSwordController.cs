@@ -6,9 +6,9 @@ public class PierceSwordController : BaseSwordController
 {
     private int pierceNumber;
     
-    public void Setup(Vector2 _throwForce, float _gravityScale, float _returnSpeed, int _pierceNumber)
+    public void Setup(Vector2 _throwForce, float _gravityScale, float _returnSpeed, float _freezeTime, int _pierceNumber)
     {
-        SetupBase(_throwForce, _gravityScale, _returnSpeed);
+        SetupBase(_throwForce, _gravityScale, _returnSpeed, _freezeTime);
         
         pierceNumber = (int)_pierceNumber;
         animator.SetBool("Spin", false);
@@ -37,7 +37,7 @@ public class PierceSwordController : BaseSwordController
             return;
         }
         
-        enemy.Damage();
+        RegisterDamage(enemy);
         if (pierceNumber <= 0)
         {
             StuckSword(other);

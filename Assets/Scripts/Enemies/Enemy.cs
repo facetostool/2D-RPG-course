@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -18,9 +19,15 @@ public class Enemy : Entity
     
     public bool canBeStunned;
     
+    private float defaultMoveSpeed;
+    private float defaultAnimationSpeed;
+    
     protected override void Start()
     {
         base.Start();
+        
+        defaultMoveSpeed = moveSpeed;
+        defaultAnimationSpeed = animator.speed;
     }
 
     protected override void Update()
@@ -81,5 +88,24 @@ public class Enemy : Entity
     {
         base.Damage();
         StartCoroutine("Knockout");
+    }
+    
+    public void Freeze()
+    {
+        moveSpeed = 0;
+        animator.speed = 0;
+    }
+    
+    public void Unfreeze()
+    {
+        moveSpeed = defaultMoveSpeed;
+        animator.speed = defaultAnimationSpeed;
+    }
+    
+    public IEnumerator FreezeFor(float seconds)
+    {
+        Freeze();
+        yield return new WaitForSeconds(seconds);
+        Unfreeze();
     }
 }

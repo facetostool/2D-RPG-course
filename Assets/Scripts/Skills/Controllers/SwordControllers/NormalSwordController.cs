@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class NormalSwordController : BaseSwordController
 {
-    public void Setup(Vector2 _throwForce, float _gravityScale, float _returnSpeed)
+    public void Setup(Vector2 _throwForce, float _gravityScale, float _returnSpeed, float _freezeTime)
     {
-        SetupBase(_throwForce, _gravityScale, _returnSpeed);
+        SetupBase(_throwForce, _gravityScale, _returnSpeed, _freezeTime);
     }
     
     protected override void Start()
@@ -24,9 +24,13 @@ public class NormalSwordController : BaseSwordController
         if (!enabled) return;
         
         base.OnTriggerEnter2D(other);
-        
-        other.GetComponent<Enemy>()?.Damage();
 
+        Enemy enemy = other.GetComponent<Enemy>();
+        if (enemy != null)
+        {
+            RegisterDamage(enemy);
+        }
+        
         StuckSword(other);
     }
 }

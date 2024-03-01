@@ -22,6 +22,12 @@ public class PlayerStateGrounded : PlayerState
             stateMachine.ChangeState(player.stateAimSword);
             return;
         }
+        
+        if (player.input.actions["Ultimate"].triggered && player.IsGroundDetected())
+        {
+            stateMachine.ChangeState(player.stateUltimate);
+            return;
+        }
 
         if (player.input.actions["CounterAttack"].triggered && player.IsGroundDetected())
         {

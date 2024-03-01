@@ -38,20 +38,17 @@ public class CloneController : MonoBehaviour
     
     void Update()
     {
-        if (finishedAnimation)
+        if (sr.color.a <= 0)
         {
-            if (sr.color.a <= 0)
-            {
-                Destroy(gameObject);
-                return;
-            }
-        
-            if (sr.color.a >= 0)
-            {
-                Color tmp = sr.color;
-                tmp.a = sr.color.a - Time.deltaTime * disappearSpeed;
-                sr.color = tmp;
-            }
+            Destroy(gameObject);
+            return;
+        }
+    
+        if (sr.color.a >= 0)
+        {
+            Color tmp = sr.color;
+            tmp.a = sr.color.a - Time.deltaTime * disappearSpeed;
+            sr.color = tmp;
         }
     }
     

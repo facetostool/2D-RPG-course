@@ -8,6 +8,7 @@ public class Entity : MonoBehaviour
     public Animator animator { get; private set; }
     public Rigidbody2D rb { get; private set; }
     public EntityFlashFX fx {get; private set;}
+    public SpriteRenderer sr { get; private set; }
     
     [SerializeField] public float moveSpeed;
     public float faceDir = 1;
@@ -23,6 +24,7 @@ public class Entity : MonoBehaviour
     [SerializeField] public Transform attackCheck;
     [SerializeField] public float attackCheckRadius;
     
+    private float defaultAlpha;
     
     protected virtual void Awake()
     {
@@ -32,8 +34,11 @@ public class Entity : MonoBehaviour
     protected virtual void Start()
     {
         fx = GetComponentInChildren<EntityFlashFX>();
+        sr = GetComponentInChildren<SpriteRenderer>();
         animator = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        
+        defaultAlpha = sr.color.a;
     }
     
     protected virtual void Update()
@@ -57,6 +62,20 @@ public class Entity : MonoBehaviour
         fx.StartCoroutine("Flash");
         
         Debug.Log(gameObject.name + " damaged");
+    }
+    
+    public void MakeTransparent()
+    {
+        Color tmp = sr.color;
+        tmp.a = 0f;
+        sr.color = tmp;
+    }
+    
+    public void MakeVisible()
+    {
+        Color tmp = sr.color;
+        tmp.a = defaultAlpha;
+        sr.color = tmp;
     }
 
     #region Collisions

@@ -22,6 +22,7 @@ public class Player : Entity
     public PlayerStateCounterAttack stateCounterAttack { get; private set;}
     public PlayerStateAimSword stateAimSword  { get; private set;}
     public PlayerStateCatchSword stateCatchSword  { get; private set;}
+    public PlayerStateUltimate stateUltimate { get; private set; }
     
     [Header("Move info")]
     [SerializeField] public float jumpForce;
@@ -53,6 +54,7 @@ public class Player : Entity
         stateCounterAttack = new PlayerStateCounterAttack(this, stateMachine, "CounterAttack");
         stateAimSword = new PlayerStateAimSword(this, stateMachine, "AimSword");
         stateCatchSword = new PlayerStateCatchSword(this, stateMachine, "CatchSword");
+        stateUltimate = new PlayerStateUltimate(this, stateMachine, "Air");
         
         moveVector = new Vector2(0, 0);
     }

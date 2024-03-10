@@ -51,6 +51,7 @@ public class SkillThrowSword : Skill
     {
         base.Start();
 
+        trajectoryPointParent.SetActive(false);
         GenerateDots();
     }
 

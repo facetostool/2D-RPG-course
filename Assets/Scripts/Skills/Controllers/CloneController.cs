@@ -15,12 +15,11 @@ public class CloneController : MonoBehaviour
 
     [SerializeField] private Transform attackCheck;
     
-    public void Setup(float _disappearSpeed)
+    public void Setup(float _disappearSpeed, Transform enemyTransform)
     {
         disappearSpeed = _disappearSpeed;
-
-        Vector3 closesEnemyPosition = ClosestEnemyPosition();
-        if (closesEnemyPosition.x < transform.position.x)
+        
+        if (enemyTransform && enemyTransform.position.x < transform.position.x)
         {
             transform.Rotate(0, 180, 0);
         }
@@ -71,27 +70,5 @@ public class CloneController : MonoBehaviour
                 enemy.Damage();
             }
         }
-    }
-
-    private Vector3 ClosestEnemyPosition()
-    {
-        float shortestDistance = 10;
-        Vector3 closestPosition = transform.position;
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, 10);
-        foreach (var hit in hits)
-        {
-            Enemy enemy = hit.GetComponent<Enemy>();
-            if (enemy)
-            {
-                float distance = Math.Abs(transform.position.x - enemy.transform.position.x);
-                if (distance < shortestDistance)
-                {
-                    shortestDistance = distance;
-                    closestPosition = hit.transform.position;
-                }
-            }
-        }
-
-        return closestPosition;
     }
 }

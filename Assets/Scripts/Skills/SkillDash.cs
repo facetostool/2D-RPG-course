@@ -36,6 +36,6 @@ public class SkillDash : Skill
         base.Use();
 
         GameObject cloneObject = Instantiate(clone, player.transform.position, Quaternion.identity);
-        cloneObject.GetComponent<CloneController>().Setup(disappearSpeed);
+        cloneObject.GetComponent<CloneController>().Setup(disappearSpeed, ClosestEnemyPosition(player.transform.position));
     }
 }

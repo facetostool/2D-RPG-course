@@ -24,7 +24,7 @@ public class SkeletonStateStunned : SkeletonState
         if (stateTime <= 0)
         {
             skeleton.SetVelocity(0,0);
-            stateMachine.ChangeState(skeleton.stateIdle);
+            stateMachine.ChangeState(skeleton.stateBattle);
         }
     }
 

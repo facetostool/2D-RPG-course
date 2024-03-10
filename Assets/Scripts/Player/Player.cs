@@ -54,7 +54,7 @@ public class Player : Entity
         stateCounterAttack = new PlayerStateCounterAttack(this, stateMachine, "CounterAttack");
         stateAimSword = new PlayerStateAimSword(this, stateMachine, "AimSword");
         stateCatchSword = new PlayerStateCatchSword(this, stateMachine, "CatchSword");
-        stateUltimate = new PlayerStateUltimate(this, stateMachine, "Air");
+        stateUltimate = new PlayerStateUltimate(this, stateMachine, "Ultimate");
         
         moveVector = new Vector2(0, 0);
     }
@@ -102,6 +102,14 @@ public class Player : Entity
         }
     }
 
+    void OnCrystal(InputValue value)
+    {
+        if (value.isPressed && skills.crystal.CanUse())
+        {
+            skills.crystal.Use();
+        }
+    }
+
     void OnMove(InputValue value)
     {
         moveVector = value.Get<Vector2>();
@@ -118,5 +126,11 @@ public class Player : Entity
         {
             Flip();
         }
+    }
+    
+    public void ExitUltimate()
+    {   
+        MakeVisible();
+        stateMachine.ChangeState(stateIdle);
     }
 }

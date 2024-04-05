@@ -122,8 +122,7 @@ public class BlackHoleController : MonoBehaviour
         Transform enemy = enemiesToAttack[currentAttackTarget].transform;
 
         var enemyPosition = enemy.transform.position;
-        GameObject clone = Instantiate(clonePrefab, new Vector3(enemyPosition.x + RandomOffset()*1f, enemyPosition.y), Quaternion.identity);
-        clone.GetComponent<CloneController>().Setup(cloneDisappearSpeed, enemy.transform);
+        SkillManager.instance.clone.Use(new Vector3(enemyPosition.x + RandomOffset()*1f, enemyPosition.y), enemy);
         currentAttackTarget++;
         attackNumber--;
         if (currentAttackTarget >= enemiesToAttack.Count)

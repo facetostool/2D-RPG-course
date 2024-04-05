@@ -7,15 +7,9 @@ public class SkillDash : Skill
     [SerializeField] public float dashSpeed;
     [SerializeField] public float dashTime;
 
-    [SerializeField] public GameObject clone;
-    [SerializeField] public float disappearSpeed;
-    
-    public enum DashType
-    {
-        Regular,
-        Clone
-    }
-    
+    [SerializeField] public bool cloneOnStart;
+    [SerializeField] public bool cloneOnEnd;
+
     protected override void Start()
     {
         base.Start();
@@ -31,11 +25,30 @@ public class SkillDash : Skill
         return base.CanUse();
     }
 
-    public override void Use()
+    public void Use(string eventType = "")
     {
         base.Use();
 
-        GameObject cloneObject = Instantiate(clone, player.transform.position, Quaternion.identity);
-        cloneObject.GetComponent<CloneController>().Setup(disappearSpeed, ClosestEnemyPosition(player.transform.position));
+        switch (eventType)
+        {
+            case "start":
+                CreateCloneOnStart();
+                break;
+            case "end":
+                CreateCloneOnEnd();
+                break;
+        }
+    }
+
+    public void CreateCloneOnStart()
+    {
+        if (cloneOnStart)
+            SkillManager.instance.clone.Use(player.transform.position, ClosestEnemyPosition(player.transform.position));
+    }
+    
+    public void CreateCloneOnEnd()
+    {
+        if (cloneOnEnd)
+            SkillManager.instance.clone.Use(player.transform.position, ClosestEnemyPosition(player.transform.position));
     }
 }

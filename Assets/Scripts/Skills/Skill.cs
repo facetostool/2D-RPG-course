@@ -8,8 +8,8 @@ public class Skill : MonoBehaviour
 {
     public Player player { get; private set; }
     
-    [field: SerializeField] public float cooldown { get; private set; }
-    private float cooldownTimer;
+    [field: SerializeField] public float cooldown { get; set; }
+    protected float cooldownTimer;
     
     protected virtual void Start()
     {

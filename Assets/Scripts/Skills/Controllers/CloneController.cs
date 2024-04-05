@@ -15,8 +15,9 @@ public class CloneController : MonoBehaviour
 
     [SerializeField] private Transform attackCheck;
     
-    public void Setup(float _disappearSpeed, Transform enemyTransform)
+    public void Setup(Vector3 _position, float _disappearSpeed, Transform enemyTransform)
     {
+        transform.position = _position;
         disappearSpeed = _disappearSpeed;
         
         if (enemyTransform && enemyTransform.position.x < transform.position.x)

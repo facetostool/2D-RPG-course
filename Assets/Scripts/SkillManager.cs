@@ -25,6 +25,7 @@ public class SkillManager : MonoBehaviour
     public SkillThrowSword throwSword { get; private set; }
     public SkillBlackHole blackHole { get; private set; }
     public SkillCrystal crystal { get; private set; }
+    public SkillClone clone { get; private set; }
 
     private void Start()
     {
@@ -32,5 +33,6 @@ public class SkillManager : MonoBehaviour
         throwSword = GetComponent<SkillThrowSword>();
         blackHole = GetComponent<SkillBlackHole>();
         crystal = GetComponent<SkillCrystal>();
+        clone = GetComponent<SkillClone>();
     }
 }

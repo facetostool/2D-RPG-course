@@ -13,7 +13,7 @@ public class PlayerStateDash : PlayerState
         base.Enter();
 
         stateTime = player.skills.dash.dashTime;
-        player.skills.dash.Use();
+        player.skills.dash.Use("start");
     }
 
     public override void Update()
@@ -45,5 +45,7 @@ public class PlayerStateDash : PlayerState
     public override void Exit()
     {
         base.Exit();
+        
+        player.skills.dash.Use("end");
     }
 }

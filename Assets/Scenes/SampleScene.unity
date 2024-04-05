@@ -5317,6 +5317,7 @@ GameObject:
   - component: {fileID: 1168420763}
   - component: {fileID: 1168420762}
   - component: {fileID: 1168420764}
+  - component: {fileID: 1168420765}
   m_Layer: 0
   m_Name: SkillManager
   m_TagString: Untagged
@@ -5339,8 +5340,8 @@ MonoBehaviour:
   <cooldown>k__BackingField: 3
   dashSpeed: 20
   dashTime: 0.2
-  clone: {fileID: 3328369035989864907, guid: d1cac9a52b61cdb4fbe72d8bb5605189, type: 3}
-  disappearSpeed: 0.7
+  cloneOnStart: 0
+  cloneOnEnd: 0
 --- !u!114 &1168420760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5436,9 +5437,31 @@ MonoBehaviour:
   <cooldown>k__BackingField: 0
   crystalPrefab: {fileID: 1110568177340808364, guid: 47be2deb936ad284ebf4fe937ca139a8, type: 3}
   crystalDestroyTime: 3
+  canCreateClone: 0
   isExplode: 1
   canMove: 1
   moveSpeed: 5
+  isMulti: 1
+  crystalNumber: 3
+  crystalsLeft: []
+  multiCooldown: 5
+  timeBetweenUseMulti: 3
+--- !u!114 &1168420765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1168420758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e075d943c1777f4ca52f17eaa5ee523, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <cooldown>k__BackingField: 0
+  clonePrefab: {fileID: 3328369035989864907, guid: d1cac9a52b61cdb4fbe72d8bb5605189, type: 3}
+  disappearSpeed: 0.7
+  canUseOnCounterAttack: 1
 --- !u!1 &1173061356
 GameObject:
   m_ObjectHideFlags: 0

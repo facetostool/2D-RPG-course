@@ -11,7 +11,7 @@ public class CloneController : MonoBehaviour
     private SpriteRenderer sr;
     private Animator animator;
     private Player player;
-    private bool finishedAnimation;
+    // private bool finishedAnimation;
 
     [SerializeField] private Transform attackCheck;
     
@@ -54,7 +54,7 @@ public class CloneController : MonoBehaviour
     
     public void CancelAnimationTrigger()
     {
-        finishedAnimation = true;
+        // finishedAnimation = true;
         
         animator.SetBool("Attack", false);
     }
@@ -68,7 +68,7 @@ public class CloneController : MonoBehaviour
             if (enemy)
             {
                 enemy.StartCoroutine("Knockout");
-                enemy.Damage();
+                enemy.DamageEffect();
             }
         }
     }

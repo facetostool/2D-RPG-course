@@ -45,7 +45,7 @@ public class HoverSwordController : BaseSwordController
             hoverTimer -= Time.deltaTime;
             if (hoverTimer <= 0)
             {
-                collider2D.enabled = false;
+                circleCollider2D.enabled = false;
                 isReturning = true;
                 isStopped = false;
                 return;

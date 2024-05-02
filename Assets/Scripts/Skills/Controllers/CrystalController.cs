@@ -84,7 +84,7 @@ public class CrystalController : MonoBehaviour
             Enemy enemy = hit.GetComponent<Enemy>();
             if (enemy)
             {
-                enemy.Damage();
+                enemy.DamageEffect();
             }
         }
     }

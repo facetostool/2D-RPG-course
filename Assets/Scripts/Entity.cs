@@ -7,8 +7,9 @@ public class Entity : MonoBehaviour
 {
     public Animator animator { get; private set; }
     public Rigidbody2D rb { get; private set; }
-    public EntityFlashFX fx {get; private set;}
+    public EntityFX fx {get; private set;}
     public SpriteRenderer sr { get; private set; }
+    public CharacterStats stats { get; private set; }
     
     [SerializeField] public float moveSpeed;
     public float faceDir = 1;
@@ -25,6 +26,8 @@ public class Entity : MonoBehaviour
     [SerializeField] public float attackCheckRadius;
     
     private float defaultAlpha;
+
+    public Action onFliped;
     
     protected virtual void Awake()
     {
@@ -33,10 +36,11 @@ public class Entity : MonoBehaviour
 
     protected virtual void Start()
     {
-        fx = GetComponentInChildren<EntityFlashFX>();
+        fx = GetComponentInChildren<EntityFX>();
         sr = GetComponentInChildren<SpriteRenderer>();
         animator = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        stats = GetComponent<CharacterStats>();
         
         defaultAlpha = sr.color.a;
     }
@@ -46,10 +50,21 @@ public class Entity : MonoBehaviour
         
     }
     
+    public virtual void SlowBy(float slowAmount, float slowTime)
+    {
+        
+    }
+
+    protected virtual void ReturnDefaultSpeed()
+    {
+        
+    }
+    
     public void Flip()
     {
         faceDir = -faceDir;
         transform.Rotate(0, 180, 0);
+        onFliped?.Invoke();
     }
     
     public virtual void SetVelocity(float x, float y)
@@ -57,7 +72,7 @@ public class Entity : MonoBehaviour
         rb.velocity = new Vector2(x, y);
     }
 
-    public virtual void Damage()
+    public virtual void DamageEffect()
     {
         fx.StartCoroutine("Flash");
         

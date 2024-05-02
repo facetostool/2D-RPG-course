@@ -54,7 +54,7 @@ public class Enemy : Entity
             Player player = hit.GetComponent<Player>();
             if (player)
             {
-                player.Damage();
+                GetComponent<CharacterStats>().DoDamage(hit.GetComponent<CharacterStats>());
             }
         }
     }
@@ -84,10 +84,10 @@ public class Enemy : Entity
         CloseCounterAttackWindow();
     }
 
-    public override void Damage()
+    public override void DamageEffect()
     {
-        base.Damage();
-        StartCoroutine("Knockout");
+        base.DamageEffect();
+        StartCoroutine(nameof(Knockout));
     }
     
     public void Freeze()
@@ -107,5 +107,26 @@ public class Enemy : Entity
         Freeze();
         yield return new WaitForSeconds(seconds);
         Unfreeze();
+    }
+
+    public virtual void Die()
+    {
+        
+    }
+
+    public override void SlowBy(float slowAmount, float slowTime)
+    {
+        base.SlowBy(slowAmount, slowTime);
+        moveSpeed = moveSpeed * (1 - slowAmount);
+        animator.speed = animator.speed * (1 - slowAmount);
+        
+        Invoke(nameof(ReturnDefaultSpeed), slowTime);
+    }
+
+    protected override void ReturnDefaultSpeed()
+    {
+        base.ReturnDefaultSpeed();
+        moveSpeed = defaultMoveSpeed;
+        animator.speed = defaultAnimationSpeed;
     }
 }

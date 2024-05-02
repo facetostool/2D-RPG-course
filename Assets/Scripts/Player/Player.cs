@@ -23,6 +23,7 @@ public class Player : Entity
     public PlayerStateAimSword stateAimSword  { get; private set;}
     public PlayerStateCatchSword stateCatchSword  { get; private set;}
     public PlayerStateUltimate stateUltimate { get; private set; }
+    public PlayerStateDead stateDead { get; private set; }
     
     [Header("Move info")]
     [SerializeField] public float jumpForce;
@@ -38,6 +39,11 @@ public class Player : Entity
     public Vector2 moveVector {  get; private set; }
     
     public bool IsBusy {  get; private set; }
+    
+    float defaultMoveSpeed;
+    float defaultJumpForce;
+    float defaultDashSpeed;
+    Vector2 defaultWallJumpForce;
     
     protected override void Awake()
     {
@@ -55,6 +61,7 @@ public class Player : Entity
         stateAimSword = new PlayerStateAimSword(this, stateMachine, "AimSword");
         stateCatchSword = new PlayerStateCatchSword(this, stateMachine, "CatchSword");
         stateUltimate = new PlayerStateUltimate(this, stateMachine, "Ultimate");
+        stateDead = new PlayerStateDead(this, stateMachine, nameof(Die));
         
         moveVector = new Vector2(0, 0);
     }
@@ -77,6 +84,11 @@ public class Player : Entity
         skills = SkillManager.instance;
         
         stateMachine.Initialize(stateIdle);
+        
+        defaultMoveSpeed = moveSpeed;
+        defaultJumpForce = jumpForce;
+        defaultDashSpeed = skills.dash.dashSpeed;
+        defaultWallJumpForce = wallJumpForce;
     }
     
     protected override void Update()
@@ -132,5 +144,33 @@ public class Player : Entity
     {   
         MakeVisible();
         stateMachine.ChangeState(stateIdle);
+    }
+
+    public void Die()
+    {
+        stateMachine.ChangeState(stateDead);
+    }
+
+    public override void SlowBy(float slowAmount, float slowTime)
+    {
+        base.SlowBy(slowAmount, slowTime);
+        moveSpeed = moveSpeed * (1 - slowAmount);
+        jumpForce = jumpForce * (1 - slowAmount);
+        skills.dash.dashSpeed = skills.dash.dashSpeed * (1 - slowAmount);
+        wallJumpForce = wallJumpForce * (1 - slowAmount);
+        animator.speed = animator.speed * (1 - slowAmount);
+        
+        Invoke(nameof(ReturnDefaultSpeed), slowTime);
+    }
+
+    protected override void ReturnDefaultSpeed()
+    {
+        base.ReturnDefaultSpeed();
+        
+        moveSpeed = defaultMoveSpeed;
+        jumpForce = defaultJumpForce;
+        skills.dash.dashSpeed = defaultDashSpeed;
+        wallJumpForce = defaultWallJumpForce;
+        animator.speed = 1;
     }
 }

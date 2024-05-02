@@ -8,7 +8,7 @@ public class BaseSwordController : MonoBehaviour
     protected Player player;
     protected Animator animator;
     protected Rigidbody2D rb;
-    protected CircleCollider2D collider2D;
+    protected CircleCollider2D circleCollider2D;
     
     protected bool isSpinning;
     protected bool isReturning;
@@ -21,7 +21,7 @@ public class BaseSwordController : MonoBehaviour
     {
         animator = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        collider2D = GetComponent<CircleCollider2D>();
+        circleCollider2D = GetComponent<CircleCollider2D>();
         player = PlayerManager.instance.player;
         
         isReturning = false;
@@ -43,7 +43,7 @@ public class BaseSwordController : MonoBehaviour
         {
             isReturning = true;
             transform.parent = null;
-            collider2D.enabled = false;
+            circleCollider2D.enabled = false;
             rb.bodyType = RigidbodyType2D.Kinematic;
             rb.constraints = RigidbodyConstraints2D.FreezeAll;
         }
@@ -85,7 +85,7 @@ public class BaseSwordController : MonoBehaviour
     {
         animator.SetBool(Spin, false);
         transform.parent = other.transform;
-        collider2D.enabled = false;
+        circleCollider2D.enabled = false;
         rb.bodyType = RigidbodyType2D.Kinematic;
         rb.constraints = RigidbodyConstraints2D.FreezeAll;
         isSpinning = false;
@@ -93,7 +93,7 @@ public class BaseSwordController : MonoBehaviour
 
     protected void RegisterDamage(Enemy enemy)
     {
-        enemy.Damage();
+        enemy.DamageEffect();
         enemy.StartCoroutine(nameof(Enemy.FreezeFor), freezeTime);
     }
 }

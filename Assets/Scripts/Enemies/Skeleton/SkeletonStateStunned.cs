@@ -12,7 +12,7 @@ public class SkeletonStateStunned : SkeletonState
     {
         base.Enter();
 
-        skeleton.fx.InvokeRepeating(nameof(EntityFlashFX.StunnedEffect), 0, 0.1f);
+        skeleton.fx.InvokeRepeating(nameof(EntityFX.StunnedEffect), 0, 0.1f);
         stateTime = skeleton.stunnedDuration;
         skeleton.SetVelocity(skeleton.stunnedDirection.x * -skeleton.faceDir, skeleton.stunnedDirection.y);
     }
@@ -32,6 +32,6 @@ public class SkeletonStateStunned : SkeletonState
     {
         base.Exit();
         
-        skeleton.fx.StopStunnedEffect();
+        skeleton.fx.StopEffect();
     }
 }

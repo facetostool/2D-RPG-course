@@ -29,7 +29,7 @@ public class PlayerAnimTriggers : MonoBehaviour
             Enemy enemy = hit.GetComponent<Enemy>();
             if (enemy)
             {
-                enemy.Damage();
+                _player.stats.DoDamage(enemy.stats);
             }
         }
     }

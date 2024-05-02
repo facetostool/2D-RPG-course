@@ -94,7 +94,7 @@ public class BounceSwordController : BaseSwordController
             }
         }
         
-        collider2D.enabled = false;
+        circleCollider2D.enabled = false;
         rb.bodyType = RigidbodyType2D.Kinematic;
         rb.constraints = RigidbodyConstraints2D.FreezeAll;
     }

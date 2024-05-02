@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStats : CharacterStats
+public class PlayerStats : EntityStats
 {
     Player player;
     public override void Start()
@@ -12,7 +12,7 @@ public class PlayerStats : CharacterStats
         player = GetComponent<Player>();
     }
 
-    public override void DoDamage(CharacterStats target)
+    public override void DoDamage(EntityStats target)
     {
         base.DoDamage(target);
     }

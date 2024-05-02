@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class EntityBar : MonoBehaviour
 {
-    public CharacterStats stats;
+    public EntityStats stats;
     public Entity entity;
     public RectTransform rTransform;
     public Slider healthSlider;
@@ -23,7 +23,7 @@ public class EntityBar : MonoBehaviour
     private void OnEnable()
     {
         entity = GetComponentInParent<Entity>();
-        stats = GetComponentInParent<CharacterStats>();
+        stats = GetComponentInParent<EntityStats>();
         healthSlider = GetComponentInChildren<Slider>();
         
         Debug.Log("EntityBar OnEnable");

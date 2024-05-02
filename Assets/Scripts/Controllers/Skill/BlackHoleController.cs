@@ -82,7 +82,7 @@ public class BlackHoleController : MonoBehaviour
         
         if (isReleased && attackTimer <= 0 && enemiesToAttack.Count > 0 && attackNumber > 0)
         {
-            PlayerManager.instance.player.MakeTransparent();
+            PlayerManager.instance.player.fx.MakeTransparent();
             AttackEnemy();
             if (attackNumber <= 0)
             {

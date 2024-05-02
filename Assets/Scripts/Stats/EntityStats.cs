@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class CharacterStats : MonoBehaviour
+public class EntityStats : MonoBehaviour
 {
     private EntityFX fx;
     private Entity entity;
@@ -31,6 +31,7 @@ public class CharacterStats : MonoBehaviour
     public float ignitedTime;
     public Stat iceDamage;
     public float chilledTime;
+    
     public Stat lightningDamage;
     public float shockedTime;
     
@@ -46,6 +47,10 @@ public class CharacterStats : MonoBehaviour
     float igniteDmgTimer;
     int igniteDmg;
     
+    [SerializeField] private GameObject thunderStrikePrefab;
+    int shockDmg;
+
+    private bool isDead;
     public int currentHealth;
     public Action onHealthChanged;
     
@@ -76,29 +81,14 @@ public class CharacterStats : MonoBehaviour
             isShocked = false;
 
         if (igniteDmgTimer <= 0 && isIgnited)
-        {
-            igniteDmgTimer = igniteDmgCooldown;
-            Debug.Log("Burning");
-            
-            UpdateHealth(currentHealth - igniteDmg);
-            if (currentHealth <= 0)
-            {
-                Die();
-            }
-        }
+            ApplyIgniteDamage();
     }
 
-    public virtual void TakeDamage(int dmg)
+    private void ApplyIgniteDamage()
     {
-        if (dmg <= 0)
-            return;
-        
-        GetComponent<Entity>().DamageEffect();
-        
-        Debug.Log("Character took " + dmg + " damage!");
-        
-        UpdateHealth(currentHealth - dmg);
-        if (currentHealth <= 0)
+        igniteDmgTimer = igniteDmgCooldown;
+        UpdateHealth(currentHealth - igniteDmg);
+        if (currentHealth <= 0 && !isDead)
         {
             Die();
         }
@@ -106,10 +96,21 @@ public class CharacterStats : MonoBehaviour
     
     protected virtual void Die()
     {
-        Debug.Log("Character died!");
+        isDead = true;
     }
     
-    public virtual void DoDamage(CharacterStats target)
+    public int MaxHealthValue()
+    {
+        return maxHealth.Value() + vitality.Value()*5;
+    }
+
+    private void UpdateHealth(int health)
+    {
+        currentHealth = health;
+        onHealthChanged?.Invoke();
+    }
+    
+    public virtual void DoDamage(EntityStats target)
     {
         if (IsAttackMissed(target))
             return;
@@ -119,11 +120,142 @@ public class CharacterStats : MonoBehaviour
         if (IsCritAttack())
             finalDamage = CalculateCritDamage(finalDamage);
         
-        target.TakeDamage(finalDamage);
-        DoMagicDamage(target);
+        target.TakePhysicalDamage(finalDamage);
+        // DoMagicDamage(target);
     }
     
-    private bool IsAttackMissed(CharacterStats target)
+    #region Magic Damage
+    public void DoMagicDamage(EntityStats target)
+    {
+        int finalDmg = fireDamage.Value() + iceDamage.Value() + lightningDamage.Value();
+        finalDmg -= target.magicResistance.Value() + target.intelligence.Value()*3;
+        
+        target.TakePhysicalDamage(finalDmg);
+        
+        if (fireDamage.Value() <= 0 && iceDamage.Value() <= 0 && lightningDamage.Value() <= 0)
+            return;
+        
+        bool _isIgnited = fireDamage.Value() > iceDamage.Value() && fireDamage.Value() > lightningDamage.Value();
+        bool _isChilled = iceDamage.Value() > fireDamage.Value() && iceDamage.Value() > lightningDamage.Value();
+        bool _isShocked = lightningDamage.Value() > fireDamage.Value() && lightningDamage.Value() > iceDamage.Value();
+
+        while (!_isIgnited && !_isChilled && !_isShocked)
+        {   
+            if (Random.value < 0.33f && fireDamage.Value() > 0)
+                _isIgnited = true;
+            else if (Random.value < 0.66f && iceDamage.Value() > 0)
+                _isChilled = true;
+            else
+                _isShocked = true;
+        }
+        
+        if (_isIgnited)
+            target.AssignIgniteDmg(fireDamage.Value() * 0.2f);
+        
+        if (_isShocked)
+            target.AssignShockDmg(lightningDamage.Value() * 0.2f);
+        
+        target.ApplyAilments(_isIgnited, _isChilled, _isShocked);
+    }
+    
+    public void AssignIgniteDmg(float _igniteDmg)
+    {
+        igniteDmg = Mathf.RoundToInt(_igniteDmg);
+    }
+    
+    public void AssignShockDmg(float _shockDmg)
+    {
+        shockDmg = Mathf.RoundToInt(_shockDmg);
+    }
+    
+    public void ApplyAilments(bool _isIgnited, bool _isChilled, bool _isShocked)
+    {
+        bool canApplyIgnite = !isIgnited && !isChilled && !isShocked;
+        bool canApplyChill = !isIgnited && !isChilled && !isShocked;
+        bool canApplyShock = !isIgnited && !isChilled;
+        
+        if (_isIgnited && canApplyIgnite)
+        {
+            isIgnited = true;
+            ignitedTimer = ignitedTime;
+            fx.IgniteEffectFor(ignitedTime);
+            
+        }
+        
+        if (_isChilled && canApplyChill)
+        {
+            isChilled = true;
+            chilledTimer = chilledTime;
+            fx.ChillEffectFor(chilledTime);
+            entity.SlowBy(0.5f, chilledTime);
+        }
+        
+        if (_isShocked && canApplyShock)
+        {
+            if (!isShocked)
+            {
+                isShocked = true;
+                shockedTimer = shockedTime;
+                fx.ShockEffectFor(shockedTime);
+                return;
+            }
+
+            if (GetComponent<Player>() != null)
+            {
+                return;
+            }
+            
+            Enemy closesEnemy = FindClosestEnemyForThunderStrike();
+            if (closesEnemy)
+            {
+                ThunderStrikeController tsc = Instantiate(thunderStrikePrefab, transform.position, Quaternion.identity).GetComponent<ThunderStrikeController>();
+                tsc.Setup(closesEnemy.gameObject, 15, shockDmg);
+            }
+        }
+    }
+    
+    Enemy FindClosestEnemyForThunderStrike()
+    {
+        float shortestDistance = 10;
+        Enemy closestDifferentEnemy = null;
+        Vector3 entityPosition = entity.transform.position;
+        Collider2D[] hits = Physics2D.OverlapCircleAll(entityPosition, 10);
+        foreach (var hit in hits)
+        {
+            Enemy enemy = hit.GetComponent<Enemy>();
+            if (enemy)
+            {
+                float distance = Math.Abs(entityPosition.x - enemy.transform.position.x);
+                if (distance < shortestDistance && distance > 0.2f)
+                {
+                    shortestDistance = distance;
+                    closestDifferentEnemy = enemy;
+                }
+            }
+        }
+
+        return closestDifferentEnemy;
+    }
+    
+    #endregion Magic Damage
+
+    #region  Physical Damage Calculations
+    
+    public virtual void TakePhysicalDamage(int dmg)
+    {
+        if (dmg <= 0)
+            return;
+        
+        GetComponent<Entity>().DamageEffect();
+        
+        UpdateHealth(currentHealth - dmg);
+        if (currentHealth <= 0 && !isDead)
+        {
+            Die();
+        }
+    }
+    
+    private bool IsAttackMissed(EntityStats target)
     {
         int totalTargetEvasion = target.evasion.Value() + target.agility.Value();
         
@@ -157,84 +289,11 @@ public class CharacterStats : MonoBehaviour
         float critDmg = damage * (critPower.Value() + strength.Value()) / 100;
         return Mathf.RoundToInt(critDmg);
     }
-    
-    private void DoMagicDamage(CharacterStats target)
-    {
-        int finalDmg = fireDamage.Value() + iceDamage.Value() + lightningDamage.Value();
-        finalDmg -= target.magicResistance.Value() + target.intelligence.Value()*3;
-        
-        target.TakeDamage(finalDmg);
-        
-        if (fireDamage.Value() <= 0 && iceDamage.Value() <= 0 && lightningDamage.Value() <= 0)
-            return;
-        
-        bool _isIgnited = fireDamage.Value() > iceDamage.Value() && fireDamage.Value() > lightningDamage.Value();
-        bool _isChilled = iceDamage.Value() > fireDamage.Value() && iceDamage.Value() > lightningDamage.Value();
-        bool _isShocked = lightningDamage.Value() > fireDamage.Value() && lightningDamage.Value() > iceDamage.Value();
-
-        while (!_isIgnited && !_isChilled && !_isShocked)
-        {   
-            if (Random.value < 0.33f && fireDamage.Value() > 0)
-                _isIgnited = true;
-            else if (Random.value < 0.66f && iceDamage.Value() > 0)
-                _isChilled = true;
-            else
-                _isShocked = true;
-        }
-        
-        if (_isIgnited)
-            target.AssignIgniteDmg(fireDamage.Value() * 0.2f);
-        
-        target.ApplyAilments(_isIgnited, _isChilled, _isShocked);
-    }
-    
-    public void AssignIgniteDmg(float _igniteDmg)
-    {
-        igniteDmg = Mathf.RoundToInt(_igniteDmg);
-    }
-    
-    public void ApplyAilments(bool _isIgnited, bool _isChilled, bool _isShocked)
-    {
-        if (isIgnited || isChilled || isShocked)
-            return;
-        
-        if (_isIgnited)
-        {
-            isIgnited = true;
-            ignitedTimer = ignitedTime;
-            fx.IgniteEffectFor(ignitedTime);
-            
-        }
-        
-        if (_isChilled)
-        {
-            isChilled = true;
-            chilledTimer = chilledTime;
-            fx.ChillEffectFor(chilledTime);
-            entity.SlowBy(0.5f, chilledTime);
-        }
-        
-        if (_isShocked)
-        {
-            isShocked = true;
-            shockedTimer = shockedTime;
-            fx.ShockEffectFor(shockedTime);
-        }
-    }
 
     public int ArmorValue()
     {
         return isChilled ? Mathf.RoundToInt(armor.Value()*0.8f) : armor.Value();
     }
     
-    public int MaxHealthValue()
-    {
-        return maxHealth.Value() + vitality.Value()*5;
-    }
-
-    private void UpdateHealth(int health)
-    {
-        currentHealth = health;
-        onHealthChanged?.Invoke();
-    }
+    #endregion
 }

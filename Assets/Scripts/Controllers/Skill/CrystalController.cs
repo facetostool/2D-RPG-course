@@ -6,6 +6,7 @@ public class CrystalController : MonoBehaviour
 {
     private CircleCollider2D cc;
     private Animator anim;
+    private Player player;
     
     private float selfDestroyTimer;
     private bool canExplode;
@@ -30,6 +31,7 @@ public class CrystalController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        player = PlayerManager.instance.player;
         cc = GetComponent<CircleCollider2D>();
         anim = GetComponent<Animator>();
     }
@@ -84,7 +86,7 @@ public class CrystalController : MonoBehaviour
             Enemy enemy = hit.GetComponent<Enemy>();
             if (enemy)
             {
-                enemy.DamageEffect();
+                player.stats.DoMagicDamage(enemy.stats);
             }
         }
     }

@@ -80,4 +80,11 @@ public class EntityFX : MonoBehaviour
     {
         sr.color = sr.color != shockColors[0] ? shockColors[0] : shockColors[1];
     }
+    
+    public void MakeTransparent()
+    {
+        Color tmp = sr.color;
+        tmp.a = 0f;
+        sr.color = tmp;
+    }
 }

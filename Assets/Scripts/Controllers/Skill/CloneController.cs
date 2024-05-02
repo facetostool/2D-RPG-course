@@ -67,8 +67,8 @@ public class CloneController : MonoBehaviour
             Enemy enemy = hit.GetComponent<Enemy>();
             if (enemy)
             {
-                enemy.StartCoroutine("Knockout");
-                enemy.DamageEffect();
+                // enemy.StartCoroutine("Knockout");
+                player.stats.DoDamage(enemy.stats);
             }
         }
     }

@@ -76,13 +76,6 @@ public class Skeleton : Enemy
         
         stateMachine.ChangeState(stateStunned);
     }
-
-    public override void DamageEffect()
-    {
-        base.DamageEffect();
-        
-        // stateMachine.ChangeState(stateBattle);
-    }
     
     public override void Die()
     {

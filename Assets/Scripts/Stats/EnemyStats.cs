@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyStats : CharacterStats
+public class EnemyStats : EntityStats
 {
     private Enemy enemy;
     public override void Start()
@@ -12,9 +12,9 @@ public class EnemyStats : CharacterStats
         enemy = GetComponent<Enemy>();
     }
 
-    public override void TakeDamage(int dmg)
+    public override void TakePhysicalDamage(int dmg)
     {
-        base.TakeDamage(dmg);
+        base.TakePhysicalDamage(dmg);
     }
     
     protected override void Die()

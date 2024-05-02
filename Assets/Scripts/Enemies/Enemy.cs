@@ -54,7 +54,7 @@ public class Enemy : Entity
             Player player = hit.GetComponent<Player>();
             if (player)
             {
-                GetComponent<CharacterStats>().DoDamage(hit.GetComponent<CharacterStats>());
+                GetComponent<EntityStats>().DoDamage(hit.GetComponent<EntityStats>());
             }
         }
     }

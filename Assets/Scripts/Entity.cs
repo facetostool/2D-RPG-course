@@ -9,7 +9,7 @@ public class Entity : MonoBehaviour
     public Rigidbody2D rb { get; private set; }
     public EntityFX fx {get; private set;}
     public SpriteRenderer sr { get; private set; }
-    public CharacterStats stats { get; private set; }
+    public EntityStats stats { get; private set; }
     
     [SerializeField] public float moveSpeed;
     public float faceDir = 1;
@@ -40,7 +40,7 @@ public class Entity : MonoBehaviour
         sr = GetComponentInChildren<SpriteRenderer>();
         animator = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        stats = GetComponent<CharacterStats>();
+        stats = GetComponent<EntityStats>();
         
         defaultAlpha = sr.color.a;
     }
@@ -72,19 +72,7 @@ public class Entity : MonoBehaviour
         rb.velocity = new Vector2(x, y);
     }
 
-    public virtual void DamageEffect()
-    {
-        fx.StartCoroutine("Flash");
-        
-        Debug.Log(gameObject.name + " damaged");
-    }
-    
-    public void MakeTransparent()
-    {
-        Color tmp = sr.color;
-        tmp.a = 0f;
-        sr.color = tmp;
-    }
+    public virtual void DamageEffect() => fx.StartCoroutine("Flash");
     
     public void MakeVisible()
     {

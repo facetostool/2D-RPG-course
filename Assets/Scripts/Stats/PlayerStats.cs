@@ -12,6 +12,7 @@ public class PlayerStats : EntityStats
         player = GetComponent<Player>();
     }
 
+    
     public override void DoDamage(EntityStats target)
     {
         base.DoDamage(target);

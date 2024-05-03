@@ -13,8 +13,6 @@ public class EntityBar : MonoBehaviour
     
     void Start()
     {
-        Debug.Log("EntityBar Start");
-        
         rTransform = GetComponentInChildren<RectTransform>();
         
         UpdateHealthBarValues();
@@ -26,7 +24,6 @@ public class EntityBar : MonoBehaviour
         stats = GetComponentInParent<EntityStats>();
         healthSlider = GetComponentInChildren<Slider>();
         
-        Debug.Log("EntityBar OnEnable");
         entity.onFliped += FlipBar;
         stats.onHealthChanged += UpdateHealthBarValues;
     }

@@ -6,7 +6,7 @@ public class EnemyStats : EntityStats
 {
     private Enemy enemy;
     public override void Start()
-    {
+    {   
         base.Start();
         
         enemy = GetComponent<Enemy>();

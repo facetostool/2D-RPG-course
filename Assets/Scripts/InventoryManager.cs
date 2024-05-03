@@ -10,6 +10,9 @@ public class InventoryManager : MonoBehaviour
     public List<InventoryItem> inventoryItems;
     public Dictionary<ItemData, InventoryItem> inventoryItemDict;
     
+    [SerializeField] private GameObject inventoryPanel;
+    private ItemSlot[] itemSlots;
+    
     void Awake()
     {
         if (instance != null)
@@ -24,6 +27,23 @@ public class InventoryManager : MonoBehaviour
     {
         inventoryItems = new List<InventoryItem>();
         inventoryItemDict = new Dictionary<ItemData, InventoryItem>();
+        
+        itemSlots = inventoryPanel.GetComponentsInChildren<ItemSlot>();
+    }
+    
+    public void UpdateUI()
+    {
+        for (int i = 0; i < itemSlots.Length; i++)
+        {
+            if (i < inventoryItems.Count)
+            {
+                itemSlots[i].SetItem(inventoryItems[i]);
+            }
+            else
+            {
+                itemSlots[i].ClearSlot();
+            }
+        }
     }
 
     public void AddItem(ItemData item)
@@ -38,6 +58,8 @@ public class InventoryManager : MonoBehaviour
             inventoryItems.Add(newItem);
             inventoryItemDict.Add(item, newItem);
         }
+        
+        UpdateUI();
     }
     
     public void RemoveItem(ItemData item)
@@ -51,5 +73,7 @@ public class InventoryManager : MonoBehaviour
                 inventoryItemDict.Remove(item);
             }
         }
+        
+        UpdateUI();
     }
 }

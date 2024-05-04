@@ -3,13 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ItemSlot : MonoBehaviour
+public class ItemSlot : MonoBehaviour, IPointerDownHandler 
 {
     [SerializeField] private Image itemImage;
     [SerializeField] private TextMeshProUGUI itemAmount;
-    [SerializeField] private InventoryItem inventoryItem;
+    [SerializeField] public InventoryItem inventoryItem;
 
     private void Start()
     {
@@ -37,5 +38,17 @@ public class ItemSlot : MonoBehaviour
         inventoryItem = null;
         GetComponent<Image>().sprite = null;
         itemAmount.text = "";
+    }
+    
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (inventoryItem == null)
+            return;
+        
+        ItemData itemData = inventoryItem.itemData;
+        if (itemData != null && itemData.itemType == ItemType.Equipment)
+        {
+            InventoryManager.instance.EquipItem(this);
+        }
     }
 }

@@ -31,7 +31,6 @@ public class EntityStats : MonoBehaviour
     public float ignitedTime;
     public Stat iceDamage;
     public float chilledTime;
-    
     public Stat lightningDamage;
     public float shockedTime;
     
@@ -53,6 +52,7 @@ public class EntityStats : MonoBehaviour
     private bool isDead;
     public int currentHealth;
     public Action onHealthChanged;
+    public Action onStatsChanged;
     
     public virtual void Start()
     {

@@ -6,6 +6,7 @@ using UnityEngine;
 public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager instance;
+    public Player player;
     
     public List<InventoryItem> inventoryItems;
     public Dictionary<ItemData, InventoryItem> inventoryItemDict;
@@ -20,9 +21,15 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private GameObject stashPanel;
     [SerializeField] private GameObject equipmentPanel;
     
+    [SerializeField] private GameObject itemSlotPrefab;
+    
     private ItemSlot[] inventorySlots;
     private ItemSlot[] stashSlots;
     private ItemSlot[] equipmentSlots;
+    
+    private int MAX_INVENTORY_SIZE = 10;
+    private int MAX_STASH_SIZE = 20;
+    private int MAX_EQUIPMENT_SIZE = 4;
     
     void Awake()
     {
@@ -36,6 +43,8 @@ public class InventoryManager : MonoBehaviour
 
     private void Start()
     {
+        player = PlayerManager.instance.player;
+        
         inventoryItems = new List<InventoryItem>();
         inventoryItemDict = new Dictionary<ItemData, InventoryItem>();
         
@@ -45,9 +54,21 @@ public class InventoryManager : MonoBehaviour
         equipmentItems = new List<InventoryItem>();
         equipmentItemDict = new Dictionary<EquipmentType, InventoryItem>();
         
-        inventorySlots = inventoryPanel.GetComponentsInChildren<ItemSlot>();
-        stashSlots = stashPanel.GetComponentsInChildren<ItemSlot>();
-        equipmentSlots = equipmentPanel.GetComponentsInChildren<ItemSlot>();
+        inventorySlots = CreateItemSlots(inventoryPanel, MAX_INVENTORY_SIZE);
+        stashSlots = CreateItemSlots(stashPanel, MAX_STASH_SIZE);
+        equipmentSlots = CreateItemSlots(equipmentPanel, MAX_EQUIPMENT_SIZE);
+    }
+    
+    public ItemSlot[] CreateItemSlots(GameObject panel, int slotAmount)
+    {
+        ItemSlot[] slots = new ItemSlot[slotAmount];
+        for (int i = 0; i < slotAmount; i++)
+        {
+            GameObject newSlot = Instantiate(itemSlotPrefab, panel.transform);
+            slots[i] = newSlot.GetComponent<ItemSlot>();
+        }
+
+        return slots;
     }
     
     public void EquipItem(ItemSlot inventorySlot)
@@ -55,17 +76,8 @@ public class InventoryManager : MonoBehaviour
         ItemDataEquipment item = (ItemDataEquipment)inventorySlot.inventoryItem.itemData;
         if (equipmentItemDict.ContainsKey(item.equipmentType))
         {
-           ItemSlot slot = null;
-           for (int i = 0; i < equipmentSlots.Length; i++)
-           {
-               ItemDataEquipment equipmentItem = (ItemDataEquipment)equipmentSlots[i].inventoryItem.itemData;
-               if (equipmentItem.equipmentType == item.equipmentType)
-               {
-                   slot = equipmentSlots[i];
-                   break;
-               }
-           }
-
+            ItemSlot slot = FindEquipmentSlotFor(item.equipmentType);
+            
            if (slot == null)
            {
                throw new Exception("No slot found to replace");
@@ -76,7 +88,10 @@ public class InventoryManager : MonoBehaviour
            slot.SetItem(newEquipmentItem);
            
            equipmentItems.Add(newEquipmentItem);
+           item.AddModifiers(player.stats);
            equipmentItems.Remove(inventoryItemToReplace);
+           var oldEquipment = (ItemDataEquipment)inventoryItemToReplace.itemData;
+           oldEquipment.RemoveModifiers(player.stats);
            
            RemoveInventoryItem(newEquipmentItem.itemData);
            AddInventoryItem(inventoryItemToReplace.itemData);
@@ -85,14 +100,28 @@ public class InventoryManager : MonoBehaviour
         {
             InventoryItem newItem = new InventoryItem(item);
             equipmentItems.Add(newItem);
+            item.AddModifiers(player.stats);
             equipmentItemDict.Add(item.equipmentType, newItem);
             UpdateUI(equipmentSlots, equipmentItems);
-            
             
             RemoveInventoryItem(item);
         }
     }
-    
+
+    private ItemSlot FindEquipmentSlotFor(EquipmentType type)
+    {
+        for (int i = 0; i < equipmentSlots.Length; i++)
+        {
+            ItemDataEquipment equipmentItem = (ItemDataEquipment)equipmentSlots[i].inventoryItem.itemData;
+            if (equipmentItem.equipmentType == type)
+            {
+                return equipmentSlots[i];
+            }
+        }
+
+        return null;
+    }
+
     public void UpdateUI(ItemSlot[] slots, List<InventoryItem> items)
     {
         for (int i = 0; i < slots.Length; i++)
@@ -131,6 +160,11 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
+            if (inventoryItems.Count >= inventorySlots.Length)
+            {
+                Debug.Log("Inventory is full");
+                return;
+            }
             InventoryItem newItem = new InventoryItem(item);
             inventoryItems.Add(newItem);
             inventoryItemDict.Add(item, newItem);

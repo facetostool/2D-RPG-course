@@ -26,12 +26,14 @@ public class EntityBar : MonoBehaviour
         
         entity.onFliped += FlipBar;
         stats.onHealthChanged += UpdateHealthBarValues;
+        stats.onStatsChanged += UpdateHealthBarValues;
     }
     
     private void OnDisable()
     {
         entity.onFliped -= FlipBar;
         stats.onHealthChanged -= UpdateHealthBarValues;
+        stats.onStatsChanged -= UpdateHealthBarValues;
     }
 
     void FlipBar()

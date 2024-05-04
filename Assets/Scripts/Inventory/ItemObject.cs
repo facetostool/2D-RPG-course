@@ -13,7 +13,7 @@ public class ItemObject : MonoBehaviour
         if (itemData != null)
         {
             GetComponent<SpriteRenderer>().sprite = itemData.icon;
-            gameObject.name = "Item: " +  itemData.itemName;
+            gameObject.name = itemData.itemType + ": " +  itemData.itemName;
         }
     }
     

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class NormalSwordController : BaseSwordController
 {
     public void Setup(Vector2 _throwForce, float _gravityScale, float _returnSpeed, float _freezeTime)

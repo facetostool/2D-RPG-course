@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = Unity.Mathematics.Random;
 
+
 public class CloneController : MonoBehaviour
 {
     private float disappearSpeed;

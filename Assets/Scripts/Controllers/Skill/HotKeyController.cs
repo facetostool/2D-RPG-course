@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+
 public class HotKeyController : MonoBehaviour
 {
     private TextMeshProUGUI text;

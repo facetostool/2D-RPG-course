@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PierceSwordController : BaseSwordController
+
 {
     private int pierceNumber;
     

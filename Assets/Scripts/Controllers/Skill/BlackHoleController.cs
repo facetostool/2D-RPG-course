@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
+
 public class BlackHoleController : MonoBehaviour
 {
     private float growSpeed;

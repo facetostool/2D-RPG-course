@@ -5036,6 +5036,7 @@ MonoBehaviour:
   stashPanel: {fileID: 381524026}
   equipmentPanel: {fileID: 1013883394}
   itemSlotPrefab: {fileID: 8212139209783148400, guid: bfc279de57836436c879994948993b96, type: 3}
+  equipmentSlotPrefab: {fileID: 5619227229289581606, guid: dd8743fc3e62531448ab540e7f9ebcf9, type: 3}
 --- !u!4 &632943773
 Transform:
   m_ObjectHideFlags: 0
@@ -5792,17 +5793,17 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   fireDamage:
-    baseValue: 0
+    baseValue: 50
     modifiers: 
-  ignitedTime: 0
+  ignitedTime: 3
   iceDamage:
     baseValue: 0
     modifiers: 
-  chilledTime: 0
+  chilledTime: 3
   lightningDamage:
     baseValue: 0
     modifiers: 
-  shockedTime: 0
+  shockedTime: 3
   isIgnited: 0
   isChilled: 0
   isShocked: 0
@@ -18118,10 +18119,6 @@ PrefabInstance:
     - target: {fileID: 4785073657890167191, guid: 286cca9d0e3e56b42b097bfc2ec3ca7b, type: 3}
       propertyPath: m_Name
       value: Skeleton
-      objectReference: {fileID: 0}
-    - target: {fileID: 7196381440121481327, guid: 286cca9d0e3e56b42b097bfc2ec3ca7b, type: 3}
-      propertyPath: levelStatsModifier
-      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 7989528074801795577, guid: 286cca9d0e3e56b42b097bfc2ec3ca7b, type: 3}
       propertyPath: m_AnchorMax.x

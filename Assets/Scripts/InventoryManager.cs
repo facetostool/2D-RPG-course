@@ -22,6 +22,7 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private GameObject equipmentPanel;
     
     [SerializeField] private GameObject itemSlotPrefab;
+    [SerializeField] private GameObject equipmentSlotPrefab;
     
     private ItemSlot[] inventorySlots;
     private ItemSlot[] stashSlots;
@@ -54,17 +55,17 @@ public class InventoryManager : MonoBehaviour
         equipmentItems = new List<InventoryItem>();
         equipmentItemDict = new Dictionary<EquipmentType, InventoryItem>();
         
-        inventorySlots = CreateItemSlots(inventoryPanel, MAX_INVENTORY_SIZE);
-        stashSlots = CreateItemSlots(stashPanel, MAX_STASH_SIZE);
-        equipmentSlots = CreateItemSlots(equipmentPanel, MAX_EQUIPMENT_SIZE);
+        inventorySlots = CreateItemSlots(inventoryPanel, MAX_INVENTORY_SIZE, itemSlotPrefab);
+        stashSlots = CreateItemSlots(stashPanel, MAX_STASH_SIZE, itemSlotPrefab);
+        equipmentSlots = CreateItemSlots(equipmentPanel, MAX_EQUIPMENT_SIZE, equipmentSlotPrefab);
     }
     
-    public ItemSlot[] CreateItemSlots(GameObject panel, int slotAmount)
+    public ItemSlot[] CreateItemSlots(GameObject panel, int slotAmount, GameObject prefab)
     {
         ItemSlot[] slots = new ItemSlot[slotAmount];
         for (int i = 0; i < slotAmount; i++)
         {
-            GameObject newSlot = Instantiate(itemSlotPrefab, panel.transform);
+            GameObject newSlot = Instantiate(prefab, panel.transform);
             slots[i] = newSlot.GetComponent<ItemSlot>();
         }
 
@@ -106,6 +107,17 @@ public class InventoryManager : MonoBehaviour
             
             RemoveInventoryItem(item);
         }
+    }
+    
+    public void UnequipItem(ItemSlot equipmentSlot)
+    {
+        ItemDataEquipment item = (ItemDataEquipment)equipmentSlot.inventoryItem.itemData;
+        item.RemoveModifiers(player.stats);
+        equipmentItems.Remove(equipmentSlot.inventoryItem);
+        equipmentItemDict.Remove(item.equipmentType);
+        UpdateUI(equipmentSlots, equipmentItems);
+        
+        AddInventoryItem(item);
     }
 
     private ItemSlot FindEquipmentSlotFor(EquipmentType type)

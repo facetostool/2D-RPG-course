@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
+
 public class ThunderStrikeController : MonoBehaviour
 {
     [SerializeField] private GameObject target;

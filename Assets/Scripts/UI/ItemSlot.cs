@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -40,7 +37,7 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler
         itemAmount.text = "";
     }
     
-    public void OnPointerDown(PointerEventData eventData)
+    public virtual void OnPointerDown(PointerEventData eventData)
     {
         if (inventoryItem == null)
             return;

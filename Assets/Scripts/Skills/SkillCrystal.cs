@@ -114,6 +114,7 @@ public class SkillCrystal : Skill
        
        if (crystalsLeft.Count == 0)
            ResetAbility();
+       
     }
 
     private void ResetAbility()

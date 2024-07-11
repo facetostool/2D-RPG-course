@@ -3,13 +3,20 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ItemSlot : MonoBehaviour, IPointerDownHandler 
+public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
 {
+    private UI ui;
+    
     [SerializeField] private Image itemImage;
     [SerializeField] private TextMeshProUGUI itemAmount;
     [SerializeField] public InventoryItem inventoryItem;
 
-    private void Start()
+    void Start()
+    {
+        ui = GetComponentInParent<UI>();
+    }
+    
+    public virtual void Awake()
     {
         itemImage = GetComponent<Image>();
         itemAmount = GetComponentInChildren<TextMeshProUGUI>();
@@ -17,6 +24,9 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler
 
     public void SetItem(InventoryItem item)
     {
+        if (!itemImage)
+            return;
+        
         inventoryItem = item;
         itemImage.color = Color.white;
         itemImage.sprite = inventoryItem.itemData.icon;
@@ -31,6 +41,9 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler
     
     public void ClearSlot()
     {
+        if (!itemImage)
+            return;
+        
         itemImage.color = Color.clear;
         inventoryItem = null;
         GetComponent<Image>().sprite = null;
@@ -42,10 +55,32 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler
         if (inventoryItem == null)
             return;
         
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            InventoryManager.instance.RemoveItem(this.inventoryItem.itemData);
+            return;
+        }
+        
         ItemData itemData = inventoryItem.itemData;
         if (itemData != null && itemData.itemType == ItemType.Equipment)
         {
             InventoryManager.instance.EquipItem(this);
         }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (inventoryItem == null || inventoryItem.itemData == null || inventoryItem.itemData.itemType != ItemType.Equipment)
+            return;
+        
+        ui.itemTooltip.ShowTooltip(inventoryItem.itemData as ItemDataEquipment);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (inventoryItem == null || inventoryItem.itemData == null || inventoryItem.itemData.itemType != ItemType.Equipment)
+            return;
+        
+        ui.itemTooltip.HideTooltip();
     }
 }

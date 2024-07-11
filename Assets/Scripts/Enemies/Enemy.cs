@@ -102,7 +102,12 @@ public class Enemy : Entity
         animator.speed = defaultAnimationSpeed;
     }
     
-    public IEnumerator FreezeFor(float seconds)
+    public void FreezeFor(float seconds)
+    {
+        StartCoroutine(nameof(FreezeForCoroutine), seconds);
+    }
+    
+    public IEnumerator FreezeForCoroutine(float seconds)
     {
         Freeze();
         yield return new WaitForSeconds(seconds);

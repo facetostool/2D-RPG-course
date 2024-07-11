@@ -95,6 +95,6 @@ public class BaseSwordController : MonoBehaviour
     protected void RegisterDamage(Enemy enemy)
     {
         player.stats.DoDamage(enemy.stats);
-        enemy.StartCoroutine(nameof(Enemy.FreezeFor), freezeTime);
+        enemy.FreezeFor(freezeTime);
     }
 }

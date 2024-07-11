@@ -8,7 +8,14 @@ public class ItemObject : MonoBehaviour
 {
     [SerializeField] ItemData itemData;
 
-    private void OnValidate()
+    private Rigidbody2D rb;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
+    private void SetupVisuals()
     {
         if (itemData != null)
         {
@@ -17,18 +24,22 @@ public class ItemObject : MonoBehaviour
         }
     }
     
-    // Update is called once per frame
-    void Update()
-    {
+    public void SetupItem(ItemData item, Vector2 velocity)
+    { 
+        itemData = item;
+        rb.velocity = velocity;
         
+        SetupVisuals();
     }
-    
-    private void OnTriggerEnter2D(Collider2D other)
+
+    public void PickupItem()
     {
-        if (other.CompareTag("Player"))
+        if (!InventoryManager.instance.CanAddItem(itemData))
         {
-            InventoryManager.instance.AddItem(itemData);
-            Destroy(gameObject);
+            rb.velocity = new Vector2(0, 5);
+            return;
         }
+        InventoryManager.instance.AddItem(itemData);
+        Destroy(gameObject);
     }
 }

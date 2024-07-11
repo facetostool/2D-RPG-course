@@ -30,6 +30,12 @@ public class PlayerAnimTriggers : MonoBehaviour
             if (enemy)
             {
                 _player.stats.DoDamage(enemy.stats);
+
+                if (!InventoryManager.instance.equipmentItemDict.TryGetValue(EquipmentType.Weapon, out var weapon))
+                    continue;
+                if (weapon == null) continue;
+                var itemData = weapon.itemData as ItemDataEquipment;
+                itemData?.ApplyEffects(enemy.transform);
             }
         }
     }

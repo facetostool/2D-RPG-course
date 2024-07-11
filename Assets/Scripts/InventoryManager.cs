@@ -1,37 +1,39 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager instance;
     public Player player;
+
+    private float lastTimeFlaskUsed;
+    private float flaskCooldown;
     
+    private float lastTimeArmorUsed;
+    private float armorCooldown;
+
+    [SerializeField] private List<ItemData> defaultInventoryItems = new List<ItemData>();
+
     public List<InventoryItem> inventoryItems;
     public Dictionary<ItemData, InventoryItem> inventoryItemDict;
-    
+
     public List<InventoryItem> stashItems;
     public Dictionary<ItemData, InventoryItem> stashItemDict;
-    
+
     public List<InventoryItem> equipmentItems;
     public Dictionary<EquipmentType, InventoryItem> equipmentItemDict;
-    
+
     [SerializeField] private GameObject inventoryPanel;
     [SerializeField] private GameObject stashPanel;
     [SerializeField] private GameObject equipmentPanel;
-    
-    [SerializeField] private GameObject itemSlotPrefab;
-    [SerializeField] private GameObject equipmentSlotPrefab;
-    
+
     private ItemSlot[] inventorySlots;
     private ItemSlot[] stashSlots;
-    private ItemSlot[] equipmentSlots;
-    
-    private int MAX_INVENTORY_SIZE = 10;
-    private int MAX_STASH_SIZE = 20;
-    private int MAX_EQUIPMENT_SIZE = 4;
-    
+    private EquipedItemSlot[] equipmentSlots;
+
     void Awake()
     {
         if (instance != null)
@@ -39,39 +41,33 @@ public class InventoryManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
         instance = this;
     }
 
     private void Start()
     {
         player = PlayerManager.instance.player;
-        
+
         inventoryItems = new List<InventoryItem>();
         inventoryItemDict = new Dictionary<ItemData, InventoryItem>();
-        
+
         stashItems = new List<InventoryItem>();
         stashItemDict = new Dictionary<ItemData, InventoryItem>();
-        
+
         equipmentItems = new List<InventoryItem>();
         equipmentItemDict = new Dictionary<EquipmentType, InventoryItem>();
-        
-        inventorySlots = CreateItemSlots(inventoryPanel, MAX_INVENTORY_SIZE, itemSlotPrefab);
-        stashSlots = CreateItemSlots(stashPanel, MAX_STASH_SIZE, itemSlotPrefab);
-        equipmentSlots = CreateItemSlots(equipmentPanel, MAX_EQUIPMENT_SIZE, equipmentSlotPrefab);
-    }
-    
-    public ItemSlot[] CreateItemSlots(GameObject panel, int slotAmount, GameObject prefab)
-    {
-        ItemSlot[] slots = new ItemSlot[slotAmount];
-        for (int i = 0; i < slotAmount; i++)
-        {
-            GameObject newSlot = Instantiate(prefab, panel.transform);
-            slots[i] = newSlot.GetComponent<ItemSlot>();
-        }
 
-        return slots;
+        inventorySlots = inventoryPanel.GetComponentsInChildren<ItemSlot>();
+        stashSlots = stashPanel.GetComponentsInChildren<ItemSlot>();
+        equipmentSlots = equipmentPanel.GetComponentsInChildren<EquipedItemSlot>();
+
+        foreach (var item in defaultInventoryItems)
+        {
+            AddItem(item);
+        }
     }
-    
+
     public void EquipItem(ItemSlot inventorySlot)
     {
         ItemDataEquipment item = (ItemDataEquipment)inventorySlot.inventoryItem.itemData;
@@ -79,59 +75,56 @@ public class InventoryManager : MonoBehaviour
         {
             ItemSlot slot = FindEquipmentSlotFor(item.equipmentType);
             
-           if (slot == null)
-           {
-               throw new Exception("No slot found to replace");
-           } 
-           
-           InventoryItem newEquipmentItem = new InventoryItem(item);
-           InventoryItem inventoryItemToReplace = slot.inventoryItem;
-           slot.SetItem(newEquipmentItem);
-           
-           equipmentItems.Add(newEquipmentItem);
-           item.AddModifiers(player.stats);
-           equipmentItems.Remove(inventoryItemToReplace);
-           var oldEquipment = (ItemDataEquipment)inventoryItemToReplace.itemData;
-           oldEquipment.RemoveModifiers(player.stats);
-           
-           RemoveInventoryItem(newEquipmentItem.itemData);
-           AddInventoryItem(inventoryItemToReplace.itemData);
+            InventoryItem newEquipmentItem = new InventoryItem(item);
+            InventoryItem inventoryItemToReplace = slot.inventoryItem;
+            slot.SetItem(newEquipmentItem);
+
+            equipmentItems.Add(newEquipmentItem);
+            equipmentItemDict[item.equipmentType] = newEquipmentItem;
+            item.AddModifiers(player.stats);
+            equipmentItems.Remove(inventoryItemToReplace);
+            var oldEquipment = (ItemDataEquipment)inventoryItemToReplace.itemData;
+            oldEquipment.RemoveModifiers(player.stats);
+
+            RemoveInventoryItem(newEquipmentItem.itemData);
+            AddInventoryItem(inventoryItemToReplace.itemData);
         }
         else
         {
             InventoryItem newItem = new InventoryItem(item);
             equipmentItems.Add(newItem);
-            item.AddModifiers(player.stats);
             equipmentItemDict.Add(item.equipmentType, newItem);
-            UpdateUI(equipmentSlots, equipmentItems);
+            item.AddModifiers(player.stats);
             
+            ItemSlot slot = FindEquipmentSlotFor(item.equipmentType);
+            slot.SetItem(newItem);
+
             RemoveInventoryItem(item);
         }
     }
-    
+
     public void UnequipItem(ItemSlot equipmentSlot)
     {
         ItemDataEquipment item = (ItemDataEquipment)equipmentSlot.inventoryItem.itemData;
         item.RemoveModifiers(player.stats);
         equipmentItems.Remove(equipmentSlot.inventoryItem);
         equipmentItemDict.Remove(item.equipmentType);
-        UpdateUI(equipmentSlots, equipmentItems);
-        
+        equipmentSlot.ClearSlot();
+
         AddInventoryItem(item);
+    }
+
+    public void UnequipItem(ItemData item)
+    {
+        if (equipmentItemDict.TryGetValue(((ItemDataEquipment)item).equipmentType, out var inventoryItem))
+        {
+            UnequipItem(FindEquipmentSlotFor(((ItemDataEquipment)item).equipmentType));
+        }
     }
 
     private ItemSlot FindEquipmentSlotFor(EquipmentType type)
     {
-        for (int i = 0; i < equipmentSlots.Length; i++)
-        {
-            ItemDataEquipment equipmentItem = (ItemDataEquipment)equipmentSlots[i].inventoryItem.itemData;
-            if (equipmentItem.equipmentType == type)
-            {
-                return equipmentSlots[i];
-            }
-        }
-
-        return null;
+        return equipmentSlots.FirstOrDefault(slot => slot.equipmentType == type);
     }
 
     public void UpdateUI(ItemSlot[] slots, List<InventoryItem> items)
@@ -148,20 +141,33 @@ public class InventoryManager : MonoBehaviour
             }
         }
     }
+    
+    public bool CanAddItem(ItemData item)
+    {
+        switch (item.itemType)
+        {
+            case ItemType.Material:
+                return true;
+            case ItemType.Equipment:
+                return inventoryItems.Count < inventorySlots.Length;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
 
     public void AddItem(ItemData item)
     {
-       switch (item.itemType)
-       {
-           case ItemType.Material:
-               AddStashItem(item);
-               break;
-           case ItemType.Equipment:
-               AddInventoryItem(item);
-               break;
-           default:
-               throw new ArgumentOutOfRangeException();
-       }
+        switch (item.itemType)
+        {
+            case ItemType.Material:
+                AddStashItem(item);
+                break;
+            case ItemType.Equipment:
+                AddInventoryItem(item);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
     }
 
     private void AddInventoryItem(ItemData item)
@@ -177,6 +183,7 @@ public class InventoryManager : MonoBehaviour
                 Debug.Log("Inventory is full");
                 return;
             }
+
             InventoryItem newItem = new InventoryItem(item);
             inventoryItems.Add(newItem);
             inventoryItemDict.Add(item, newItem);
@@ -184,7 +191,7 @@ public class InventoryManager : MonoBehaviour
 
         UpdateUI(inventorySlots, inventoryItems);
     }
-    
+
     private void AddStashItem(ItemData item)
     {
         if (stashItemDict.ContainsKey(item))
@@ -197,7 +204,7 @@ public class InventoryManager : MonoBehaviour
             stashItems.Add(newItem);
             stashItemDict.Add(item, newItem);
         }
-        
+
         UpdateUI(stashSlots, stashItems);
     }
 
@@ -230,7 +237,7 @@ public class InventoryManager : MonoBehaviour
 
         UpdateUI(inventorySlots, inventoryItems);
     }
-    
+
     private void RemoveStashItem(ItemData item)
     {
         if (stashItemDict.ContainsKey(item))
@@ -244,5 +251,75 @@ public class InventoryManager : MonoBehaviour
         }
 
         UpdateUI(stashSlots, stashItems);
+    }
+
+    public bool CanCraft(CraftItemSlot slot)
+    {
+        if (slot.inventoryItem == null)
+            return false;
+
+        var itemData = slot.inventoryItem.itemData as ItemDataEquipment;
+
+        if (itemData!.craftMaterials.Count == 0)
+            return false;
+
+        foreach (var material in itemData.craftMaterials)
+        {
+            if (!stashItemDict.TryGetValue(material.itemData, out var stashItem))
+                return false;
+
+            if (stashItem.amount < material.amount)
+                return false;
+        }
+
+        return true;
+    }
+
+    public void CraftItem(CraftItemSlot slot)
+    {
+        var itemData = slot.inventoryItem.itemData as ItemDataEquipment;
+
+        if (itemData?.craftMaterials == null) return;
+
+        foreach (var material in itemData.craftMaterials)
+        {
+            RemoveStashItem(material.itemData);
+        }
+
+        AddInventoryItem(itemData);
+    }
+
+    public bool CanUseFlask()
+    {
+        if (!equipmentItemDict.TryGetValue(EquipmentType.Flask, out _)) return false;
+        return Time.time - lastTimeFlaskUsed > flaskCooldown;
+    }
+    
+    public void UseFlask()
+    {
+        if (equipmentItemDict.TryGetValue(EquipmentType.Flask, out var flaskItem))
+        {
+            var flask = (ItemDataEquipment)flaskItem.itemData;
+            flask.ApplyEffects(null);
+            lastTimeFlaskUsed = Time.time;
+            flaskCooldown = flask.cooldown;
+        }
+    }
+    
+    public bool CanUseArmor()
+    {
+        if (!equipmentItemDict.TryGetValue(EquipmentType.Armor, out _)) return false;
+        return Time.time - lastTimeArmorUsed > armorCooldown;
+    }
+    
+    public void UseArmor()
+    {
+        if (equipmentItemDict.TryGetValue(EquipmentType.Armor, out var armorItem))
+        {
+            var armor = (ItemDataEquipment)armorItem.itemData;
+            armor.ApplyEffects(player.transform);
+            lastTimeArmorUsed = Time.time;
+            armorCooldown = armor.cooldown;
+        }
     }
 }

@@ -10,12 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 765157b2975f959429b87296b56dae7e, type: 3}
-  m_Name: Wooden Sword
+  m_Name: Freeze Armor
   m_EditorClassIdentifier: 
   itemType: 1
-  itemName: Wooden Sword
-  icon: {fileID: 1025091068, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
-  equipmentType: 2
+  itemName: Freeze Armor
+  icon: {fileID: 288293509, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
+  dropChance: 100
+  equipmentType: 1
+  effects:
+  - {fileID: 11400000, guid: cb3971806aec02d4d938670b25ec65eb, type: 2}
   strength:
     baseValue: 0
     modifiers: 
@@ -29,7 +32,7 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   armor:
-    baseValue: 0
+    baseValue: 10
     modifiers: 
   evasion:
     baseValue: 0
@@ -41,10 +44,10 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   damage:
-    baseValue: 5
+    baseValue: 0
     modifiers: 
   critChance:
-    baseValue: 3
+    baseValue: 0
     modifiers: 
   critPower:
     baseValue: 0
@@ -58,3 +61,5 @@ MonoBehaviour:
   lightningDamage:
     baseValue: 0
     modifiers: 
+  craftMaterials: []
+  cooldown: 5

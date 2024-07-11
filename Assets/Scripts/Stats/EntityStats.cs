@@ -4,6 +4,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+public enum StatType
+{
+    strength,
+    agility,
+    intelligence,
+    vitality,
+    armor,
+    evasion,
+    magicResistance,
+    damage,
+    critChance,
+    critPower,
+    fireDamage,
+    iceDamage,
+    lightningDamage,
+    maxHealth,
+}
+
 public class EntityStats : MonoBehaviour
 {
     private EntityFX fx;
@@ -94,6 +112,11 @@ public class EntityStats : MonoBehaviour
         }
     }
     
+    public bool IsDead()
+    {
+        return isDead;
+    }
+    
     protected virtual void Die()
     {
         isDead = true;
@@ -109,13 +132,36 @@ public class EntityStats : MonoBehaviour
         currentHealth = health;
         onHealthChanged?.Invoke();
     }
+
+    public void HealByMax(float percentage)
+    {
+        var newHealth = currentHealth + Mathf.RoundToInt(MaxHealthValue() * percentage);
+        if (newHealth > MaxHealthValue())
+            newHealth = MaxHealthValue();
+        
+        UpdateHealth(newHealth);
+    }
+    
+    public void BuffStatFor(float duration, Stat stat, int value)
+    {
+        stat.AddModifier(value);
+        onStatsChanged?.Invoke();
+        StartCoroutine(RemoveBuffAfter(duration, stat, value));
+    }
+    
+    IEnumerator RemoveBuffAfter(float duration, Stat stat, int value)
+    {
+        yield return new WaitForSeconds(duration);
+        stat.RemoveModifier(value);
+        onStatsChanged?.Invoke();
+    }
     
     public virtual void DoDamage(EntityStats target)
     {
         if (IsAttackMissed(target))
             return;
         
-        int finalDamage = damage.Value() + strength.Value() - target.ArmorValue();
+        int finalDamage = GetDamage() - target.ArmorValue();
         
         if (IsCritAttack())
             finalDamage = CalculateCritDamage(finalDamage);
@@ -124,11 +170,21 @@ public class EntityStats : MonoBehaviour
         // DoMagicDamage(target);
     }
     
+    public int GetDamage()
+    {
+        return damage.Value() + strength.Value();
+    }
+    
+    public int GetMagicResistance()
+    {
+        return magicResistance.Value() + intelligence.Value()*3;
+    }
+    
     #region Magic Damage
     public void DoMagicDamage(EntityStats target)
     {
         int finalDmg = fireDamage.Value() + iceDamage.Value() + lightningDamage.Value();
-        finalDmg -= target.magicResistance.Value() + target.intelligence.Value()*3;
+        finalDmg -= target.GetMagicResistance();
         
         target.TakePhysicalDamage(finalDmg);
         
@@ -257,37 +313,44 @@ public class EntityStats : MonoBehaviour
     
     private bool IsAttackMissed(EntityStats target)
     {
-        int totalTargetEvasion = target.evasion.Value() + target.agility.Value();
+        int totalTargetEvasion = target.GetEvadeChance();
         
         if (isShocked)
             totalTargetEvasion += 20;
         
         int hitChance = Random.Range(0, 100);
-        if (hitChance < totalTargetEvasion)
-        {
-            Debug.Log("Character evaded the attack!");
-            return true;
-        }
-
-        return false;
+        if (hitChance >= totalTargetEvasion) return false;
+        Debug.Log("Character evaded the attack!");
+        return true;
+    }
+    
+    public int GetEvadeChance()
+    {
+        return evasion.Value() + agility.Value();
     }
 
     private bool IsCritAttack()
     {
-        int finalCritChanceValue = critChance.Value() + agility.Value();
-        if (Random.Range(0, 100) < finalCritChanceValue)
-        {
-            Debug.Log("Character landed a critical hit!");
-            return true;
-        }
+        if (Random.Range(0, 100) >= GetCritChance()) return false;
+        Debug.Log("Character landed a critical hit!");
+        return true;
 
-        return false;
+    }
+    
+    public int GetCritChance()
+    {
+        return critChance.Value() + agility.Value();
     }
     
     private int CalculateCritDamage(int damage)
     {
-        float critDmg = damage * (critPower.Value() + strength.Value()) / 100;
+        float critDmg = GetCritPower() * damage / 100;
         return Mathf.RoundToInt(critDmg);
+    }
+    
+    public int GetCritPower()
+    {
+        return critPower.Value() + strength.Value();
     }
 
     public int ArmorValue()
@@ -296,4 +359,26 @@ public class EntityStats : MonoBehaviour
     }
     
     #endregion
+    
+    public Stat GetStat(StatType type)
+    {
+        return type switch
+        {
+            StatType.strength => strength,
+            StatType.agility => agility,
+            StatType.intelligence => intelligence,
+            StatType.vitality => vitality,
+            StatType.armor => armor,
+            StatType.evasion => evasion,
+            StatType.magicResistance => magicResistance,
+            StatType.damage => damage,
+            StatType.critChance => critChance,
+            StatType.critPower => critPower,
+            StatType.fireDamage => fireDamage,
+            StatType.iceDamage => iceDamage,
+            StatType.lightningDamage => lightningDamage,
+            StatType.maxHealth => maxHealth,
+            _ => null
+        };
+    }
 }

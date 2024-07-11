@@ -10,6 +10,8 @@ public class Player : Entity
     public SkillManager skills { get; private set; }
     public GameObject sword { get; private set; }
     
+    public InventoryManager inventory { get; private set; }
+    
     public PlayerStateMachine stateMachine { get; private set; }
     public PlayerStateIdle stateIdle { get; private set; }
     public PlayerStateMove stateMove { get; private set; }
@@ -82,6 +84,7 @@ public class Player : Entity
         input = GetComponent<PlayerInput>();
         
         skills = SkillManager.instance;
+        inventory = InventoryManager.instance;
         
         stateMachine.Initialize(stateIdle);
         
@@ -97,6 +100,14 @@ public class Player : Entity
 
         stateMachine.currentState.Update();
         FlipController();
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            if (inventory.CanUseFlask())
+            {
+                inventory.UseFlask();
+            }
+        }
     }
 
     public IEnumerator BusyFor(float _time)
@@ -172,5 +183,10 @@ public class Player : Entity
         skills.dash.dashSpeed = defaultDashSpeed;
         wallJumpForce = defaultWallJumpForce;
         animator.speed = 1;
+    }
+    
+    public int GetAttackCounter()
+    {
+        return stateAttack.attackCounter;
     }
 }

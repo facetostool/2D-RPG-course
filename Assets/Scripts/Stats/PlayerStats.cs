@@ -22,5 +22,19 @@ public class PlayerStats : EntityStats
     {
         base.Die();
         player.Die();
+        GetComponent<PlayerItemDrop>().GenerateDrop();
+    }
+
+    public override void TakePhysicalDamage(int dmg)
+    {
+        base.TakePhysicalDamage(dmg);
+
+        if (!InventoryManager.instance.CanUseArmor())
+        {
+            Debug.Log("Armor is on cooldown!");
+            return;
+        }
+        
+        InventoryManager.instance.UseArmor();
     }
 }

@@ -10,12 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 765157b2975f959429b87296b56dae7e, type: 3}
-  m_Name: Steel Armor
+  m_Name: Damage flask
   m_EditorClassIdentifier: 
   itemType: 1
-  itemName: Steel Armor
-  icon: {fileID: -1581127718, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
-  equipmentType: 1
+  itemName: Damage flask
+  icon: {fileID: 404454020, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
+  dropChance: 100
+  equipmentType: 3
+  effects:
+  - {fileID: 11400000, guid: cc07480d520615c41ba2ba9b5e22583e, type: 2}
   strength:
     baseValue: 0
     modifiers: 
@@ -26,16 +29,16 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   vitality:
-    baseValue: 10
+    baseValue: 0
     modifiers: 
   armor:
-    baseValue: 10
+    baseValue: 0
     modifiers: 
   evasion:
     baseValue: 0
     modifiers: 
   maxHealth:
-    baseValue: 5
+    baseValue: 0
     modifiers: 
   magicResistance:
     baseValue: 0
@@ -58,3 +61,5 @@ MonoBehaviour:
   lightningDamage:
     baseValue: 0
     modifiers: 
+  craftMaterials: []
+  cooldown: 0

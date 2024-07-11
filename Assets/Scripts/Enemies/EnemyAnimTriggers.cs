@@ -29,6 +29,7 @@ public class EnemyAnimTriggers : MonoBehaviour
     public void OpenCounterAttackWindow()
     {
         _enemy.OpenCounterAttackWindow();
+        Invoke(nameof(CloseCounterAttackWindow), 1f);
     }
     
     public void CloseCounterAttackWindow()

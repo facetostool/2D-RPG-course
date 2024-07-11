@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public enum EquipmentType
@@ -14,6 +15,9 @@ public enum EquipmentType
 public class ItemDataEquipment : ItemData
 {
     public EquipmentType equipmentType;
+    
+    [Header("Effects")]
+    public List<ItemEffect> effects;
     
     [Header("Base Stats")]
     public Stat strength; // 1 point increases damage by 1 and crit power by 1%
@@ -37,6 +41,14 @@ public class ItemDataEquipment : ItemData
     public Stat iceDamage;
     public Stat lightningDamage;
     
+    [Header("Craft Materials")]
+    public List<InventoryItem> craftMaterials;
+    
+    [Header("Flask settings")]
+    public int cooldown;
+    
+    StringBuilder sb = new StringBuilder();
+    int descriptionLength = 0;
     public void AddModifiers(EntityStats stats)
     {
         stats.strength.AddModifier(strength.Value());
@@ -81,5 +93,75 @@ public class ItemDataEquipment : ItemData
         stats.lightningDamage.RemoveModifier(lightningDamage.Value());
         
         stats.onStatsChanged?.Invoke();
+    }
+
+    public void ApplyEffects(Transform target)
+    {
+        foreach (var effect in effects)
+        {
+            effect.Apply(target);
+        }
+    }
+
+    public string GetStatsDescription()
+    {
+        sb = new StringBuilder();
+        descriptionLength = 0;
+        
+        AddStatToDescription(StatType.strength, "Strength");
+        AddStatToDescription(StatType.agility, "Agility");
+        AddStatToDescription(StatType.intelligence, "Intelligence");
+        AddStatToDescription(StatType.vitality, "Vitality");
+        AddStatToDescription(StatType.armor, "Armor");
+        AddStatToDescription(StatType.evasion, "Evasion");
+        AddStatToDescription(StatType.magicResistance, "Magic Resist");
+        AddStatToDescription(StatType.damage, "Damage");
+        AddStatToDescription(StatType.critChance, "Crit. Chance");
+        AddStatToDescription(StatType.critPower, "Crit. Power");
+        AddStatToDescription(StatType.fireDamage, "Fire Damage");
+        AddStatToDescription(StatType.iceDamage, "Ice Damage");
+        AddStatToDescription(StatType.lightningDamage, "Lightning Dmg");
+        AddStatToDescription(StatType.maxHealth, "Max Health");
+
+        if (descriptionLength < 5)
+        {
+            for (int i = 0; i < 5 - descriptionLength; i++)
+            {
+                sb.AppendLine();
+            }
+        }
+        
+        return sb.ToString();
+    }
+    
+    public Stat GetStat(StatType type)
+    {
+        return type switch
+        {
+            StatType.strength => strength,
+            StatType.agility => agility,
+            StatType.intelligence => intelligence,
+            StatType.vitality => vitality,
+            StatType.armor => armor,
+            StatType.evasion => evasion,
+            StatType.magicResistance => magicResistance,
+            StatType.damage => damage,
+            StatType.critChance => critChance,
+            StatType.critPower => critPower,
+            StatType.fireDamage => fireDamage,
+            StatType.iceDamage => iceDamage,
+            StatType.lightningDamage => lightningDamage,
+            StatType.maxHealth => maxHealth,
+            _ => null
+        };
+    }
+    
+    void AddStatToDescription(StatType statType, string statName)
+    {
+        if (GetStat(statType) == null) return;
+        if (GetStat(statType).Value() == 0) return;
+        if (sb.Length > 0) sb.AppendLine();
+        sb.Append($"{statName}: {GetStat(statType).Value()}");
+        descriptionLength++;
     }
 }

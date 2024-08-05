@@ -8,6 +8,8 @@ public class EquipedItemSlot : ItemSlot
     {
         if (inventoryItem == null || inventoryItem.itemData == null || inventoryItem.itemData.itemType != ItemType.Equipment)
             return;
+        
+        ui.itemTooltip.HideTooltip();
 
         InventoryManager.instance.UnequipItem(this);
     }

@@ -13,6 +13,22 @@ enum SwordThrowType
 
 public class SkillThrowSword : Skill
 {
+    [Header("Skill UI")]
+    [SerializeField] private SkillTreeSlot throwSwordSlot;
+    [SerializeField] private bool throwSwordUnlocked;
+    
+    [SerializeField] private SkillTreeSlot timeStopSlot;
+    [SerializeField] public bool timeStopUnlocked;
+    [SerializeField] private SkillTreeSlot vulnerabilitySlot;
+    [SerializeField] public bool vulnerabilityUnlocked;
+    
+    [SerializeField] private SkillTreeSlot throwSwordBounceSlot;
+    [SerializeField] private bool throwSwordBounceUnlocked;
+    [SerializeField] private SkillTreeSlot throwSwordPierceSlot;
+    [SerializeField] private bool throwSwordPierceUnlocked;
+    [SerializeField] private SkillTreeSlot throwSwordHoverSlot;
+    [SerializeField] private bool throwSwordHoverUnlocked;
+    
     [Header("Throw Sword Settings")]
     [SerializeField] private GameObject swordPrefab;
     [SerializeField] private Vector2 throwForce;
@@ -53,6 +69,37 @@ public class SkillThrowSword : Skill
 
         trajectoryPointParent.SetActive(false);
         GenerateDots();
+        
+        AssignUnlockActions();
+    }
+
+    private void AssignUnlockActions()
+    {
+        throwSwordSlot.onUnlock += () =>
+        {
+            throwSwordUnlocked = true;
+            swordThrowType = SwordThrowType.Normal;
+        };
+        timeStopSlot.onUnlock += () => timeStopUnlocked = true;
+        vulnerabilitySlot.onUnlock += () => vulnerabilityUnlocked = true;
+        
+        throwSwordBounceSlot.onUnlock += () =>
+        {
+            throwSwordBounceUnlocked = true;
+            swordThrowType = SwordThrowType.Bounce;
+        };
+        
+        throwSwordPierceSlot.onUnlock += () =>
+        {
+            throwSwordPierceUnlocked = true;
+            swordThrowType = SwordThrowType.Pierce;
+        };
+        
+        throwSwordHoverSlot.onUnlock += () =>
+        {
+            throwSwordHoverUnlocked = true;
+            swordThrowType = SwordThrowType.Hover;
+        };
     }
 
     protected override void Update()
@@ -64,7 +111,7 @@ public class SkillThrowSword : Skill
 
     public override bool CanUse()
     {
-        return base.CanUse();
+        return throwSwordUnlocked && base.CanUse();
     }
 
     public void EnablePoints()

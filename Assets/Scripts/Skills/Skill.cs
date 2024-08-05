@@ -8,8 +8,10 @@ public class Skill : MonoBehaviour
 {
     public Player player { get; private set; }
     
+    [SerializeField] public SkillImageCooldown uiImageCooldown;
+    
     [field: SerializeField] public float cooldown { get; set; }
-    protected float cooldownTimer;
+    public float cooldownTimer;
     
     protected virtual void Start()
     {
@@ -32,6 +34,9 @@ public class Skill : MonoBehaviour
     public virtual void Use()
     {
         cooldownTimer = cooldown;
+        
+        if (uiImageCooldown)
+            uiImageCooldown.StartCooldown(cooldown);
     }
     
     public Transform ClosestEnemyPosition(Vector3 entityPosition)

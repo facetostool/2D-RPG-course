@@ -1,9 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = Unity.Mathematics.Random;
-
 
 public class CloneController : MonoBehaviour
 {
@@ -12,14 +9,19 @@ public class CloneController : MonoBehaviour
     private SpriteRenderer sr;
     private Animator animator;
     private Player player;
+    
+    private bool canAttack;
+    private float cloneSpawnChance;
     // private bool finishedAnimation;
 
     [SerializeField] private Transform attackCheck;
     
-    public void Setup(Vector3 _position, float _disappearSpeed, Transform enemyTransform)
+    public void Setup(Vector3 _position, float _disappearSpeed, Transform enemyTransform, float cloneSpawnChance, bool canAttack = false)
     {
         transform.position = _position;
         disappearSpeed = _disappearSpeed;
+        this.canAttack = canAttack;
+        this.cloneSpawnChance = cloneSpawnChance;
         
         if (enemyTransform && enemyTransform.position.x < transform.position.x)
         {
@@ -33,7 +35,7 @@ public class CloneController : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         
-        animator.SetBool("Attack", true);
+        animator.SetBool("Attack", canAttack);
         animator.SetInteger("AttackCounter", UnityEngine.Random.Range(0, 3));
     }
     
@@ -55,8 +57,6 @@ public class CloneController : MonoBehaviour
     
     public void CancelAnimationTrigger()
     {
-        // finishedAnimation = true;
-        
         animator.SetBool("Attack", false);
     }
 
@@ -68,8 +68,7 @@ public class CloneController : MonoBehaviour
             Enemy enemy = hit.GetComponent<Enemy>();
             if (enemy)
             {
-                // enemy.StartCoroutine("Knockout");
-                player.stats.DoDamage(enemy.stats);
+               player.skills.clone.OnHitAttackTrigger(enemy);
             }
         }
     }

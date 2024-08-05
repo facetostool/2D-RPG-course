@@ -1,25 +1,35 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class CraftItemSlot : ItemSlot
+public class CraftItemSlot : MonoBehaviour, IPointerDownHandler
 {
-    public override void Awake()
+    private UI ui;
+    
+    [SerializeField] private Image itemImage;
+    [SerializeField] private TextMeshProUGUI itemText;
+    [SerializeField] public ItemDataEquipment data;
+
+    void Start()
     {
-        base.Awake();
-        SetItem(inventoryItem);
+        ui = GetComponentInParent<UI>();
+    }
+    
+    public void SetItem(ItemDataEquipment _item)
+    {
+        if (!_item)
+            return;
+        
+        data = _item;
+        itemImage.color = Color.white;
+        itemImage.sprite = _item.icon;
+        itemText.text = _item.itemName;
     }
 
-    public override void OnPointerDown(PointerEventData eventData)
+    public void OnPointerDown(PointerEventData eventData)
     {
-        if (inventoryItem == null)
-            return;
-
-        if (!InventoryManager.instance.CanCraft(this))
-        {
-            Debug.Log("Cannot craft item");
-            return;
-        }
-        InventoryManager.instance.CraftItem(this);
+        ui.craftItemWindow.Setup(data);
     }
 }

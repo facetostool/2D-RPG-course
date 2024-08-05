@@ -9,6 +9,8 @@ public class PlayerManager : MonoBehaviour
 
     [field: SerializeField] public Player player { get; private set; }
     
+    [SerializeField] private int currency;
+    
     private void Awake()
     {
         if (instance != null)
@@ -17,5 +19,25 @@ public class PlayerManager : MonoBehaviour
             return;
         }
         instance = this;
+    }
+    
+    public void AddCurrency(int amount)
+    {
+        currency += amount;
+    }
+    
+    public void RemoveCurrency(int amount)
+    {
+        currency -= amount;
+    }
+    
+    public int GetCurrency()
+    {
+        return currency;
+    }
+    
+    public bool CanAfford(int amount)
+    {
+        return currency >= amount;
     }
 }

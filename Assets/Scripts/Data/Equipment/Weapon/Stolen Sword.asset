@@ -60,4 +60,11 @@ MonoBehaviour:
   lightningDamage:
     baseValue: 0
     modifiers: 
-  craftMaterials: []
+  craftMaterials:
+  - itemData: {fileID: 11400000, guid: 26a3d88e3a2104ef49dfee592804ac6c, type: 2}
+    amount: 2
+  - itemData: {fileID: 11400000, guid: de8186fbe5b8f554a91571d0e51cd9e2, type: 2}
+    amount: 2
+  - itemData: {fileID: 11400000, guid: 3bd46ee6c9ba0cc4c9ecc26279ce21b6, type: 2}
+    amount: 2
+  cooldown: 0

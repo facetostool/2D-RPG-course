@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    private UI ui;
+    protected UI ui;
     
     [SerializeField] private Image itemImage;
     [SerializeField] private TextMeshProUGUI itemAmount;
@@ -55,9 +55,11 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler
         if (inventoryItem == null)
             return;
         
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+        ui.itemTooltip.HideTooltip();
+        
+        if (Input.GetKey(KeyCode.LeftControl))
         {
-            InventoryManager.instance.RemoveItem(this.inventoryItem.itemData);
+            InventoryManager.instance.RemoveItem(inventoryItem.itemData);
             return;
         }
         

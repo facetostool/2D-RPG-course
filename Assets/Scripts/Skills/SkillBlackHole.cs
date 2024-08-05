@@ -12,9 +12,14 @@ public class SkillBlackHole : Skill
     [SerializeField] private float attackNumber;
     [SerializeField] private float skillTimer;
     
+    [SerializeField] private SkillTreeSlot blackHoleSlot;
+    [SerializeField] private bool blackHoleUnlocked;
+    
     protected override void Start()
     {
         base.Start();
+        
+        blackHoleSlot.onUnlock += () => blackHoleUnlocked = true;
     }
 
     protected override void Update()
@@ -24,7 +29,7 @@ public class SkillBlackHole : Skill
 
     public override bool CanUse()
     {
-        return base.CanUse();
+        return blackHoleUnlocked && base.CanUse();
     }
 
     public override void Use()

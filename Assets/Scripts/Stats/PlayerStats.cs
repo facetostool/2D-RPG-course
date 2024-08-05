@@ -37,4 +37,27 @@ public class PlayerStats : EntityStats
         
         InventoryManager.instance.UseArmor();
     }
+
+    public override void EvasionEffect(EntityStats attacker, EntityStats target)
+    {
+        base.EvasionEffect(attacker, target);
+        
+        player.skills.dodge.CreateClone(attacker.transform);
+    }
+    
+    public void DoCloneDamage(EnemyStats target, float dmgMultiplier)
+    {
+        if (IsAttackMissed(target))
+        {
+            target.EvasionEffect(this, target);
+            return;
+        }
+        
+        int finalDamage = GetDamage() - target.ArmorValue();
+        
+        if (IsCritAttack())
+            finalDamage = CalculateCritDamage(finalDamage);
+        
+        target.TakePhysicalDamage(Mathf.RoundToInt(finalDamage * dmgMultiplier));
+    }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerStateCounterAttack : PlayerState
 {
-    private bool canCreateClone;
+    private bool canCreateClone; // This is a new variable that will be used to check if the clone has already been created during this a single attack
     
     public PlayerStateCounterAttack(Player _player, PlayerStateMachine _stateMachine, string _anim) : base(_player, _stateMachine, _anim)
     {
@@ -41,9 +41,10 @@ public class PlayerStateCounterAttack : PlayerState
                 {
                     stateTime = 10;
                     enemy.Stun();
+                    player.skills.parry.Heal();
                     if (canCreateClone)
                     {
-                        player.skills.clone.UseFromCounterAttack(hit.transform);
+                        player.skills.parry.CreateClone(enemy);
                         canCreateClone = false;
                     }
                     player.animator.SetBool("SuccessCounterAttack", true);

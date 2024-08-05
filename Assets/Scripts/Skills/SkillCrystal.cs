@@ -8,16 +8,26 @@ public class SkillCrystal : Skill
 {
     [SerializeField] GameObject crystalPrefab;
     [SerializeField] float crystalDestroyTime;
-    [SerializeField] bool canCreateClone;
+    
+    [Header("Main")]
+    [SerializeField] private SkillTreeSlot crystalSlot;
+    [SerializeField] private bool crystalUnlocked;
+    
+    [Header("Clone")]
+    [SerializeField] private SkillTreeSlot cloneSlot;
+    [SerializeField] bool cloneUnlocked;
     
     [Header("Explosion")]
-    [SerializeField] private bool isExplode;
+    [SerializeField] private SkillTreeSlot explodeSlot;
+    [SerializeField] private bool explodeUnlocked;
     
     [Header("Move")]
-    [SerializeField] private bool canMove;
+    [SerializeField] private SkillTreeSlot moveSlot;
+    [SerializeField] private bool moveUnlocked;
     [SerializeField] private float moveSpeed;
     
     [Header("Multi crystal")]
+    [SerializeField] private SkillTreeSlot multiSlot;
     [SerializeField] private bool isMulti;
     [SerializeField] private int crystalNumber;
     [SerializeField] private List<GameObject> crystalsLeft;
@@ -30,10 +40,22 @@ public class SkillCrystal : Skill
     {
         base.Start();
         
+        crystalSlot.onUnlock += () => crystalUnlocked = true;
+        cloneSlot.onUnlock += () => cloneUnlocked = true;
+        explodeSlot.onUnlock += () => explodeUnlocked = true;
+        moveSlot.onUnlock += () => moveUnlocked = true;
+        multiSlot.onUnlock += WhenMultiEnabled;
+        
         if (isMulti)
         {
             RefillCrystals();
         }
+    }
+
+    private void WhenMultiEnabled()
+    {
+        RefillCrystals();
+        isMulti = true;
     }
 
     protected override void Update()
@@ -41,11 +63,20 @@ public class SkillCrystal : Skill
         base.Update();
     }
 
+    public override bool CanUse()
+    {
+        return crystalUnlocked && base.CanUse();
+    }
+    
+    public void CreateCrystal(Vector3 position)
+    {
+        GameObject crystal = Instantiate(crystalPrefab, position, Quaternion.identity);
+        crystal.GetComponent<CrystalController>().Setup(crystalDestroyTime, explodeUnlocked, moveUnlocked, moveSpeed, ClosestEnemyPosition(position));
+        currCrystal = crystal;
+    }
 
     public override void Use()
     {
-        base.Use();
-        
         if (isMulti)
         {
             UseMultiCrystal();
@@ -56,28 +87,29 @@ public class SkillCrystal : Skill
         {
             var position = player.transform.position;
             GameObject crystal = Instantiate(crystalPrefab, position, Quaternion.identity);
-            crystal.GetComponent<CrystalController>().Setup(crystalDestroyTime, isExplode, canMove, moveSpeed, ClosestEnemyPosition(position));
+            crystal.GetComponent<CrystalController>().Setup(crystalDestroyTime, explodeUnlocked, moveUnlocked, moveSpeed, ClosestEnemyPosition(position));
             currCrystal = crystal;
             return;
         }
 
-        if (canMove)
+        base.Use();
+        if (moveUnlocked)
         {
             return;
         }
-
+        
         // Swap player and crystal positions
         Vector2 playerPosition = player.transform.position;
         player.transform.position = currCrystal.transform.position;
         
-        if (canCreateClone)
+        if (cloneUnlocked)
         {
             SkillManager.instance.clone.Use(playerPosition, ClosestEnemyPosition(playerPosition));
             Destroy(currCrystal);
             return;
         }
         
-        if (isExplode)
+        if (explodeUnlocked)
         {
             currCrystal.transform.position = playerPosition;
             currCrystal.GetComponent<CrystalController>().Explode();
@@ -108,7 +140,7 @@ public class SkillCrystal : Skill
        int crystalPos = crystalsLeft.Count - 1;
        GameObject crystal = crystalsLeft[crystalPos];
        GameObject crystalGO = Instantiate(crystal, player.transform.position, Quaternion.identity); 
-       crystalGO.GetComponent<CrystalController>().Setup(crystalDestroyTime, isExplode, canMove, moveSpeed,
+       crystalGO.GetComponent<CrystalController>().Setup(crystalDestroyTime, explodeUnlocked, moveUnlocked, moveSpeed,
            ClosestEnemyPosition(player.transform.position));
        crystalsLeft.Remove(crystal);
        

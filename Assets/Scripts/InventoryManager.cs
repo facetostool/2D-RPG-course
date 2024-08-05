@@ -14,6 +14,8 @@ public class InventoryManager : MonoBehaviour
     
     private float lastTimeArmorUsed;
     private float armorCooldown;
+    
+    [SerializeField] private SkillImageCooldown flaskImageCooldown;
 
     [SerializeField] private List<ItemData> defaultInventoryItems = new List<ItemData>();
 
@@ -127,6 +129,21 @@ public class InventoryManager : MonoBehaviour
         return equipmentSlots.FirstOrDefault(slot => slot.equipmentType == type);
     }
 
+    public void AddItem(ItemData item)
+    {
+        switch (item.itemType)
+        {
+            case ItemType.Material:
+                AddStashItem(item);
+                break;
+            case ItemType.Equipment:
+                AddInventoryItem(item);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+
     public void UpdateUI(ItemSlot[] slots, List<InventoryItem> items)
     {
         for (int i = 0; i < slots.Length; i++)
@@ -141,7 +158,7 @@ public class InventoryManager : MonoBehaviour
             }
         }
     }
-    
+
     public bool CanAddItem(ItemData item)
     {
         switch (item.itemType)
@@ -150,21 +167,6 @@ public class InventoryManager : MonoBehaviour
                 return true;
             case ItemType.Equipment:
                 return inventoryItems.Count < inventorySlots.Length;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-    }
-
-    public void AddItem(ItemData item)
-    {
-        switch (item.itemType)
-        {
-            case ItemType.Material:
-                AddStashItem(item);
-                break;
-            case ItemType.Equipment:
-                AddInventoryItem(item);
-                break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
@@ -253,17 +255,12 @@ public class InventoryManager : MonoBehaviour
         UpdateUI(stashSlots, stashItems);
     }
 
-    public bool CanCraft(CraftItemSlot slot)
+    public bool CanCraft(ItemDataEquipment item)
     {
-        if (slot.inventoryItem == null)
+        if (item!.craftMaterials.Count == 0)
             return false;
 
-        var itemData = slot.inventoryItem.itemData as ItemDataEquipment;
-
-        if (itemData!.craftMaterials.Count == 0)
-            return false;
-
-        foreach (var material in itemData.craftMaterials)
+        foreach (var material in item.craftMaterials)
         {
             if (!stashItemDict.TryGetValue(material.itemData, out var stashItem))
                 return false;
@@ -275,18 +272,16 @@ public class InventoryManager : MonoBehaviour
         return true;
     }
 
-    public void CraftItem(CraftItemSlot slot)
+    public void CraftItem(ItemDataEquipment item)
     {
-        var itemData = slot.inventoryItem.itemData as ItemDataEquipment;
+        if (item?.craftMaterials == null) return;
 
-        if (itemData?.craftMaterials == null) return;
-
-        foreach (var material in itemData.craftMaterials)
+        foreach (var material in item.craftMaterials)
         {
             RemoveStashItem(material.itemData);
         }
 
-        AddInventoryItem(itemData);
+        AddInventoryItem(item);
     }
 
     public bool CanUseFlask()
@@ -303,6 +298,9 @@ public class InventoryManager : MonoBehaviour
             flask.ApplyEffects(null);
             lastTimeFlaskUsed = Time.time;
             flaskCooldown = flask.cooldown;
+            
+            if (flaskImageCooldown)
+                flaskImageCooldown.StartCooldown(flask.cooldown);
         }
     }
     

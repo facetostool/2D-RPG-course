@@ -13,7 +13,8 @@ public class PlayerStateDash : PlayerState
         base.Enter();
 
         stateTime = player.skills.dash.dashTime;
-        player.skills.dash.Use("start");
+        player.skills.dash.Use();
+        player.skills.dash.CreateCloneOnStart();
     }
 
     public override void Update()
@@ -46,6 +47,6 @@ public class PlayerStateDash : PlayerState
     {
         base.Exit();
         
-        player.skills.dash.Use("end");
+        player.skills.dash.CreateCloneOnEnd();
     }
 }

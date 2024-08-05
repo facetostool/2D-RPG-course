@@ -67,6 +67,8 @@ public class EntityStats : MonoBehaviour
     [SerializeField] private GameObject thunderStrikePrefab;
     int shockDmg;
 
+    [SerializeField] private float vulnerableMultiplier = 1.2f;
+    private bool isVulnerable;
     private bool isDead;
     public int currentHealth;
     public Action onHealthChanged;
@@ -75,6 +77,8 @@ public class EntityStats : MonoBehaviour
     public virtual void Start()
     {
         currentHealth = maxHealth.Value();
+        onHealthChanged?.Invoke();
+        
         critPower.SetBaseValue(150);
         
         fx = GetComponentInChildren<EntityFX>();
@@ -105,11 +109,7 @@ public class EntityStats : MonoBehaviour
     private void ApplyIgniteDamage()
     {
         igniteDmgTimer = igniteDmgCooldown;
-        UpdateHealth(currentHealth - igniteDmg);
-        if (currentHealth <= 0 && !isDead)
-        {
-            Die();
-        }
+        TakeDamage(igniteDmg);
     }
     
     public bool IsDead()
@@ -131,6 +131,18 @@ public class EntityStats : MonoBehaviour
     {
         currentHealth = health;
         onHealthChanged?.Invoke();
+    }
+    
+    public void TakeDamage(int dmg)
+    {
+        if (isVulnerable)
+            dmg = Mathf.RoundToInt(vulnerableMultiplier * dmg);
+        
+        UpdateHealth(currentHealth - dmg);
+        if (currentHealth <= 0 && !isDead)
+        {
+            Die();
+        }
     }
 
     public void HealByMax(float percentage)
@@ -155,11 +167,31 @@ public class EntityStats : MonoBehaviour
         stat.RemoveModifier(value);
         onStatsChanged?.Invoke();
     }
+
+    public virtual void EvasionEffect(EntityStats attacker, EntityStats target)
+    {
+        Debug.Log("EvasionEffect");
+    }
+    
+    public void MakeVulnerableFor(float duration)
+    {
+        StartCoroutine(VulnerableCorutine(duration));
+    }
+
+    private IEnumerator VulnerableCorutine(float duration)
+    {
+        isVulnerable = true;
+        yield return new WaitForSeconds(duration);
+        isVulnerable = true;
+    }
     
     public virtual void DoDamage(EntityStats target)
     {
         if (IsAttackMissed(target))
+        {
+            target.EvasionEffect(this, target);
             return;
+        }
         
         int finalDamage = GetDamage() - target.ArmorValue();
         
@@ -304,14 +336,10 @@ public class EntityStats : MonoBehaviour
         
         GetComponent<Entity>().DamageEffect();
         
-        UpdateHealth(currentHealth - dmg);
-        if (currentHealth <= 0 && !isDead)
-        {
-            Die();
-        }
+        TakeDamage(dmg);
     }
     
-    private bool IsAttackMissed(EntityStats target)
+    protected bool IsAttackMissed(EntityStats target)
     {
         int totalTargetEvasion = target.GetEvadeChance();
         
@@ -329,7 +357,7 @@ public class EntityStats : MonoBehaviour
         return evasion.Value() + agility.Value();
     }
 
-    private bool IsCritAttack()
+    protected bool IsCritAttack()
     {
         if (Random.Range(0, 100) >= GetCritChance()) return false;
         Debug.Log("Character landed a critical hit!");
@@ -342,7 +370,7 @@ public class EntityStats : MonoBehaviour
         return critChance.Value() + agility.Value();
     }
     
-    private int CalculateCritDamage(int damage)
+    protected int CalculateCritDamage(int damage)
     {
         float critDmg = GetCritPower() * damage / 100;
         return Mathf.RoundToInt(critDmg);
@@ -380,5 +408,11 @@ public class EntityStats : MonoBehaviour
             StatType.maxHealth => maxHealth,
             _ => null
         };
+    }
+    
+    public void AddModifier(StatType type, int value)
+    {
+        GetStat(type).AddModifier(value);
+        onStatsChanged?.Invoke();
     }
 }

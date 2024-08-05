@@ -17,19 +17,19 @@ public class PlayerStateGrounded : PlayerState
     {
         base.Update();
         
-        if (Input.GetKeyDown(KeyCode.Mouse1) && player.IsGroundDetected() && !player.sword)
+        if (Input.GetKeyDown(KeyCode.Mouse1) && player.IsGroundDetected() && !player.sword && player.skills.throwSword.CanUse())
         {
             stateMachine.ChangeState(player.stateAimSword);
             return;
         }
         
-        if (player.input.actions["Ultimate"].triggered && player.IsGroundDetected())
+        if (player.input.actions["Ultimate"].triggered && player.IsGroundDetected() && player.skills.blackHole.CanUse())
         {
             stateMachine.ChangeState(player.stateUltimate);
             return;
         }
 
-        if (player.input.actions["CounterAttack"].triggered && player.IsGroundDetected())
+        if (player.input.actions["CounterAttack"].triggered && player.IsGroundDetected() && player.skills.parry.CanUse())
         {
             stateMachine.ChangeState(player.stateCounterAttack);
             return;

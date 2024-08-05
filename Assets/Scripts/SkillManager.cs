@@ -26,6 +26,8 @@ public class SkillManager : MonoBehaviour
     public SkillBlackHole blackHole { get; private set; }
     public SkillCrystal crystal { get; private set; }
     public SkillClone clone { get; private set; }
+    public SkillParry parry { get; private set; }
+    public SkillDodge dodge { get; private set; }
 
     private void Start()
     {
@@ -34,5 +36,7 @@ public class SkillManager : MonoBehaviour
         blackHole = GetComponent<SkillBlackHole>();
         crystal = GetComponent<SkillCrystal>();
         clone = GetComponent<SkillClone>();
+        parry = GetComponent<SkillParry>();
+        dodge = GetComponent<SkillDodge>();
     }
 }

@@ -1,0 +1,1 @@
+1. Hide and show flask icon when flask is equipped

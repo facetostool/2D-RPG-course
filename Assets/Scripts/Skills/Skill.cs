@@ -34,7 +34,12 @@ public class Skill : MonoBehaviour
     public virtual void Use()
     {
         cooldownTimer = cooldown;
-        
+
+        StartImageCooldown();
+    }
+    
+    protected void StartImageCooldown()
+    {
         if (uiImageCooldown)
             uiImageCooldown.StartCooldown(cooldown);
     }

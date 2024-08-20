@@ -23,6 +23,7 @@ public class PlayerItemDrop : ItemDrop
         {
             DropItem(randomItemsToDrop[i].itemData);
             InventoryManager.instance.UnequipItem(randomItemsToDrop[i].itemData);
+            InventoryManager.instance.RemoveItem(randomItemsToDrop[i].itemData);
         }
     }
 }

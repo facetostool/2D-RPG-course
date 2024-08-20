@@ -2,9 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
-public class InventoryManager : MonoBehaviour
+public class InventoryManager : MonoBehaviour, ISaveManager
 {
     public static InventoryManager instance;
     public Player player;
@@ -16,7 +17,7 @@ public class InventoryManager : MonoBehaviour
     private float armorCooldown;
     
     [SerializeField] private SkillImageCooldown flaskImageCooldown;
-
+    
     [SerializeField] private List<ItemData> defaultInventoryItems = new List<ItemData>();
 
     public List<InventoryItem> inventoryItems;
@@ -35,6 +36,10 @@ public class InventoryManager : MonoBehaviour
     private ItemSlot[] inventorySlots;
     private ItemSlot[] stashSlots;
     private EquipedItemSlot[] equipmentSlots;
+    
+    [Header("Loaded items")]
+    [SerializeField] private List<InventoryItem> loadedInventoryItems;
+    [SerializeField] private List<InventoryItem> loadedEquipmentItems;
 
     void Awake()
     {
@@ -63,16 +68,39 @@ public class InventoryManager : MonoBehaviour
         inventorySlots = inventoryPanel.GetComponentsInChildren<ItemSlot>();
         stashSlots = stashPanel.GetComponentsInChildren<ItemSlot>();
         equipmentSlots = equipmentPanel.GetComponentsInChildren<EquipedItemSlot>();
+    }
 
+    private void AddStartingItems()
+    {
+        if (loadedEquipmentItems is { Count: > 0 })
+        {
+            foreach (var item in loadedEquipmentItems)
+            {
+                EquipItem(item);
+            }
+        }
+        
+        if (loadedInventoryItems is { Count: > 0 })
+        {
+            foreach (var item in loadedInventoryItems)
+            {
+                for (var i = 0; i < item.amount; i++)
+                {
+                    AddItem(item.itemData);
+                }
+            }
+            return;
+        }
+        
         foreach (var item in defaultInventoryItems)
         {
             AddItem(item);
         }
     }
-
-    public void EquipItem(ItemSlot inventorySlot)
+    
+    public void EquipItem(InventoryItem inventoryItem)
     {
-        ItemDataEquipment item = (ItemDataEquipment)inventorySlot.inventoryItem.itemData;
+        ItemDataEquipment item = (ItemDataEquipment)inventoryItem.itemData;
         if (equipmentItemDict.ContainsKey(item.equipmentType))
         {
             ItemSlot slot = FindEquipmentSlotFor(item.equipmentType);
@@ -93,13 +121,12 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            InventoryItem newItem = new InventoryItem(item);
-            equipmentItems.Add(newItem);
-            equipmentItemDict.Add(item.equipmentType, newItem);
+            equipmentItems.Add(inventoryItem);
+            equipmentItemDict.Add(item.equipmentType, inventoryItem);
             item.AddModifiers(player.stats);
             
             ItemSlot slot = FindEquipmentSlotFor(item.equipmentType);
-            slot.SetItem(newItem);
+            slot.SetItem(inventoryItem);
 
             RemoveInventoryItem(item);
         }
@@ -166,6 +193,9 @@ public class InventoryManager : MonoBehaviour
             case ItemType.Material:
                 return true;
             case ItemType.Equipment:
+                if (inventoryItemDict.ContainsKey(item))
+                    return true;
+                
                 return inventoryItems.Count < inventorySlots.Length;
             default:
                 throw new ArgumentOutOfRangeException();
@@ -320,4 +350,74 @@ public class InventoryManager : MonoBehaviour
             armorCooldown = armor.cooldown;
         }
     }
+
+    #region Save and Load
+
+    public void SaveData(ref GameData data)
+    {
+        SerializableDictionary<string, int> inventoryDictionary = new SerializableDictionary<string, int>();
+        foreach (var item in inventoryItems)
+        {
+            inventoryDictionary.Add(item.itemData.guid, item.amount);
+        }
+
+        foreach (var item in stashItems)
+        {
+            inventoryDictionary.Add(item.itemData.guid, item.amount);
+        }
+        
+        data.items = inventoryDictionary;
+        
+        data.equipmentGUIDs = equipmentItems.Select(item => item.itemData.guid).ToList();
+    }
+
+    public void LoadData(GameData data)
+    {
+        List<ItemData> itemsDatabase = GetItemsDatabase();
+        loadedInventoryItems = new List<InventoryItem>();
+        
+        foreach (var item in data.items)
+        {
+            ItemData itemData = itemsDatabase.FirstOrDefault(i => i.guid == item.Key);
+            if (itemData != null)
+            {
+                InventoryItem inventoryItem = new InventoryItem(itemData)
+                {
+                    amount = item.Value
+                };
+                loadedInventoryItems.Add(inventoryItem);
+            }
+            else
+            {
+                Debug.Log("Item not found in database");
+            }
+        }
+
+        loadedEquipmentItems = new List<InventoryItem>();
+        foreach (var itemData in data.equipmentGUIDs.Select(itemGUID => itemsDatabase.FirstOrDefault(i => i.guid == itemGUID)))
+        {
+            if (itemData != null)
+            {
+                InventoryItem inventoryItem = new InventoryItem(itemData);
+                loadedEquipmentItems.Add(inventoryItem);
+            }
+            else
+            {
+                Debug.Log("Item not found in database");
+            }
+        }
+        
+        AddStartingItems();
+    }
+
+    private List<ItemData> GetItemsDatabase()
+    {
+       // get list of items in Scripts/Data/Equipment folder of type ItemData
+       return AssetDatabase.FindAssets("t:ItemData", new[] {"Assets/Scripts/Data/Items"})
+           .Select(AssetDatabase.GUIDToAssetPath)
+           .Select(AssetDatabase.LoadAssetAtPath<ItemData>)
+           .ToList();
+    } 
+
+    #endregion
 }

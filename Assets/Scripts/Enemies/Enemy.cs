@@ -116,7 +116,16 @@ public class Enemy : Entity
 
     public virtual void Die()
     {
-        
+    }
+    
+    public void OnDieAnimationEnd()
+    {
+        DestroyObject();
+    }
+    
+    public void DestroyObject()
+    {
+        Destroy(gameObject);
     }
 
     public override void SlowBy(float slowAmount, float slowTime)

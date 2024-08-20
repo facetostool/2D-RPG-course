@@ -156,5 +156,6 @@ public class SkillCrystal : Skill
         
         cooldownTimer = multiCooldown;
         RefillCrystals();
+        StartImageCooldown();
     }
 }

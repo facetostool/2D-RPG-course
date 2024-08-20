@@ -47,6 +47,8 @@ public class Player : Entity
     float defaultDashSpeed;
     Vector2 defaultWallJumpForce;
     
+    public Action onDie;
+    
     protected override void Awake()
     {
         stateMachine = new PlayerStateMachine();
@@ -160,6 +162,7 @@ public class Player : Entity
     public void Die()
     {
         stateMachine.ChangeState(stateDead);
+        onDie?.Invoke();
     }
 
     public override void SlowBy(float slowAmount, float slowTime)
@@ -188,5 +191,10 @@ public class Player : Entity
     public int GetAttackCounter()
     {
         return stateAttack.attackCounter;
+    }
+    
+    public bool IsDead()
+    {
+        return stats.IsDead();
     }
 }

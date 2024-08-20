@@ -36,4 +36,9 @@ public class EnemyAnimTriggers : MonoBehaviour
     {
         _enemy.CloseCounterAttackWindow();
     }
+    
+    public void OnDieAnimationEnd()
+    {
+        _enemy.OnDieAnimationEnd();
+    }
 }

@@ -146,7 +146,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1251094325
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: -1
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
@@ -500,7 +500,7 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   damage:
-    baseValue: 1
+    baseValue: 100
     modifiers: 
   critChance:
     baseValue: 0
@@ -524,9 +524,13 @@ MonoBehaviour:
   isChilled: 0
   isShocked: 0
   thunderStrikePrefab: {fileID: 4646994445478155925, guid: f745fd8176fa242f0ad70a204e3d8568, type: 3}
+  vulnerableMultiplier: 1.2
   currentHealth: 0
   level: 1
   levelStatsModifier: 0.4
+  soulsToDrop:
+    baseValue: 0
+    modifiers: 
 --- !u!50 &2512051020168118074
 Rigidbody2D:
   serializedVersion: 4
@@ -810,7 +814,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1251094325
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: -85727878, guid: 687df074731fbf744b668d2275dbb675, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

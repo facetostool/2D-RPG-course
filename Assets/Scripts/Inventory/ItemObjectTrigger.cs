@@ -17,8 +17,9 @@ public class ItemObjectTrigger : MonoBehaviour
         if (!other.CompareTag("Player"))
             return;
         
-        if (other.GetComponent<PlayerStats>().IsDead())
+        if (other.GetComponent<Player>().IsDead())
             return;
+        
         item.PickupItem();
     }
 }

@@ -12,8 +12,11 @@ public class EnemyStats : EntityStats
     [Range(0, 1f)]
     [SerializeField] private float levelStatsModifier = 0.4f;
     
+    [SerializeField] private Stat soulsToDrop;
+    
     public override void Start()
     {   
+        soulsToDrop.SetBaseValue(100);
         AddLevelModifiers();
         base.Start();
         
@@ -48,6 +51,8 @@ public class EnemyStats : EntityStats
         Modify(fireDamage);
         Modify(iceDamage);
         Modify(lightningDamage);
+
+        Modify(soulsToDrop);
     }
 
     public override void TakePhysicalDamage(int dmg)
@@ -61,5 +66,6 @@ public class EnemyStats : EntityStats
         enemy.Die();
         
         itemDropSystem.GenerateDrop();
+        PlayerManager.instance.AddCurrency(soulsToDrop.Value());
     }
 }

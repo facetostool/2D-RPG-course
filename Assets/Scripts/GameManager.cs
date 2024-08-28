@@ -24,17 +24,17 @@ public class GameManager : MonoBehaviour, ISaveManager
 
     [SerializeField] private List<CheckpointController> checkpoints;
     private Player player;
+    private Scene currScene;
     private void Start()
     {
         checkpoints = new List<CheckpointController>(FindObjectsOfType<CheckpointController>());
         player = PlayerManager.instance.player;
+        currScene = SceneManager.GetActiveScene();
     }
 
     public void RestartCurrentScene() {
         SaveManager.instance.SaveGame();
-        
-        Scene scene = SceneManager.GetActiveScene(); 
-        SceneManager.LoadScene(scene.name);
+        SceneManager.LoadScene(currScene.name);
     }
     
     public Vector2 FindClosestCheckpoint()

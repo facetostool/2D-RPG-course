@@ -14,6 +14,9 @@ public class PlayerStateAttack : PlayerState
     public override void Enter()
     {
         base.Enter();
+        
+        SoundManager.instance.PlaySFX((int)SfxEffect.PlayerAttack);
+        
         stateTime = 0.1f;
 
         float attackDir = player.faceDir;

@@ -12,6 +12,8 @@ public class PlayerStateMove : PlayerStateGrounded
     public override void Enter()
     {
         base.Enter();
+        
+        SoundManager.instance.PlaySFX((int)SfxEffect.PlayerFootstep);
     }
     
     public override void Update()
@@ -31,5 +33,7 @@ public class PlayerStateMove : PlayerStateGrounded
     public override void Exit()
     {
         base.Exit();
+        
+        SoundManager.instance.StopSFX((int)SfxEffect.PlayerFootstep);
     }
 }

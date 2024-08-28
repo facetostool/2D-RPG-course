@@ -11,6 +11,8 @@ public class PlayerStateDead : PlayerState
     public override void Enter()
     {
         base.Enter();
+        
+        SoundManager.instance.PlaySFX((int)SfxEffect.PlayerDie);
     }
 
     public override void Update()

@@ -13,6 +13,8 @@ public class PlayerStateJump : PlayerState
         base.Enter();
 
         player.rb.velocity = new Vector2(player.rb.velocity.x, player.jumpForce);
+        
+        SoundManager.instance.PlaySFX((int)SfxEffect.PlayerJump);
     }
 
     public override void Update()

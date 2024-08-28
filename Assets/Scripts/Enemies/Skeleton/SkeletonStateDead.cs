@@ -11,6 +11,8 @@ public class SkeletonStateDead : SkeletonState
     public override void Enter()
     {
         base.Enter();
+        
+        SoundManager.instance.PlaySFX((int)SfxEffect.SkeletonDie);
     }
 
     public override void Update()

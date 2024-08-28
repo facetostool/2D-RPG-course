@@ -11,6 +11,7 @@ public class SkeletonStateMove : SkeletonStateGrounded
     public override void Enter()
     {
         base.Enter();
+        // SoundManager.instance.PlaySFX(24, skeleton.transform);
     }
 
     public override void Update()

@@ -31,6 +31,8 @@ public class CheckpointController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.CompareTag("Player") || isActivated) return;
+        
+        SoundManager.instance.PlaySFX((int)SfxEffect.Checkpoint);
         Activate();
     }
 

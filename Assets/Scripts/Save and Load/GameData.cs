@@ -16,6 +16,8 @@ public class GameData
   public Vector2 lastDeadLightPosition;
   public int lastDeadLightCurrency;
   
+  public SerializableDictionary<string, float> volumeLevels;
+  
   public GameData()
   {
     this.currency = 0;
@@ -26,5 +28,6 @@ public class GameData
     this.closestCheckpoint = Vector2.zero;
     this.lastDeadLightPosition = Vector2.zero;
     this.lastDeadLightCurrency = 0;
+    this.volumeLevels = new SerializableDictionary<string, float>();
   }
 }

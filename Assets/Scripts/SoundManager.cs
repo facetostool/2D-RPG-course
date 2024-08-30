@@ -18,6 +18,7 @@ enum SfxEffect
     PlayerJump = 17,
     SkeletonDie = 24,
     Checkpoint = 5,
+    Wind = 30,
 }
 public class SoundManager : MonoBehaviour
 {
@@ -57,6 +58,11 @@ public class SoundManager : MonoBehaviour
         }
     }
     
+    public AudioSource GetSFX(int index)
+    {
+        return sfx[index];
+    }
+    
     public void PlaySFX(int fxIndex, Transform source = null)
     {
         if (source != null)
@@ -75,6 +81,7 @@ public class SoundManager : MonoBehaviour
     public void StopSFX(int fxIndex)
     {
         sfx[fxIndex].Stop();
+        sfx[fxIndex].loop = false;
     }
 
     public void StatBGM(int bgIndex)
@@ -84,6 +91,24 @@ public class SoundManager : MonoBehaviour
             audioSource.Stop();
         }
         bgm[bgIndex].Play();
+    }
+    
+    public Coroutine StopEffectSlowly(int fxIndex)
+    { 
+        Debug.Log("StopEffectSlowly"); 
+        return StartCoroutine(StopSFXSlowly(fxIndex));
+    }
+    
+    private IEnumerator StopSFXSlowly(int fxIndex)
+    {
+        var defaultVolume = sfx[fxIndex].volume;
+        while (sfx[fxIndex].volume > 0)
+        {
+            sfx[fxIndex].volume -= Time.deltaTime;
+            yield return null;
+        }
+        sfx[fxIndex].Stop();
+        sfx[fxIndex].volume = defaultVolume;
     }
     
     public void StopBGM(int bgIndex)

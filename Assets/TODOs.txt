@@ -1,1 +1,2 @@
 1. Hide and show flask icon when flask is equipped
+2. Fix bugs with sound effects area 

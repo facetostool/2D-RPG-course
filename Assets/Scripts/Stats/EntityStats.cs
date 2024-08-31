@@ -133,7 +133,7 @@ public class EntityStats : MonoBehaviour
         onHealthChanged?.Invoke();
     }
     
-    public void TakeDamage(int dmg)
+    public virtual void TakeDamage(int dmg)
     {
         if (isVulnerable)
             dmg = Mathf.RoundToInt(vulnerableMultiplier * dmg);

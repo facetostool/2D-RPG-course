@@ -12,7 +12,7 @@ public class PlayerStateDead : PlayerState
     {
         base.Enter();
         
-        SoundManager.instance.PlaySFX((int)SfxEffect.PlayerDie);
+        SoundManager.instance.PlaySFX(SfxEffect.WomenStruggle2);
     }
 
     public override void Update()

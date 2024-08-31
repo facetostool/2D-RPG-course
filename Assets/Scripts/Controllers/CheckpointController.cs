@@ -32,7 +32,7 @@ public class CheckpointController : MonoBehaviour
     {
         if (!other.CompareTag("Player") || isActivated) return;
         
-        SoundManager.instance.PlaySFX((int)SfxEffect.Checkpoint);
+        SoundManager.instance.PlaySFX(SfxEffect.Checkpoint);
         Activate();
     }
 

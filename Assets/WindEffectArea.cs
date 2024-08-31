@@ -16,7 +16,7 @@ public class WindEffectArea : MonoBehaviour
         defaultValue = windAudioSource.volume;
         BoxCollider2D collider = GetComponent<BoxCollider2D>();
         if (collider.OverlapPoint(PlayerManager.instance.player.transform.position)) {
-            SoundManager.instance.PlaySFX((int)SfxEffect.Wind);
+            SoundManager.instance.PlaySFX(SfxEffect.Wind);
         }
     }
 

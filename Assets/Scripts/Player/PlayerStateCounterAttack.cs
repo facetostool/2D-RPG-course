@@ -39,6 +39,8 @@ public class PlayerStateCounterAttack : PlayerState
             {
                 if (enemy.canBeStunned)
                 {
+                    SoundManager.instance.PlaySFX(SfxEffect.PlayerAttack1);
+                    
                     stateTime = 10;
                     enemy.Stun();
                     player.skills.parry.Heal();

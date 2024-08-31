@@ -13,7 +13,7 @@ public class PlayerStateMove : PlayerStateGrounded
     {
         base.Enter();
         
-        SoundManager.instance.PlaySFX((int)SfxEffect.PlayerFootstep);
+        SoundManager.instance.PlaySFX(SfxEffect.PlayerFootstep);
     }
     
     public override void Update()

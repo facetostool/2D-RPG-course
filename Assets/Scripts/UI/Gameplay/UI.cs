@@ -78,6 +78,7 @@ public class UI : MonoBehaviour
         if (tab != null)
             tab.SetActive(true);
         
+        SoundManager.instance.PlaySFX(SfxEffect.Click);
         HideTooltips();
         ShowInGameUI();
     }
@@ -110,5 +111,6 @@ public class UI : MonoBehaviour
     private void ShowDiedCanvas()
     {
         fadeDiedCanvas.FadeIn(fadeDiedDuration);
+        SoundManager.instance.PlaySFX(SfxEffect.DeathScreen);
     }
 }

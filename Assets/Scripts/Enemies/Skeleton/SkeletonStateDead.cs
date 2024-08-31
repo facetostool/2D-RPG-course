@@ -12,7 +12,7 @@ public class SkeletonStateDead : SkeletonState
     {
         base.Enter();
         
-        SoundManager.instance.PlaySFX((int)SfxEffect.SkeletonDie);
+        SoundManager.instance.PlaySFX(SfxEffect.SkeletonDie);
     }
 
     public override void Update()

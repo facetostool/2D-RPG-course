@@ -35,6 +35,7 @@ public class PlayerStateAimSword : PlayerState
         
         if (Input.GetKeyUp(KeyCode.Mouse1))
         {
+            SoundManager.instance.PlaySFX(SfxEffect.SwordThrow1);
             player.skills.throwSword.Use();
             stateMachine.ChangeState(player.stateIdle);
             return;

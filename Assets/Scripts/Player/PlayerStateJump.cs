@@ -14,7 +14,7 @@ public class PlayerStateJump : PlayerState
 
         player.rb.velocity = new Vector2(player.rb.velocity.x, player.jumpForce);
         
-        SoundManager.instance.PlaySFX((int)SfxEffect.PlayerJump);
+        SoundManager.instance.PlaySFX(SfxEffect.PlayerJump);
     }
 
     public override void Update()

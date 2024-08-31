@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,16 +10,45 @@ enum BGMMusicTheme
     MainMenu = 1,
 }
 
-enum SfxEffect
+public enum SfxEffect
 {
-    PlayerAttack = 2,
-    PlayerDie = 35, 
-    PlayerFootstep = 14,
-    ItemPickup = 18,
-    PlayerJump = 17,
-    SkeletonDie = 24,
+    PlayerAttack1 = 0,
+    PlayerAttack2 = 1,
+    PlayerAttack3 = 2,
+    Bankai = 3,
+    Burning = 4,
     Checkpoint = 5,
+    BlackHole = 6,
+    Click = 7,
+    Clock = 8,
+    ClockTick1 = 9,
+    ClockTick2 = 10,
+    DeathScreen = 11,
+    EvilVoice = 12,
+    FireMagic = 13,
+    PlayerFootstep = 14,
+    GirlSigh2 = 15,
+    GrandfatherClock = 16,
+    PlayerJump = 17,
+    ItemPickup = 18,
+    MonsterBreath = 19,
+    MonsterGrowl1 = 20,
+    MonsterGrowl2 = 21,
+    OpenChest = 22,
+    QuickTimeEvent = 23,
+    SkeletonDie = 24,
+    Spell1 = 25,
+    Spell2 = 26,
+    SwordThrow1 = 27,
+    SwordThrow2 = 28,
+    ThunderStrike = 29,
     Wind = 30,
+    WomenSigh1 = 31,
+    WomenSigh2 = 32,
+    WomenSigh3 = 33,
+    WomenStruggle1 = 34,
+    WomenStruggle2 = 35, 
+    SkeletonAttack1 = 36,
 }
 public class SoundManager : MonoBehaviour
 {
@@ -43,19 +73,21 @@ public class SoundManager : MonoBehaviour
     
     [SerializeField] private float maxDistanceSFX = 10f;
     
+    private bool isMuted = true;
+    
     private void Start()
     {
-        Debug.Log(SceneManager.GetActiveScene().name);
-        
         switch (SceneManager.GetActiveScene().name)
         {
             case "MainMenu":
-                SoundManager.instance.StatBGM((int)BGMMusicTheme.MainMenu);
+                StatBGM((int)BGMMusicTheme.MainMenu);
                 break;
             case "Gameplay":
-                SoundManager.instance.StatBGM((int)BGMMusicTheme.Gameplay);
+                StatBGM((int)BGMMusicTheme.Gameplay);
                 break;
         }
+        
+        Invoke(nameof(Unmute), 1f);
     }
     
     public AudioSource GetSFX(int index)
@@ -63,8 +95,18 @@ public class SoundManager : MonoBehaviour
         return sfx[index];
     }
     
-    public void PlaySFX(int fxIndex, Transform source = null)
+    public void PlaySFX(SfxEffect fxIndex, Transform source = null)
     {
+        PlaySFX(fxIndex, source, 1f);
+    }
+    
+    public void PlaySFX(SfxEffect fxIndex, Transform source, float pitch)
+    {
+        if (isMuted)
+        {
+            return;
+        }
+        
         if (source != null)
         {
             float distance = Vector3.Distance(source.position, PlayerManager.instance.player.transform.position);
@@ -74,8 +116,8 @@ public class SoundManager : MonoBehaviour
             }
         }
 
-        sfx[fxIndex].pitch = Random.Range(0.9f, 1.1f);
-        sfx[fxIndex].Play();
+        sfx[(int)fxIndex].pitch = Random.Range(pitch - 0.1f, pitch + 0.1f);
+        sfx[(int)fxIndex].Play();
     }
 
     public void StopSFX(int fxIndex)
@@ -94,9 +136,8 @@ public class SoundManager : MonoBehaviour
     }
     
     public Coroutine StopEffectSlowly(int fxIndex)
-    { 
-        Debug.Log("StopEffectSlowly"); 
-        return StartCoroutine(StopSFXSlowly(fxIndex));
+    {
+        return gameObject.IsDestroyed() ? null : StartCoroutine(StopSFXSlowly(fxIndex));
     }
     
     private IEnumerator StopSFXSlowly(int fxIndex)
@@ -114,5 +155,10 @@ public class SoundManager : MonoBehaviour
     public void StopBGM(int bgIndex)
     {
         bgm[bgIndex].Stop();
+    }
+    
+    private void Unmute()
+    {
+        isMuted = false;
     }
 }

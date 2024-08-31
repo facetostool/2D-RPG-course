@@ -39,7 +39,7 @@ public class ItemObject : MonoBehaviour
             rb.velocity = new Vector2(0, 5);
             return;
         }
-        SoundManager.instance.PlaySFX((int)SfxEffect.ItemPickup);
+        SoundManager.instance.PlaySFX(SfxEffect.ItemPickup);
         InventoryManager.instance.AddItem(itemData);
         Destroy(gameObject);
     }

@@ -10,13 +10,6 @@ public class VolumeSlider : MonoBehaviour, ISaveManager
     [SerializeField] private string mixerParameter;
     [SerializeField] private AudioMixer audioMixer;
     
-    private Slider slider;
-    
-    void Start()
-    {
-        slider = GetComponent<Slider>();
-    }
-    
     void Update()
     {
         
@@ -29,14 +22,16 @@ public class VolumeSlider : MonoBehaviour, ISaveManager
 
     public void SaveData(ref GameData data)
     {
-        data.volumeLevels[mixerParameter] = slider.value;
+        data.volumeLevels[mixerParameter] = GetComponent<Slider>().value;
     }
 
     public void LoadData(GameData data)
     {
+        var slider = GetComponent<Slider>();
+        
         if (!data.volumeLevels.ContainsKey(mixerParameter))
         {
-            slider.value = 0; 
+            slider.value = 1; 
             return;
         }
         

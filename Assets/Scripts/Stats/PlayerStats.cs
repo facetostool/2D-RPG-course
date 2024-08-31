@@ -37,6 +37,14 @@ public class PlayerStats : EntityStats
         
         InventoryManager.instance.UseArmor();
     }
+    
+    public override void TakeDamage(int dmg)
+    {
+        base.TakeDamage(dmg);
+        
+        Debug.Log("Player took " + dmg + " damage!");
+        SoundManager.instance.PlaySFX(SfxEffect.WomenSigh2);
+    }
 
     public override void EvasionEffect(EntityStats attacker, EntityStats target)
     {

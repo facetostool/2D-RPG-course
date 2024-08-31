@@ -13,6 +13,7 @@ public class SkeletonStateAttack : SkeletonState
         base.Enter();
         
         skeleton.SetVelocity(0,0);
+        SoundManager.instance.PlaySFX(SfxEffect.SkeletonAttack1, skeleton.transform, 0.3f);
     }
 
     public override void Update()

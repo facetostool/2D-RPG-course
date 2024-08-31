@@ -20,6 +20,8 @@ public class PlayerStateUltimate : PlayerState
         isSkillUsed = false;
 
         stateTime = 1;
+        SoundManager.instance.PlaySFX( SfxEffect.BlackHole);
+        SoundManager.instance.PlaySFX( SfxEffect.Bankai);
     }
 
     public override void Update()

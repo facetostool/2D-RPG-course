@@ -11,6 +11,7 @@ public class PlayerStateCatchSword : PlayerState
     public override void Enter()
     {
         base.Enter();
+        SoundManager.instance.PlaySFX(SfxEffect.SwordThrow2);
     }
 
     public override void Update()

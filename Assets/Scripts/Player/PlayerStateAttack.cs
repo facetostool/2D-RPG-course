@@ -15,7 +15,7 @@ public class PlayerStateAttack : PlayerState
     {
         base.Enter();
         
-        SoundManager.instance.PlaySFX((int)SfxEffect.PlayerAttack);
+        SoundManager.instance.PlaySFX(SfxEffect.PlayerAttack3);
         
         stateTime = 0.1f;
 

@@ -34,9 +34,13 @@ public class CloneController : MonoBehaviour
         player = PlayerManager.instance.player;
         sr = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
-        
-        animator.SetBool("Attack", canAttack);
-        animator.SetInteger("AttackCounter", UnityEngine.Random.Range(0, 3));
+
+        if (canAttack)
+        {
+            animator.SetBool("Attack", canAttack);
+            animator.SetInteger("AttackCounter", UnityEngine.Random.Range(0, 3));
+            SoundManager.instance.PlaySFX( SfxEffect.PlayerAttack3);
+        }
     }
     
     void Update()

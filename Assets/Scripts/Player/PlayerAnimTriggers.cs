@@ -16,9 +16,9 @@ public class PlayerAnimTriggers : MonoBehaviour
         
     }
 
-    public void CancelAnimationTrigger()
+    public void FinishAnimationTrigger()
     {
-        _player.stateMachine.currentState.StopAnimationsTrigger();
+        _player.stateMachine.currentState.FinishedAnimationsTrigger();
     }
 
     public void OnHitAttackTrigger()

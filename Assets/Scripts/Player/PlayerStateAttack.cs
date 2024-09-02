@@ -49,7 +49,7 @@ public class PlayerStateAttack : PlayerState
             player.SetVelocity(0,0);
         }
         
-        if (stopAnimations)
+        if (finishedAnimation)
         {
             stateMachine.ChangeState(player.stateIdle);
             return;
@@ -60,7 +60,7 @@ public class PlayerStateAttack : PlayerState
     {
         base.Exit();
 
-        player.StartCoroutine("BusyFor", 0.1f);
+        player.MakeBusyFor( .1f);
         lastAttackTime = Time.time;
     }
 }

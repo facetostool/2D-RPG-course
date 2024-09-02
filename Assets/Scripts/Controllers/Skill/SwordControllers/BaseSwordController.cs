@@ -57,9 +57,9 @@ public class BaseSwordController : MonoBehaviour
                 returnSpeed * Time.deltaTime
             );
             
-            if (transform.position == player.transform.position)
+            if (Vector3.Distance(transform.position,player.transform.position) <= 0.2f)
             {
-                player.ClearSword();
+                player.CatchSword();
             }
         }
     }

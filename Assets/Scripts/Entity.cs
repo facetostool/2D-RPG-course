@@ -50,6 +50,11 @@ public class Entity : MonoBehaviour
         
     }
     
+    public bool IsDead()
+    {
+        return stats.IsDead();
+    }
+    
     public virtual void SlowBy(float slowAmount, float slowTime)
     {
         

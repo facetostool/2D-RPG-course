@@ -42,7 +42,6 @@ public class PlayerStats : EntityStats
     {
         base.TakeDamage(dmg);
         
-        Debug.Log("Player took " + dmg + " damage!");
         SoundManager.instance.PlaySFX(SfxEffect.WomenSigh2);
     }
 

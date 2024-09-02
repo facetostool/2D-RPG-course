@@ -75,8 +75,9 @@ public class Player : Entity
         sword = _sword;
     }
     
-    public void ClearSword()
+    public void CatchSword()
     {
+        stateMachine.ChangeState(stateCatchSword);
         Destroy(sword);
     }
     
@@ -118,6 +119,11 @@ public class Player : Entity
         yield return new WaitForSeconds(_time);
         IsBusy = false;
     }
+    
+    public void MakeBusyFor(float _time)
+    {
+        StartCoroutine(BusyFor(_time));
+    }
 
     void OnDash(InputValue value)
     {
@@ -142,6 +148,9 @@ public class Player : Entity
 
     void FlipController()
     {
+        if (IsBusy)
+            return;
+        
         if (rb.velocity.x > 0 && faceDir < 0)
         {
             Flip();
@@ -191,10 +200,5 @@ public class Player : Entity
     public int GetAttackCounter()
     {
         return stateAttack.attackCounter;
-    }
-    
-    public bool IsDead()
-    {
-        return stats.IsDead();
     }
 }

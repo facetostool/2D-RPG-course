@@ -1,3 +1,6 @@
 1. Hide and show flask icon when flask is equipped
 2. Fix the bug when skeleton is lagging after killing the player
 3. CatchSword state implementation
+4. When the enemy is chilled - attack animation sound is not slowed down
+5. Bug: when any particle FX applied to the enemy, and we stun him - it's cancels the invokes and the particle FX is not stopped
+6. Remove silence at the beginning of the WomenSigh2 sound effect

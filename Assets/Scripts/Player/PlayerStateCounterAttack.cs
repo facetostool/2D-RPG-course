@@ -25,7 +25,7 @@ public class PlayerStateCounterAttack : PlayerState
         base.Update();
         player.SetVelocity(0,0);
         
-        if (stateTime <= 0 || stopAnimations) 
+        if (stateTime <= 0 || finishedAnimation) 
         {
             stateMachine.ChangeState(player.stateIdle);
             return;

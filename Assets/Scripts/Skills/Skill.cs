@@ -52,7 +52,7 @@ public class Skill : MonoBehaviour
         foreach (var hit in hits)
         {
             Enemy enemy = hit.GetComponent<Enemy>();
-            if (enemy)
+            if (enemy && !enemy.IsDead())
             {
                 float distance = Math.Abs(entityPosition.x - enemy.transform.position.x);
                 if (distance < shortestDistance)

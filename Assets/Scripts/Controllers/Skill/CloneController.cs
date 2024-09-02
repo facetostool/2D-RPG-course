@@ -59,7 +59,7 @@ public class CloneController : MonoBehaviour
         }
     }
     
-    public void CancelAnimationTrigger()
+    public void FinishAnimationTrigger()
     {
         animator.SetBool("Attack", false);
     }

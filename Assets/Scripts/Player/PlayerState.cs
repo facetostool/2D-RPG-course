@@ -9,7 +9,7 @@ public class PlayerState
     public string anim;
 
     public float stateTime;
-    public bool stopAnimations;
+    public bool finishedAnimation;
     
     public PlayerState(Player _player, PlayerStateMachine _stateMachine, string _anim)
     {
@@ -21,7 +21,7 @@ public class PlayerState
     
     public virtual void Enter()
     {
-        stopAnimations = false;
+        finishedAnimation = false;
         player.animator.SetBool(anim, true);
     }
     
@@ -38,8 +38,8 @@ public class PlayerState
         player.animator.SetBool(anim, false);
     }
 
-    public void StopAnimationsTrigger()
+    public void FinishedAnimationsTrigger()
     {
-        stopAnimations = true;
+        finishedAnimation = true;
     }
 }

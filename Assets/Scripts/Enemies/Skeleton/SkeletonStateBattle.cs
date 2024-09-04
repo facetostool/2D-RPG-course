@@ -15,18 +15,23 @@ public class SkeletonStateBattle : SkeletonState
         
         SoundManager.instance.PlaySFX( SfxEffect.MonsterGrowl1);
         stateTime = skeleton.battleNoDetectionTime;
-    }
-
-    public override void Update()
-    {
-        base.Update();
         
         if (PlayerManager.instance.player.IsDead())
         {
             stateMachine.ChangeState(skeleton.stateIdle);
             return;
         }
+    }
 
+    public override void Update()
+    {
+        base.Update();
+        
+        if (enemy.isKnocked)
+        {
+            return;
+        }
+        
         RaycastHit2D hit = skeleton.PlayerDetectionRaycast();
         if (hit.collider != null)
         {

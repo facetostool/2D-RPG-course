@@ -19,7 +19,6 @@ public class SkeletonStateIdle : SkeletonStateGrounded
     public override void Update()
     {
         base.Update();
-        skeleton.SetVelocity(0,0);
         
         if (stateTime <= 0)
         {

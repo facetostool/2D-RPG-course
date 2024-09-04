@@ -7,15 +7,11 @@ public class Enemy : Entity
 {
     public EnemyStateMachine stateMachine;
     
-    [Header("Knocked info")]
-    [SerializeField] private Vector2 knockedDirection;
-    [SerializeField] private float knockedDuration;
-    private bool isKnocked;
-    
     [Header("Stunned info")]
     [SerializeField] public Vector2 stunnedDirection;
     [SerializeField] public float stunnedDuration;
     [SerializeField] public SpriteRenderer counterAttackIndicator;
+    [SerializeField] public float stunnedKnockDuration;
     
     public bool canBeStunned;
     
@@ -36,15 +32,6 @@ public class Enemy : Entity
         
         stateMachine.currentState.Update();
     }
-    
-    public IEnumerator Knockout()
-    {
-        isKnocked = true;
-        rb.velocity = new Vector2(knockedDirection.x * -faceDir, knockedDirection.y);
-        yield return new WaitForSeconds(knockedDuration);
-        isKnocked = false;
-        base.SetVelocity(0, 0);
-    }
 
     public void OnHitAttackTrigger()
     {
@@ -54,7 +41,7 @@ public class Enemy : Entity
             Player player = hit.GetComponent<Player>();
             if (player)
             {
-                stats.DoDamage(player.stats);
+                stats.DoDamage(player.stats, transform);
             }
         }
     }

@@ -87,7 +87,7 @@ public class CrystalController : MonoBehaviour
             Enemy enemy = hit.GetComponent<Enemy>();
             if (enemy)
             {
-                player.stats.DoMagicDamage(enemy.stats);
+                player.stats.DoMagicDamage(enemy.stats, transform);
                 
                 if (!InventoryManager.instance.equipmentItemDict.TryGetValue(EquipmentType.Amulet, out var amulet))
                     continue;

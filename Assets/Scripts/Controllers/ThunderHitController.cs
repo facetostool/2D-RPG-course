@@ -9,7 +9,7 @@ public class ThunderHitController : MonoBehaviour
     {
         if (!other.CompareTag("Enemy"))
             return;
-    
-        PlayerManager.instance.player.stats.DoMagicDamage(other.GetComponent<Enemy>().stats);
+        
+        PlayerManager.instance.player.stats.DoMagicDamage(other.GetComponent<Enemy>().stats, transform);
     }
 }

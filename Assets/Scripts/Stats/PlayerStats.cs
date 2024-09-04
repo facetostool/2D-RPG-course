@@ -11,12 +11,6 @@ public class PlayerStats : EntityStats
         
         player = GetComponent<Player>();
     }
-
-    
-    public override void DoDamage(EntityStats target)
-    {
-        base.DoDamage(target);
-    }
     
     protected override void Die()
     {
@@ -41,7 +35,6 @@ public class PlayerStats : EntityStats
     public override void TakeDamage(int dmg)
     {
         base.TakeDamage(dmg);
-        
         SoundManager.instance.PlaySFX(SfxEffect.WomenSigh2);
     }
 

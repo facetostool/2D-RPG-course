@@ -27,16 +27,15 @@ public class PlayerAnimTriggers : MonoBehaviour
         foreach (var hit in hits)
         {
             Enemy enemy = hit.GetComponent<Enemy>();
-            if (enemy)
-            {
-                _player.stats.DoDamage(enemy.stats);
+            if (!enemy) continue;
+            
+            _player.stats.DoDamage(enemy.stats, _player.transform);
 
-                if (!InventoryManager.instance.equipmentItemDict.TryGetValue(EquipmentType.Weapon, out var weapon))
-                    continue;
-                if (weapon == null) continue;
-                var itemData = weapon.itemData as ItemDataEquipment;
-                itemData?.ApplyEffects(enemy.transform);
-            }
+            if (!InventoryManager.instance.equipmentItemDict.TryGetValue(EquipmentType.Weapon, out var weapon))
+                continue;
+            if (weapon == null) continue;
+            var itemData = weapon.itemData as ItemDataEquipment;
+            itemData?.ApplyEffects(enemy.transform);
         }
     }
 }

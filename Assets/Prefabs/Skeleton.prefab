@@ -10249,7 +10249,7 @@ MonoBehaviour:
   thunderStrikePrefab: {fileID: 4646994445478155925, guid: f745fd8176fa242f0ad70a204e3d8568, type: 3}
   vulnerableMultiplier: 1.2
   currentHealth: 0
-  level: 1
+  level: 5
   levelStatsModifier: 0.4
   soulsToDrop:
     baseValue: 0
@@ -10277,7 +10277,7 @@ MonoBehaviour:
   wallCheckDistance: 0.5
   attackCheck: {fileID: 2381595259068037652}
   attackCheckRadius: 1.01
-  knockedDirection: {x: 3, y: 3}
+  knockedForce: {x: 5, y: 5}
   knockedDuration: 0.1
   stunnedDirection: {x: 6, y: 4}
   stunnedDuration: 0.7

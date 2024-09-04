@@ -8,7 +8,9 @@ public class IceAndFireProjectileController : MonoBehaviour
     {
         if (!other.CompareTag("Enemy"))
             return;
-    
-        PlayerManager.instance.player.stats.DoMagicDamage(other.GetComponent<Enemy>().stats);
+
+        Enemy enemy = other.GetComponent<Enemy>();
+        
+        PlayerManager.instance.player.stats.DoMagicDamage(enemy.stats, transform);
     }
 }

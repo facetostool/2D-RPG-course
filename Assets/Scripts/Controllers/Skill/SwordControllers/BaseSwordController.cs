@@ -94,7 +94,7 @@ public class BaseSwordController : MonoBehaviour
 
     protected void RegisterDamage(Enemy enemy)
     {
-        player.stats.DoDamage(enemy.stats);
+        player.stats.DoDamage(enemy.stats, transform);
         
         if (player.skills.throwSword.vulnerabilityUnlocked)
             enemy.stats.MakeVulnerableFor(freezeTime);

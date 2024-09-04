@@ -25,6 +25,12 @@ public class Entity : MonoBehaviour
     [SerializeField] public Transform attackCheck;
     [SerializeField] public float attackCheckRadius;
     
+    [Header("Knocked info")]
+    [SerializeField] private Vector2 knockedForce;
+    [SerializeField] private float knockedDuration;
+    private float knockDirection;
+    public bool isKnocked;
+    
     private float defaultAlpha;
 
     public Action onFliped;
@@ -104,6 +110,24 @@ public class Entity : MonoBehaviour
              {
                  return Physics2D.Raycast(wallCheck.position, Vector2.right, wallCheckDistance*faceDir, whatIsGround);
              }
+
+    #endregion
+
+    #region Knock
+
+    public void SetupKnockDirection(Transform dmgSource)
+    {
+        knockDirection = dmgSource.position.x > transform.position.x ? -1 : 1;
+    }
+    
+    public IEnumerator Knockout()
+    {
+        isKnocked = true;
+        rb.velocity = new Vector2(knockedForce.x * knockDirection, knockedForce.y);
+        yield return new WaitForSeconds(knockedDuration);
+        isKnocked = false;
+        rb.velocity = new Vector2(0, 0);
+    }
 
     #endregion
 }

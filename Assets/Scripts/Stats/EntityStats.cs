@@ -175,23 +175,26 @@ public class EntityStats : MonoBehaviour
     
     public void MakeVulnerableFor(float duration)
     {
-        StartCoroutine(VulnerableCorutine(duration));
+        StartCoroutine(VulnerableCoroutine(duration));
     }
 
-    private IEnumerator VulnerableCorutine(float duration)
+    private IEnumerator VulnerableCoroutine(float duration)
     {
         isVulnerable = true;
         yield return new WaitForSeconds(duration);
         isVulnerable = true;
     }
     
-    public virtual void DoDamage(EntityStats target)
+    public virtual void DoDamage(EntityStats target, Transform dmgSource)
     {
+        target.entity.SetupKnockDirection(dmgSource);
+        
         if (IsAttackMissed(target))
         {
             target.EvasionEffect(this, target);
             return;
         }
+        
         
         int finalDamage = GetDamage() - target.ArmorValue();
         
@@ -213,8 +216,10 @@ public class EntityStats : MonoBehaviour
     }
     
     #region Magic Damage
-    public void DoMagicDamage(EntityStats target)
+    public void DoMagicDamage(EntityStats target, Transform dmgSource)
     {
+        target.entity.SetupKnockDirection(dmgSource);
+        
         int finalDmg = fireDamage.Value() + iceDamage.Value() + lightningDamage.Value();
         finalDmg -= target.GetMagicResistance();
         

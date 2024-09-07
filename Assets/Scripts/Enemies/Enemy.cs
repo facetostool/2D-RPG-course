@@ -13,6 +13,10 @@ public class Enemy : Entity
     [SerializeField] public SpriteRenderer counterAttackIndicator;
     [SerializeField] public float stunnedKnockDuration;
     
+    [Header("Attack info")]
+    [SerializeField] public float attackMinCooldown;
+    [SerializeField] public float attackMaxCooldown;
+    
     public bool canBeStunned;
     
     private float defaultMoveSpeed;

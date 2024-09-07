@@ -15344,32 +15344,12 @@ PrefabInstance:
       value: Skeleton (1)
       objectReference: {fileID: 0}
     - target: {fileID: 5514779880226924369, guid: 286cca9d0e3e56b42b097bfc2ec3ca7b, type: 3}
-      propertyPath: knockedForce.x
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 5514779880226924369, guid: 286cca9d0e3e56b42b097bfc2ec3ca7b, type: 3}
-      propertyPath: knockedForce.y
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5514779880226924369, guid: 286cca9d0e3e56b42b097bfc2ec3ca7b, type: 3}
-      propertyPath: stunnedDuration
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 5514779880226924369, guid: 286cca9d0e3e56b42b097bfc2ec3ca7b, type: 3}
-      propertyPath: detectionDistance
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5514779880226924369, guid: 286cca9d0e3e56b42b097bfc2ec3ca7b, type: 3}
-      propertyPath: stunnedKnockDuration
+      propertyPath: attackMaxCooldown
       value: 0.2
       objectReference: {fileID: 0}
-    - target: {fileID: 7196381440121481327, guid: 286cca9d0e3e56b42b097bfc2ec3ca7b, type: 3}
-      propertyPath: level
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7196381440121481327, guid: 286cca9d0e3e56b42b097bfc2ec3ca7b, type: 3}
-      propertyPath: damage.baseValue
-      value: 1
+    - target: {fileID: 5514779880226924369, guid: 286cca9d0e3e56b42b097bfc2ec3ca7b, type: 3}
+      propertyPath: attackMinCooldown
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 7989528074801795577, guid: 286cca9d0e3e56b42b097bfc2ec3ca7b, type: 3}
       propertyPath: m_AnchorMax.x
@@ -24271,7 +24251,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5514779880226924369, guid: 286cca9d0e3e56b42b097bfc2ec3ca7b, type: 3}
       propertyPath: detectionDistance
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7196381440121481327, guid: 286cca9d0e3e56b42b097bfc2ec3ca7b, type: 3}
       propertyPath: level

@@ -4,9 +4,11 @@
 4. When the enemy is chilled - attack animation sound is not slowed down
 5. Bug: when any particle FX applied to the enemy, and we stun him - it's cancels the invokes and the particle FX is not stopped
 6. Remove silence at the beginning of the WomenSigh2 sound effect
+7. When the enemy is in battle state - it tries to come close and closer until sprite is overlapped
+8 Is skeleton is above on platform - it's not falling down
 
 
-2. player knockback
-3. game pause (Time.timeScale = 0)
-4. Dead zone
+1. player knockback
+3. Dead zone
 5. Dash invincibility@
+6. Blackhole graphic improvement

@@ -74,9 +74,13 @@ public class UI : MonoBehaviour
         {
             child.gameObject.SetActive(false);
         }
-        
+
         if (tab != null)
-            tab.SetActive(true);
+        {
+            if (tab != inGameUI)
+                GameManager.instance.PauseGame();
+            tab.SetActive(true);  
+        }
         
         SoundManager.instance.PlaySFX(SfxEffect.Click);
         HideTooltips();
@@ -100,6 +104,7 @@ public class UI : MonoBehaviour
         if (transform.Cast<Transform>().Any(child => child.gameObject.activeSelf))
             return;
 
+        GameManager.instance.ResumeGame();
         inGameUI.SetActive(true);
     }
     

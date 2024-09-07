@@ -63,6 +63,7 @@ public class Skeleton : Enemy
         base.OnDrawGizmos();
         
         Gizmos.DrawLine(playerCheck.position, new Vector3(playerCheck.position.x + detectionDistance*faceDir, playerCheck.position.y));
+        Gizmos.DrawLine(playerCheck.position, new Vector3(playerCheck.position.x + attackDistance*faceDir, playerCheck.position.y));
     }
 
     public RaycastHit2D PlayerDetectionRaycast()

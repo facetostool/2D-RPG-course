@@ -10223,7 +10223,7 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   damage:
-    baseValue: 10
+    baseValue: 1
     modifiers: 
   critChance:
     baseValue: 0
@@ -10249,7 +10249,7 @@ MonoBehaviour:
   thunderStrikePrefab: {fileID: 4646994445478155925, guid: f745fd8176fa242f0ad70a204e3d8568, type: 3}
   vulnerableMultiplier: 1.2
   currentHealth: 0
-  level: 5
+  level: 1
   levelStatsModifier: 0.4
   soulsToDrop:
     baseValue: 0
@@ -10276,22 +10276,26 @@ MonoBehaviour:
   wallCheck: {fileID: 8110983619546914289}
   wallCheckDistance: 0.5
   attackCheck: {fileID: 2381595259068037652}
-  attackCheckRadius: 1.01
-  knockedForce: {x: 5, y: 5}
+  attackCheckRadius: 1.1
+  knockedForce: {x: 4, y: 3}
   knockedDuration: 0.1
-  stunnedDirection: {x: 6, y: 4}
-  stunnedDuration: 0.7
+  isKnocked: 0
+  stunnedDirection: {x: 8, y: 3}
+  stunnedDuration: 1
   counterAttackIndicator: {fileID: 5811706273705911894}
+  stunnedKnockDuration: 0.2
+  attackMinCooldown: 0.1
+  attackMaxCooldown: 0.2
   canBeStunned: 0
   idleStateTime: 2
   battleNoDetectionTime: 3
-  detectionDistance: 5
+  detectionDistance: 4
   whatIsPlayer:
     serializedVersion: 2
     m_Bits: 64
   playerCheck: {fileID: 8435122365141388999}
   moveBattleMultiplayer: 1
-  attackDistance: 2
+  attackDistance: 2.5
 --- !u!114 &4541651985234930100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10572,7 +10576,7 @@ Transform:
   m_GameObject: {fileID: 6531631745547401278}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.21, y: -0.36, z: 0}
+  m_LocalPosition: {x: 1.43, y: -0.38, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -15498,7 +15502,7 @@ Transform:
   m_GameObject: {fileID: 9125199725072907487}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.09, y: -0.07, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

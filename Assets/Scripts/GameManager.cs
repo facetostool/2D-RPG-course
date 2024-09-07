@@ -81,4 +81,19 @@ public class GameManager : MonoBehaviour, ISaveManager
                 checkpoint.Activate();
         }
     }
+    
+    public void PauseGame()
+    {
+        Time.timeScale = 0;
+    }
+    
+    public void ResumeGame()
+    {
+        Time.timeScale = 1;
+    }
+    
+    public bool IsGamePaused()
+    {
+        return Time.timeScale == 0;
+    }
 }

@@ -100,6 +100,9 @@ public class Player : Entity
     protected override void Update()
     {
         base.Update();
+        
+        if (GameManager.instance.IsGamePaused())
+            return;
 
         stateMachine.currentState.Update();
         FlipController();
@@ -127,6 +130,9 @@ public class Player : Entity
 
     void OnDash(InputValue value)
     {
+        if (GameManager.instance.IsGamePaused())
+            return;
+        
         if (value.isPressed && skills.dash.CanUse())
         {
             stateMachine.ChangeState(stateDash);
@@ -135,6 +141,9 @@ public class Player : Entity
 
     void OnCrystal(InputValue value)
     {
+        if (GameManager.instance.IsGamePaused())
+            return;
+        
         if (value.isPressed && skills.crystal.CanUse())
         {
             skills.crystal.Use();
@@ -143,6 +152,9 @@ public class Player : Entity
 
     void OnMove(InputValue value)
     {
+        if (GameManager.instance.IsGamePaused())
+            return;
+        
         moveVector = value.Get<Vector2>();
     }
 

@@ -35,6 +35,7 @@ public class HotKeyController : MonoBehaviour
         {
             blackHole.GetComponent<BlackHoleController>().AddEnemy(enemy);
             gameObject.SetActive(false);
+            SoundManager.instance.PlaySFX(SfxEffect.QuickTimeEvent);
         }
     }
 }

@@ -15,6 +15,7 @@ public class PlayerStateDash : PlayerState
         stateTime = player.skills.dash.dashTime;
         player.skills.dash.Use();
         player.skills.dash.CreateCloneOnStart();
+        SoundManager.instance.PlaySFX(SfxEffect.Dash);
     }
 
     public override void Update()

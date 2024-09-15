@@ -75,10 +75,11 @@ public class Enemy : Entity
         CloseCounterAttackWindow();
     }
 
-    public override void DamageEffect()
+    public override void DamageEffect(int dmg)
     {
-        base.DamageEffect();
+        base.DamageEffect(dmg);
         StartCoroutine(nameof(Knockout));
+        SoundManager.instance.PlaySFX(SfxEffect.Hit, null, 1.5f);
     }
     
     public void Freeze()

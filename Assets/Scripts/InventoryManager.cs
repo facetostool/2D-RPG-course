@@ -100,6 +100,7 @@ public class InventoryManager : MonoBehaviour, ISaveManager
     
     public void EquipItem(InventoryItem inventoryItem)
     {
+        SoundManager.instance.PlaySFX(SfxEffect.Equip);
         ItemDataEquipment item = (ItemDataEquipment)inventoryItem.itemData;
         if (equipmentItemDict.ContainsKey(item.equipmentType))
         {
@@ -134,6 +135,7 @@ public class InventoryManager : MonoBehaviour, ISaveManager
 
     public void UnequipItem(ItemSlot equipmentSlot)
     {
+        SoundManager.instance.PlaySFX(SfxEffect.Unequip);
         ItemDataEquipment item = (ItemDataEquipment)equipmentSlot.inventoryItem.itemData;
         item.RemoveModifiers(player.stats);
         equipmentItems.Remove(equipmentSlot.inventoryItem);
@@ -328,6 +330,7 @@ public class InventoryManager : MonoBehaviour, ISaveManager
             flask.ApplyEffects(null);
             lastTimeFlaskUsed = Time.time;
             flaskCooldown = flask.cooldown;
+            SoundManager.instance.PlaySFX(SfxEffect.Heal);
             
             if (flaskImageCooldown)
                 flaskImageCooldown.StartCooldown(flask.cooldown);

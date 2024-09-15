@@ -56,9 +56,11 @@ public class CraftItemWindow : MonoBehaviour
         if (!InventoryManager.instance.CanCraft(item))
         {
             Debug.Log("Cannot craft item");
+            SoundManager.instance.PlaySFX(SfxEffect.CraftFail);
             return;  
         }
         
+        SoundManager.instance.PlaySFX(SfxEffect.SuccessCraft);
         InventoryManager.instance.CraftItem(item);
     }
     

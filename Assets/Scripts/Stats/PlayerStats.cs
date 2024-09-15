@@ -35,7 +35,6 @@ public class PlayerStats : EntityStats
     public override void TakeDamage(int dmg)
     {
         base.TakeDamage(dmg);
-        SoundManager.instance.PlaySFX(SfxEffect.WomenSigh2);
     }
 
     public override void EvasionEffect(EntityStats attacker, EntityStats target)

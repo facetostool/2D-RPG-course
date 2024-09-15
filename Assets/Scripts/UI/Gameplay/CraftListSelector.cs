@@ -33,7 +33,7 @@ public class CraftListSelector : MonoBehaviour, IPointerDownHandler
     public void OnPointerDown(PointerEventData eventData)
     {
         SetupList();
-        
+        SoundManager.instance.PlaySFX(SfxEffect.Click);
         GetComponentInParent<UI>().craftItemWindow.HideContent();
     }
 }

@@ -26,9 +26,9 @@ public class Entity : MonoBehaviour
     [SerializeField] public float attackCheckRadius;
     
     [Header("Knocked info")]
-    [SerializeField] private Vector2 knockedForce;
-    [SerializeField] private float knockedDuration;
-    private float knockDirection;
+    [SerializeField] public Vector2 knockedForce;
+    [SerializeField] public float knockedDuration;
+    public float knockDirection;
     public bool isKnocked;
     
     private float defaultAlpha;
@@ -83,7 +83,7 @@ public class Entity : MonoBehaviour
         rb.velocity = new Vector2(x, y);
     }
 
-    public virtual void DamageEffect() => fx.StartCoroutine("Flash");
+    public virtual void DamageEffect(int dmg) => fx.StartCoroutine("Flash");
     
     public void MakeVisible()
     {

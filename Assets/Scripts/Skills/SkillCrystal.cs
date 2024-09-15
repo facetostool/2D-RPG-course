@@ -101,6 +101,7 @@ public class SkillCrystal : Skill
         // Swap player and crystal positions
         Vector2 playerPosition = player.transform.position;
         player.transform.position = currCrystal.transform.position;
+        SoundManager.instance.PlaySFX(SfxEffect.Crystal);
         
         if (cloneUnlocked)
         {
@@ -156,6 +157,6 @@ public class SkillCrystal : Skill
         
         cooldownTimer = multiCooldown;
         RefillCrystals();
-        StartImageCooldown();
+        StartImageCooldown(multiCooldown);
     }
 }

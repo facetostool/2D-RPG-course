@@ -339,8 +339,7 @@ public class EntityStats : MonoBehaviour
         if (dmg <= 0)
             return;
         
-        GetComponent<Entity>().DamageEffect();
-        
+        GetComponent<Entity>().DamageEffect(dmg);
         TakeDamage(dmg);
     }
     

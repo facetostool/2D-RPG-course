@@ -35,6 +35,8 @@ public class CrystalController : MonoBehaviour
         player = PlayerManager.instance.player;
         cc = GetComponent<CircleCollider2D>();
         anim = GetComponent<Animator>();
+        
+        SoundManager.instance.PlaySFX(SfxEffect.Crystal);
     }
 
     // Update is called once per frame
@@ -59,7 +61,7 @@ public class CrystalController : MonoBehaviour
         
         if (selfDestroyTimer <= 0)
         {
-            if (canExplode)
+            if (canExplode && !canGrow)
             {
                 Explode();
                 return;
@@ -72,6 +74,7 @@ public class CrystalController : MonoBehaviour
     {
         anim.SetTrigger(ExplodeTrigger);
         canGrow = true;
+        SoundManager.instance.PlaySFX(SfxEffect.Explosion2);
     }
     
     public void SelfDestroy()

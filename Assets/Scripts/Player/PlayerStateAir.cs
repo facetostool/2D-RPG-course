@@ -21,6 +21,7 @@ public class PlayerStateAir : PlayerState
         
         if (player.IsGroundDetected())
         {
+            SoundManager.instance.PlaySFX(SfxEffect.Landing);
             stateMachine.ChangeState(player.stateIdle);
             return;
         }

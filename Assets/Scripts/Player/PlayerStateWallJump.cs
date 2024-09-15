@@ -14,6 +14,7 @@ public class PlayerStateWallJump : PlayerState
 
         stateTime = 0.1f;
         player.SetVelocity(-player.faceDir * player.wallJumpForce.x , player.wallJumpForce.y);
+        SoundManager.instance.PlaySFX(SfxEffect.Jump);
     }
 
     public override void Update()

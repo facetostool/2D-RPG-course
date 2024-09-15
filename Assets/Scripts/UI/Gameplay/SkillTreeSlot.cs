@@ -57,8 +57,14 @@ public class SkillTreeSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     private void Unlock()
     {
-        if (!CanUnlock()) return;
+        if (!CanUnlock())
+        {
+            SoundManager.instance.PlaySFX(SfxEffect.SkillFail);
+            return;
+        }
+            
         
+        SoundManager.instance.PlaySFX(SfxEffect.SuccessSkillLearn);
         PlayerManager.instance.RemoveCurrency(price);
         unlocked = true;
         GetComponent<Image>().color = Color.white;

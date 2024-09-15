@@ -27,6 +27,8 @@ public class Player : Entity
     public PlayerStateUltimate stateUltimate { get; private set; }
     public PlayerStateDead stateDead { get; private set; }
     
+    public PlayerStateKnocked stateKnocked { get; private set; }
+    
     [Header("Move info")]
     [SerializeField] public float jumpForce;
     [SerializeField] public Vector2 wallJumpForce;
@@ -66,6 +68,7 @@ public class Player : Entity
         stateCatchSword = new PlayerStateCatchSword(this, stateMachine, "CatchSword");
         stateUltimate = new PlayerStateUltimate(this, stateMachine, "Ultimate");
         stateDead = new PlayerStateDead(this, stateMachine, nameof(Die));
+        stateKnocked = new PlayerStateKnocked(this, stateMachine, "Air");
         
         moveVector = new Vector2(0, 0);
     }
@@ -130,6 +133,9 @@ public class Player : Entity
 
     void OnDash(InputValue value)
     {
+        if (IsBusy)
+            return;
+        
         if (GameManager.instance.IsGamePaused())
             return;
         
@@ -141,6 +147,9 @@ public class Player : Entity
 
     void OnCrystal(InputValue value)
     {
+        if (IsBusy)
+            return;
+        
         if (GameManager.instance.IsGamePaused())
             return;
         
@@ -212,5 +221,18 @@ public class Player : Entity
     public int GetAttackCounter()
     {
         return stateAttack.attackCounter;
+    }
+    
+    public override void DamageEffect(int dmg)
+    {
+        base.DamageEffect(dmg);
+        if (dmg * 100 /stats.MaxHealthValue() >= 30)
+        {
+            stateMachine.ChangeState(stateKnocked);
+        }
+        else
+        {
+            SoundManager.instance.PlaySFX(SfxEffect.WomenSigh2);
+        }
     }
 }

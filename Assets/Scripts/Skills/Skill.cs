@@ -35,13 +35,13 @@ public class Skill : MonoBehaviour
     {
         cooldownTimer = cooldown;
 
-        StartImageCooldown();
+        StartImageCooldown(cooldown);
     }
     
-    protected void StartImageCooldown()
+    protected void StartImageCooldown(float _cooldown)
     {
         if (uiImageCooldown)
-            uiImageCooldown.StartCooldown(cooldown);
+            uiImageCooldown.StartCooldown(_cooldown);
     }
     
     public Transform ClosestEnemyPosition(Vector3 entityPosition)

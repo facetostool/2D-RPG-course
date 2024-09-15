@@ -31,5 +31,6 @@ public class CraftItemSlot : MonoBehaviour, IPointerDownHandler
     public void OnPointerDown(PointerEventData eventData)
     {
         ui.craftItemWindow.Setup(data);
+        SoundManager.instance.PlaySFX(SfxEffect.Click);
     }
 }

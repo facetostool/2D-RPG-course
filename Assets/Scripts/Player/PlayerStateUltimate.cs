@@ -19,7 +19,7 @@ public class PlayerStateUltimate : PlayerState
         player.rb.gravityScale = 0;
         isSkillUsed = false;
 
-        stateTime = 1;
+        stateTime = player.skills.blackHole.flyTime;
         SoundManager.instance.PlaySFX( SfxEffect.BlackHole);
         SoundManager.instance.PlaySFX( SfxEffect.Bankai);
     }
@@ -30,17 +30,15 @@ public class PlayerStateUltimate : PlayerState
 
         if (stateTime > 0)
         {
-            player.rb.velocity = new Vector2(0, 5);
+            player.rb.velocity = new Vector2(0, player.skills.blackHole.flySpeed);
         }
         
         if (stateTime <= 0)
         {
             player.rb.velocity = new Vector2(0, -0.1f);
-            if (!isSkillUsed)
-            {
-                player.skills.blackHole.Use();
-                isSkillUsed = true;
-            }
+            if (isSkillUsed) return;
+            player.skills.blackHole.Use();
+            isSkillUsed = true;
         }
     }
 

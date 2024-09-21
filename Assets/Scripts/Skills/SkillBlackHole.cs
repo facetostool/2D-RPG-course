@@ -11,6 +11,8 @@ public class SkillBlackHole : Skill
     [SerializeField] private float attackCooldown;
     [SerializeField] private float attackNumber;
     [SerializeField] private float skillTimer;
+    [SerializeField] public float flySpeed;
+    [SerializeField] public float flyTime;
     
     [SerializeField] private SkillTreeSlot blackHoleSlot;
     [SerializeField] private bool blackHoleUnlocked;

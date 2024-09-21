@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -24,6 +25,8 @@ public class BlackHoleController : MonoBehaviour
     private List<Enemy> freezedEnemies = new List<Enemy>();
     
     private SpriteRenderer sr;
+    private CinemachineVirtualCamera virtualCamera;
+    private Player player;
 
     [SerializeField] private GameObject clonePrefab;
     [SerializeField] private float cloneDisappearSpeed;
@@ -46,6 +49,8 @@ public class BlackHoleController : MonoBehaviour
     
     void Start()
     {
+        virtualCamera = GameManager.instance.virtualCamera;
+        player = PlayerManager.instance.player;
     }
     
     void Update()
@@ -83,7 +88,7 @@ public class BlackHoleController : MonoBehaviour
         
         if (isReleased && attackTimer <= 0 && enemiesToAttack.Count > 0 && attackNumber > 0)
         {
-            PlayerManager.instance.player.fx.MakeTransparent();
+            player.fx.MakeTransparent();
             AttackEnemy();
             if (attackNumber <= 0)
             {
@@ -94,7 +99,8 @@ public class BlackHoleController : MonoBehaviour
 
     private void ExitBlackHole()
     {
-        PlayerManager.instance.player.ExitUltimate();
+        virtualCamera.Follow = player.transform;
+        player.ExitUltimate();
         foreach (var enemy in freezedEnemies)
         {
             enemy.Unfreeze();
@@ -123,7 +129,12 @@ public class BlackHoleController : MonoBehaviour
         Transform enemy = enemiesToAttack[currentAttackTarget].transform;
 
         var enemyPosition = enemy.transform.position;
-        SkillManager.instance.clone.Use(new Vector3(enemyPosition.x + RandomOffset()*1f, enemyPosition.y), enemy);
+        GameObject clone = SkillManager.instance.clone.Use(new Vector3(enemyPosition.x + RandomOffset()*1f, enemyPosition.y), enemy);
+        if (clone)
+        {
+            virtualCamera.Follow = clone.transform;
+        }
+        
         currentAttackTarget++;
         attackNumber--;
         if (currentAttackTarget >= enemiesToAttack.Count)

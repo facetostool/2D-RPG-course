@@ -53,17 +53,18 @@ public class SkillClone : Skill
         };
     }
     
-    public void Use(Vector3 position, Transform enemyPosition)
+    public GameObject Use(Vector3 position, Transform enemyPosition) 
     {
         base.Use();
 
         if (crystalCloneUnlocked)
         {
             player.skills.crystal.CreateCrystal(player.transform.position);
-            return;
+            return null;
         }
         GameObject cloneObject = Instantiate(clonePrefab);
         cloneObject.GetComponent<CloneController>().Setup(position, disappearSpeed, enemyPosition, cloneSpawnChance, cloneAttackUnlocked);
+        return cloneObject;
     }
     
     public void UseWithDelayAndOffset(Transform _hit)

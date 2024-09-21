@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -21,12 +22,16 @@ public class GameManager : MonoBehaviour, ISaveManager
     }
 
     #endregion
-
+    
+    
     [SerializeField] private List<CheckpointController> checkpoints;
     private Player player;
     private Scene currScene;
+    
+    public CinemachineVirtualCamera virtualCamera;
     private void Start()
     {
+        virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
         checkpoints = new List<CheckpointController>(FindObjectsOfType<CheckpointController>());
         player = PlayerManager.instance.player;
         currScene = SceneManager.GetActiveScene();

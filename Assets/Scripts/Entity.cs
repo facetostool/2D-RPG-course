@@ -83,8 +83,12 @@ public class Entity : MonoBehaviour
         rb.velocity = new Vector2(x, y);
     }
 
-    public virtual void DamageEffect(int dmg) => fx.StartCoroutine("Flash");
-    
+    public virtual void DamageEffect(int dmg)
+    {
+        fx.StartCoroutine("Flash");
+        fx.OnHit();
+    }
+
     public void MakeVisible()
     {
         Color tmp = sr.color;

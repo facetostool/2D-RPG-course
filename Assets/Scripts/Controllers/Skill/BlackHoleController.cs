@@ -23,6 +23,8 @@ public class BlackHoleController : MonoBehaviour
     private int currentAttackTarget;
     private List<Transform> enemiesToAttack = new List<Transform>();
     private List<Enemy> freezedEnemies = new List<Enemy>();
+
+    private float backRotateSpeed;
     
     private SpriteRenderer sr;
     private CinemachineVirtualCamera virtualCamera;
@@ -32,10 +34,12 @@ public class BlackHoleController : MonoBehaviour
     [SerializeField] private float cloneDisappearSpeed;
     [SerializeField] private GameObject hotKeyPrefab;
     [SerializeField] private List<KeyCode> hotKeys;
+    [SerializeField] private GameObject background;
+    
     
     private List<GameObject> hotKeyObjects = new List<GameObject>();
 
-    public void Setup( float _growSpeed, float _shrinkSpeed, float _maxSize, float _attackCooldown, float _attackNumber, float _skillTimer)
+    public void Setup( float _growSpeed, float _shrinkSpeed, float _maxSize, float _attackCooldown, float _attackNumber, float _skillTimer, float _backRotateSpeed)
     {
         growSpeed = _growSpeed;
         shrinkSpeed = _shrinkSpeed;
@@ -43,6 +47,7 @@ public class BlackHoleController : MonoBehaviour
         attackCooldown = _attackCooldown;
         attackNumber = _attackNumber;
         skillTimer = _skillTimer;
+        backRotateSpeed = _backRotateSpeed;
         
         canGrow = true;
     }
@@ -56,6 +61,9 @@ public class BlackHoleController : MonoBehaviour
     void Update()
     {
         skillTimer -= Time.deltaTime;
+        
+        // Continiously rotate background
+        background.transform.Rotate(0, 0, backRotateSpeed * Time.deltaTime);
         
         if (canGrow)
         {

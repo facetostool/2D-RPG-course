@@ -19,6 +19,8 @@ public class EntityFX : MonoBehaviour
     [SerializeField] private ParticleSystem chillParticles;
     [SerializeField] private ParticleSystem shockParticles;
     
+    [SerializeField] private ParticleSystem onHitParticles;
+    
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
@@ -114,5 +116,10 @@ public class EntityFX : MonoBehaviour
     private void ShockingParticlesStop()
     {
         shockParticles.Stop();
+    }
+    
+    public void OnHit()
+    {
+        onHitParticles.Play();
     }
 }

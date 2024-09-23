@@ -13,6 +13,7 @@ public class SkillBlackHole : Skill
     [SerializeField] private float skillTimer;
     [SerializeField] public float flySpeed;
     [SerializeField] public float flyTime;
+    [SerializeField] private float backRotateSpeed;
     
     [SerializeField] private SkillTreeSlot blackHoleSlot;
     [SerializeField] private bool blackHoleUnlocked;
@@ -39,6 +40,6 @@ public class SkillBlackHole : Skill
         base.Use();
 
         GameObject blackHole = Instantiate(blackHolePrefab, player.transform.position, Quaternion.identity);
-        blackHole.GetComponent<BlackHoleController>().Setup(growSpeed, shrinkSpeed, maxSize, attackCooldown, attackNumber, skillTimer);
+        blackHole.GetComponent<BlackHoleController>().Setup(growSpeed, shrinkSpeed, maxSize, attackCooldown, attackNumber, skillTimer, backRotateSpeed);
     }
 }

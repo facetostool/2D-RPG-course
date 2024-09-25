@@ -90,6 +90,7 @@ public class BaseSwordController : MonoBehaviour
         rb.bodyType = RigidbodyType2D.Kinematic;
         rb.constraints = RigidbodyConstraints2D.FreezeAll;
         isSpinning = false;
+        GetComponentInChildren<ParticleSystem>().Play();
     }
 
     protected void RegisterDamage(Enemy enemy)

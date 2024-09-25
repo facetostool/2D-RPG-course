@@ -7,6 +7,8 @@ public class PlayerStateDash : PlayerState
     public PlayerStateDash(Player _player, PlayerStateMachine _stateMachine, string _anim) : base(_player, _stateMachine, _anim)
     {
     }
+    
+    private float imageFXTimer;
 
     public override void Enter()
     {
@@ -21,6 +23,14 @@ public class PlayerStateDash : PlayerState
     public override void Update()
     {
         base.Update();
+        
+        if (imageFXTimer > 0)
+        {
+            imageFXTimer -= Time.deltaTime;
+        } else {
+            player.fx.ImageFX(player.sr.sprite);
+            imageFXTimer = player.fx.imageFrequency;
+        }
 
         if (player.IsWallDetected())
         {

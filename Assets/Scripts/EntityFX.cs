@@ -20,12 +20,21 @@ public class EntityFX : MonoBehaviour
     [SerializeField] private ParticleSystem shockParticles;
     
     [SerializeField] private ParticleSystem onHitParticles;
+    [SerializeField] private ParticleSystem dustParticles;
+
+    [Header("Image FX")]
+    [SerializeField] public float imageFrequency;
+    [SerializeField] private float disappearSpeed;
+    [SerializeField] private GameObject imageFXPrefab;
+    
+    private Entity entity;
     
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
         originalMaterial = sr.material;
         originalColor = sr.color;
+        entity = GetComponentInParent<Entity>();
     }
     
     void Update()
@@ -121,5 +130,16 @@ public class EntityFX : MonoBehaviour
     public void OnHit()
     {
         onHitParticles.Play();
+    }
+    
+    public void DustEffect() 
+    {
+        dustParticles.Play();
+    }
+
+    public void ImageFX(Sprite _sprite)
+    {
+        GameObject imageFX = Instantiate(imageFXPrefab, entity.transform.position, entity.transform.rotation);
+        imageFX.GetComponent<ImageFXController>().Setup(disappearSpeed, _sprite);
     }
 }

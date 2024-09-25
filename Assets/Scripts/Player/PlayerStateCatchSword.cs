@@ -12,6 +12,7 @@ public class PlayerStateCatchSword : PlayerState
     {
         base.Enter();
         SoundManager.instance.PlaySFX(SfxEffect.SwordThrow2);
+        player.fx.DustEffect();
         
         if (player.transform.position.x > player.sword.transform.position.x && player.faceDir == 1)
         {

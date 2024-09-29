@@ -19,9 +19,9 @@ public class PlayerStats : EntityStats
         GetComponent<PlayerItemDrop>().GenerateDrop();
     }
 
-    public override void TakePhysicalDamage(int dmg)
+    public override void TakePhysicalDamage(int dmg, bool isCrit)
     {
-        base.TakePhysicalDamage(dmg);
+        base.TakePhysicalDamage(dmg, isCrit);
 
         if (!InventoryManager.instance.CanUseArmor())
         {
@@ -54,9 +54,10 @@ public class PlayerStats : EntityStats
         
         int finalDamage = GetDamage() - target.ArmorValue();
         
-        if (IsCritAttack())
+        var isCritical = IsCritAttack();
+        if (isCritical)
             finalDamage = CalculateCritDamage(finalDamage);
         
-        target.TakePhysicalDamage(Mathf.RoundToInt(finalDamage * dmgMultiplier));
+        target.TakePhysicalDamage(Mathf.RoundToInt(finalDamage * dmgMultiplier), isCritical);
     }
 }

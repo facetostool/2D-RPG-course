@@ -55,9 +55,9 @@ public class EnemyStats : EntityStats
         Modify(soulsToDrop);
     }
 
-    public override void TakePhysicalDamage(int dmg)
+    public override void TakePhysicalDamage(int dmg, bool isCrit)
     {
-        base.TakePhysicalDamage(dmg);
+        base.TakePhysicalDamage(dmg, isCrit);
     }
     
     protected override void Die()

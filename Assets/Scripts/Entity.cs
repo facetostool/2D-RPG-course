@@ -83,8 +83,17 @@ public class Entity : MonoBehaviour
         rb.velocity = new Vector2(x, y);
     }
 
-    public virtual void DamageEffect(int dmg)
+    public virtual void DamageEffect(int dmg, bool isCrit)
     {
+        if (isCrit)
+        {
+            fx.PopupTextFX(dmg.ToString(), fx.critPopupTextColor, fx.defaultPopupTextSize*1.5f);
+        }
+        else
+        {
+            fx.PopupTextFX(dmg.ToString(), fx.defaultPopupTextColor, fx.defaultPopupTextSize);
+        }
+
         fx.StartCoroutine("Flash");
         fx.OnHit();
     }
@@ -99,21 +108,21 @@ public class Entity : MonoBehaviour
     #region Collisions
 
     public virtual void OnDrawGizmos()
-             {
-                 Gizmos.DrawLine(groundCheck.position, new Vector3(groundCheck.position.x, groundCheck.position.y - groundCheckDistance));
-                 Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance*faceDir, wallCheck.position.y));
-                 Gizmos.DrawWireSphere(attackCheck.position, attackCheckRadius);
-             }
-         
-             public bool IsGroundDetected()
-             {
-                 return Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckDistance, whatIsGround);
-             }
-         
-             public bool IsWallDetected()
-             {
-                 return Physics2D.Raycast(wallCheck.position, Vector2.right, wallCheckDistance*faceDir, whatIsGround);
-             }
+    {
+        Gizmos.DrawLine(groundCheck.position, new Vector3(groundCheck.position.x, groundCheck.position.y - groundCheckDistance));
+        Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance*faceDir, wallCheck.position.y));
+        Gizmos.DrawWireSphere(attackCheck.position, attackCheckRadius);
+    }
+
+    public bool IsGroundDetected()
+    {
+        return Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckDistance, whatIsGround);
+    }
+
+    public bool IsWallDetected()
+    {
+        return Physics2D.Raycast(wallCheck.position, Vector2.right, wallCheckDistance*faceDir, whatIsGround);
+    }
 
     #endregion
 

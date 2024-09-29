@@ -223,9 +223,9 @@ public class Player : Entity
         return stateAttack.attackCounter;
     }
     
-    public override void DamageEffect(int dmg)
+    public override void DamageEffect(int dmg, bool isCrit)
     {
-        base.DamageEffect(dmg);
+        base.DamageEffect(dmg, isCrit);
         if (dmg * 100 /stats.MaxHealthValue() >= 30)
         {
             stateMachine.ChangeState(stateKnocked);

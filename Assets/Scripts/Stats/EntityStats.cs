@@ -109,6 +109,7 @@ public class EntityStats : MonoBehaviour
     private void ApplyIgniteDamage()
     {
         igniteDmgTimer = igniteDmgCooldown;
+        fx.PopupTextFX(igniteDmg.ToString(), fx.fireDmgTextColor, fx.defaultPopupTextSize);
         TakeDamage(igniteDmg);
     }
     
@@ -197,11 +198,12 @@ public class EntityStats : MonoBehaviour
         
         
         int finalDamage = GetDamage() - target.ArmorValue();
-        
-        if (IsCritAttack())
+
+        var isCritical = IsCritAttack();
+        if (isCritical)
             finalDamage = CalculateCritDamage(finalDamage);
-        
-        target.TakePhysicalDamage(finalDamage);
+
+        target.TakePhysicalDamage(finalDamage, isCritical);
         // DoMagicDamage(target);
     }
     
@@ -334,12 +336,12 @@ public class EntityStats : MonoBehaviour
 
     #region  Physical Damage Calculations
     
-    public virtual void TakePhysicalDamage(int dmg)
+    public virtual void TakePhysicalDamage(int dmg, bool isCritical = false)
     {
         if (dmg <= 0)
             return;
         
-        GetComponent<Entity>().DamageEffect(dmg);
+        GetComponent<Entity>().DamageEffect(dmg, isCritical);
         TakeDamage(dmg);
     }
     
@@ -352,7 +354,8 @@ public class EntityStats : MonoBehaviour
         
         int hitChance = Random.Range(0, 100);
         if (hitChance >= totalTargetEvasion) return false;
-        Debug.Log("Character evaded the attack!");
+        
+        entity.fx.PopupTextFX("Evaded", Color.white, entity.fx.defaultPopupTextSize);
         return true;
     }
     

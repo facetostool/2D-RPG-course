@@ -28,8 +28,12 @@ public class PlayerStateAir : PlayerState
 
         if (player.IsWallDetected())
         {
-            stateMachine.ChangeState(player.stateWallSlide);
-            return;
+            // check if player's x velocity is faced to the wall
+            if (player.moveVector.x > 0 && player.faceDir > 0 || player.moveVector.x < 0 && player.faceDir < 0)
+            {
+                stateMachine.ChangeState(player.stateWallSlide);
+                return;
+            }
         }
         
         player.rb.velocity = new Vector2(player.moveVector.x * player.moveSpeed * 0.8f, player.rb.velocity.y);

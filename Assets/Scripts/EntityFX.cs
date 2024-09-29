@@ -34,6 +34,17 @@ public class EntityFX : MonoBehaviour
     public Vector2 swordCatchShake;
     public Vector2 strongHitShake;
     
+    [Header("Popup Text")]
+    [SerializeField] private GameObject popupTextPrefab;
+    [SerializeField] public Color defaultPopupTextColor;
+    [SerializeField] public Color critPopupTextColor;
+    [SerializeField] public Color fireDmgTextColor;
+    [SerializeField] public Color iceDmgTextColor;
+    [SerializeField] public Color shockDmgTextColor;
+    [SerializeField] public float defaultPopupTextSize;
+    [SerializeField] public float bigPopupTextSize;
+    [SerializeField] public float smallPopupTextSize;
+    
     private Entity entity;
     
     void Start()
@@ -157,5 +168,13 @@ public class EntityFX : MonoBehaviour
     {
         GameObject imageFX = Instantiate(imageFXPrefab, entity.transform.position, entity.transform.rotation);
         imageFX.GetComponent<ImageFXController>().Setup(disappearSpeed, _sprite);
+    }
+    
+    public void PopupTextFX(string text, Color color, float size)
+    {
+        // generate random position offset
+        Vector3 offset = new Vector3(Random.Range(-0.3f, 0.3f), 1 + Random.Range(-0.3f, 0.3f), 0);
+        GameObject popupText = Instantiate(popupTextPrefab, entity.transform.position + offset, Quaternion.identity);
+        popupText.GetComponent<PopupTextFXController>().Setup(text, color, size);
     }
 }

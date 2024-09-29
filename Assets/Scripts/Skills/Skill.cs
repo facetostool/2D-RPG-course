@@ -28,7 +28,13 @@ public class Skill : MonoBehaviour
 
     public virtual bool CanUse()
     {
-        return cooldownTimer <= 0;
+        if (cooldownTimer > 0)
+        {
+            player.fx.PopupTextFX("Skill is on cooldown", player.fx.defaultPopupTextColor, player.fx.defaultPopupTextSize);
+            return false;
+        }
+
+        return true;
     }
 
     public virtual void Use()

@@ -893,6 +893,22 @@ MonoBehaviour:
   chillParticles: {fileID: 6278153575584970432}
   shockParticles: {fileID: 2883854830197636844}
   onHitParticles: {fileID: 1674596248427696160}
+  dustParticles: {fileID: 0}
+  imageFrequency: 0
+  disappearSpeed: 0
+  imageFXPrefab: {fileID: 0}
+  shakeAmplitude: 0
+  swordCatchShake: {x: 0, y: 0}
+  strongHitShake: {x: 0, y: 0}
+  popupTextPrefab: {fileID: 2105534542472921725, guid: c2edfdefc56bff744abbde42decb5fe5, type: 3}
+  defaultPopupTextColor: {r: 1, g: 1, b: 1, a: 1}
+  critPopupTextColor: {r: 0.60784316, g: 0.2, b: 0, a: 1}
+  fireDmgTextColor: {r: 1, g: 0.16000006, b: 0, a: 1}
+  iceDmgTextColor: {r: 0.32941177, g: 0.7372549, b: 1, a: 1}
+  shockDmgTextColor: {r: 1, g: 0.8509804, b: 0.36862746, a: 1}
+  defaultPopupTextSize: 4
+  bigPopupTextSize: 5
+  smallPopupTextSize: 3
 --- !u!1 &6531631745547401278
 GameObject:
   m_ObjectHideFlags: 0

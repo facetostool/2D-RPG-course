@@ -229,6 +229,7 @@ public class Player : Entity
         if (dmg * 100 /stats.MaxHealthValue() >= 30)
         {
             stateMachine.ChangeState(stateKnocked);
+            fx.ShakeScreen(fx.strongHitShake);
         }
         else
         {

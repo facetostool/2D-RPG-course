@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 
 public class EntityFX : MonoBehaviour
@@ -27,6 +28,12 @@ public class EntityFX : MonoBehaviour
     [SerializeField] private float disappearSpeed;
     [SerializeField] private GameObject imageFXPrefab;
     
+    [Header("Screen Shake")]
+    private CinemachineImpulseSource impulseSource;
+    [SerializeField] private float shakeAmplitude;
+    public Vector2 swordCatchShake;
+    public Vector2 strongHitShake;
+    
     private Entity entity;
     
     void Start()
@@ -35,11 +42,20 @@ public class EntityFX : MonoBehaviour
         originalMaterial = sr.material;
         originalColor = sr.color;
         entity = GetComponentInParent<Entity>();
+        impulseSource = FindObjectOfType<CinemachineImpulseSource>();
     }
     
     void Update()
     {
         
+    }
+    
+    public void ShakeScreen(Vector2 direction)
+    {
+        var impulseVector =
+            new Vector3(direction.x * PlayerManager.instance.player.faceDir, direction.y * shakeAmplitude, 0) *
+            shakeAmplitude;
+        impulseSource.GenerateImpulseWithVelocity(impulseVector);
     }
     
     public IEnumerator Flash()

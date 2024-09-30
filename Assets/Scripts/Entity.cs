@@ -42,11 +42,11 @@ public class Entity : MonoBehaviour
 
     protected virtual void Start()
     {
-        fx = GetComponentInChildren<EntityFX>();
         sr = GetComponentInChildren<SpriteRenderer>();
         animator = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
         stats = GetComponent<EntityStats>();
+        fx = GetComponentInChildren<EntityFX>();
         
         defaultAlpha = sr.color.a;
     }

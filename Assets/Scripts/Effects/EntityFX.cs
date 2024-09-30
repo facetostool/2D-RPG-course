@@ -5,13 +5,17 @@ using UnityEngine;
 
 public class EntityFX : MonoBehaviour
 {
-    private SpriteRenderer sr;
+    protected SpriteRenderer sr;
+    protected Entity entity;
 
+    [Header("Hit Flash")]
     [SerializeField] private Material flashMaterial;
     [SerializeField] private float flashTime;
     private Material originalMaterial;
     private Color originalColor;
+    [SerializeField] private ParticleSystem onHitParticles;
     
+    [Header("Elemental Effects")]
     [SerializeField] private Color[] chillColors;
     [SerializeField] private Color[] igniteColors;
     [SerializeField] private Color[] shockColors;
@@ -19,20 +23,6 @@ public class EntityFX : MonoBehaviour
     [SerializeField] private ParticleSystem burningParticles;
     [SerializeField] private ParticleSystem chillParticles;
     [SerializeField] private ParticleSystem shockParticles;
-    
-    [SerializeField] private ParticleSystem onHitParticles;
-    [SerializeField] private ParticleSystem dustParticles;
-
-    [Header("Image FX")]
-    [SerializeField] public float imageFrequency;
-    [SerializeField] private float disappearSpeed;
-    [SerializeField] private GameObject imageFXPrefab;
-    
-    [Header("Screen Shake")]
-    private CinemachineImpulseSource impulseSource;
-    [SerializeField] private float shakeAmplitude;
-    public Vector2 swordCatchShake;
-    public Vector2 strongHitShake;
     
     [Header("Popup Text")]
     [SerializeField] private GameObject popupTextPrefab;
@@ -45,28 +35,17 @@ public class EntityFX : MonoBehaviour
     [SerializeField] public float bigPopupTextSize;
     [SerializeField] public float smallPopupTextSize;
     
-    private Entity entity;
-    
-    void Start()
+    protected virtual void Start()
     {
         sr = GetComponent<SpriteRenderer>();
         originalMaterial = sr.material;
         originalColor = sr.color;
         entity = GetComponentInParent<Entity>();
-        impulseSource = FindObjectOfType<CinemachineImpulseSource>();
     }
     
-    void Update()
+    protected virtual void Update()
     {
         
-    }
-    
-    public void ShakeScreen(Vector2 direction)
-    {
-        var impulseVector =
-            new Vector3(direction.x * PlayerManager.instance.player.faceDir, direction.y * shakeAmplitude, 0) *
-            shakeAmplitude;
-        impulseSource.GenerateImpulseWithVelocity(impulseVector);
     }
     
     public IEnumerator Flash()
@@ -157,17 +136,6 @@ public class EntityFX : MonoBehaviour
     public void OnHit()
     {
         onHitParticles.Play();
-    }
-    
-    public void DustEffect() 
-    {
-        dustParticles.Play();
-    }
-
-    public void ImageFX(Sprite _sprite)
-    {
-        GameObject imageFX = Instantiate(imageFXPrefab, entity.transform.position, entity.transform.rotation);
-        imageFX.GetComponent<ImageFXController>().Setup(disappearSpeed, _sprite);
     }
     
     public void PopupTextFX(string text, Color color, float size)

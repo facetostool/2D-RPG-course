@@ -30,7 +30,7 @@ public class Skill : MonoBehaviour
     {
         if (cooldownTimer > 0)
         {
-            player.fx.PopupTextFX("Skill is on cooldown", player.fx.defaultPopupTextColor, player.fx.defaultPopupTextSize);
+            player.fx.PopupTextFX("Not ready", player.fx.defaultPopupTextColor, player.fx.defaultPopupTextSize);
             return false;
         }
 

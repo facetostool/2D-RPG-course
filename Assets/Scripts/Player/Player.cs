@@ -9,6 +9,7 @@ public class Player : Entity
     public PlayerInput input { get; private set; }
     public SkillManager skills { get; private set; }
     public GameObject sword { get; private set; }
+    public PlayerFX fx;
     
     public InventoryManager inventory { get; private set; }
     
@@ -88,6 +89,7 @@ public class Player : Entity
     {
         base.Start();
         input = GetComponent<PlayerInput>();
+        fx = GetComponentInChildren<PlayerFX>();
         
         skills = SkillManager.instance;
         inventory = InventoryManager.instance;

@@ -85,15 +85,6 @@ public class Entity : MonoBehaviour
 
     public virtual void DamageEffect(int dmg, bool isCrit)
     {
-        if (isCrit)
-        {
-            fx.PopupTextFX(dmg.ToString(), fx.critPopupTextColor, fx.defaultPopupTextSize*1.5f);
-        }
-        else
-        {
-            fx.PopupTextFX(dmg.ToString(), fx.defaultPopupTextColor, fx.defaultPopupTextSize);
-        }
-
         fx.StartCoroutine("Flash");
         fx.OnHit();
     }

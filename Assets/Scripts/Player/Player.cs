@@ -228,6 +228,16 @@ public class Player : Entity
     public override void DamageEffect(int dmg, bool isCrit)
     {
         base.DamageEffect(dmg, isCrit);
+        
+        if (isCrit)
+        {
+            fx.PopupTextFX(dmg.ToString(), fx.critPopupTextColor, fx.defaultPopupTextSize*2f);
+        }
+        else
+        {
+            fx.PopupTextFX(dmg.ToString(), fx.defaultPopupTextColor, fx.defaultPopupTextSize*1.7f);
+        }
+        
         if (dmg * 100 /stats.MaxHealthValue() >= 30)
         {
             stateMachine.ChangeState(stateKnocked);

@@ -78,6 +78,14 @@ public class Enemy : Entity
     public override void DamageEffect(int dmg, bool isCrit)
     {
         base.DamageEffect(dmg, isCrit);
+        if (isCrit)
+        {
+            fx.PopupTextFX(dmg.ToString(), fx.critPopupTextColor, fx.defaultPopupTextSize*1.5f);
+        }
+        else
+        {
+            fx.PopupTextFX(dmg.ToString(), fx.defaultPopupTextColor, fx.defaultPopupTextSize);
+        }
         StartCoroutine(nameof(Knockout));
         SoundManager.instance.PlaySFX(SfxEffect.Hit, null, 1.5f);
     }

@@ -9,10 +9,12 @@ public class ItemObject : MonoBehaviour
     [SerializeField] ItemData itemData;
 
     private Rigidbody2D rb;
+    private Player player;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        player = PlayerManager.instance.player;
     }
 
     private void SetupVisuals()
@@ -37,6 +39,7 @@ public class ItemObject : MonoBehaviour
         if (!InventoryManager.instance.CanAddItem(itemData))
         {
             rb.velocity = new Vector2(0, 5);
+            player.fx.PopupTextFX("Inventory is full", player.fx.defaultPopupTextColor, player.fx.defaultPopupTextSize);
             return;
         }
         SoundManager.instance.PlaySFX(SfxEffect.ItemPickup);

@@ -171,6 +171,7 @@ public class EntityStats : MonoBehaviour
 
     public virtual void EvasionEffect(EntityStats attacker, EntityStats target)
     {
+        fx.PopupTextFX("Evaded", fx.defaultPopupTextColor, fx.defaultPopupTextSize);
         Debug.Log("EvasionEffect");
     }
     

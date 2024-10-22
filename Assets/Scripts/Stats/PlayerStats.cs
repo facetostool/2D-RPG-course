@@ -46,7 +46,7 @@ public class PlayerStats : EntityStats
     
     public void DoCloneDamage(EnemyStats target, float dmgMultiplier)
     {
-        if (IsAttackMissed(target))
+        if (target.IsAttackMissed())
         {
             target.EvasionEffect(this, target);
             return;

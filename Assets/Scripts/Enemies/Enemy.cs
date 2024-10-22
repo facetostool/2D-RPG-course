@@ -16,6 +16,13 @@ public class Enemy : Entity
     [Header("Attack info")]
     [SerializeField] public float attackMinCooldown;
     [SerializeField] public float attackMaxCooldown;
+    [SerializeField] public float attackDistance;
+    
+    [Header("Player Detection")]
+    [SerializeField] public float detectionDistance;
+    [SerializeField] public LayerMask whatIsPlayer;
+    [SerializeField] public Transform playerCheck;
+    [SerializeField] public float moveBattleMultiplayer;
     
     public bool canBeStunned;
     
@@ -36,10 +43,28 @@ public class Enemy : Entity
         
         stateMachine.currentState.Update();
     }
+    
+    public override void OnDrawGizmos()
+    {
+        base.OnDrawGizmos();
+        
+        // Gizmos.DrawLine(playerCheck.position, new Vector3(playerCheck.position.x + detectionDistance*faceDir, playerCheck.position.y));
+        Gizmos.DrawLine(playerCheck.position, new Vector3(playerCheck.position.x + ScaledAttackDistance()*faceDir, playerCheck.position.y));
+    }
+    
+    public RaycastHit2D PlayerDetectionRaycast()
+    {
+        return Physics2D.Raycast(playerCheck.position, Vector2.right, detectionDistance*faceDir, whatIsPlayer);
+    }
+    
+    public RaycastHit2D PlayerAttackRaycast()
+    {
+        return Physics2D.Raycast(playerCheck.position, Vector2.right, ScaledAttackDistance()*faceDir, whatIsPlayer);
+    }
 
     public void OnHitAttackTrigger()
     {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(this.attackCheck.position, this.attackCheckRadius);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(this.attackCheck.position, ScaledAttackRadius());
         foreach (var hit in hits)
         {
             Player player = hit.GetComponent<Player>();
@@ -86,7 +111,7 @@ public class Enemy : Entity
         {
             fx.PopupTextFX(dmg.ToString(), fx.defaultPopupTextColor, fx.defaultPopupTextSize);
         }
-        StartCoroutine(nameof(Knockout));
+        Knock();
         SoundManager.instance.PlaySFX(SfxEffect.Hit, null, 1.5f);
     }
     
@@ -118,7 +143,7 @@ public class Enemy : Entity
     {
     }
     
-    public void OnDieAnimationEnd()
+    public virtual void OnDieAnimationEnd()
     {
         DestroyObject();
     }
@@ -142,5 +167,10 @@ public class Enemy : Entity
         base.ReturnDefaultSpeed();
         moveSpeed = defaultMoveSpeed;
         animator.speed = defaultAnimationSpeed;
+    }
+    
+    public float ScaledAttackDistance()
+    {
+        return attackDistance*transform.localScale.x;
     }
 }

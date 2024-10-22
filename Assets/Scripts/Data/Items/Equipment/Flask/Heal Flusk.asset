@@ -15,7 +15,8 @@ MonoBehaviour:
   itemType: 1
   itemName: Heal Flusk
   icon: {fileID: -410334530, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
-  dropChance: 100
+  guid: 800cb6bde2833d1409b559beab26bffd
+  dropChance: 5
   equipmentType: 3
   effects:
   - {fileID: 11400000, guid: ad82d74af8077854897f93defab4d5b1, type: 2}

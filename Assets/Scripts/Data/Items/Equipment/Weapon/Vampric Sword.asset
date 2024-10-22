@@ -15,7 +15,8 @@ MonoBehaviour:
   itemType: 1
   itemName: Vampric Sword
   icon: {fileID: -1944902997, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
-  dropChance: 9
+  guid: a7ffaf5947a324541a22931762d7e619
+  dropChance: 5
   equipmentType: 2
   effects:
   - {fileID: 11400000, guid: ad82d74af8077854897f93defab4d5b1, type: 2}
@@ -62,3 +63,4 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   craftMaterials: []
+  cooldown: 0

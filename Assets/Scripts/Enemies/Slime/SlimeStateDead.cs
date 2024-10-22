@@ -12,6 +12,7 @@ public class SlimeStateDead : SlimeState
     {
         base.Enter();
         
+        slime.PlayDieEffect();
         // SoundManager.instance.PlaySFX(SfxEffect.SlimeDie);
     }
 

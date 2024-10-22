@@ -66,7 +66,7 @@ public class CloneController : MonoBehaviour
 
     public void OnHitAttackTrigger()
     {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(attackCheck.position, player.attackCheckRadius);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(attackCheck.position, player.ScaledAttackRadius());
         foreach (var hit in hits)
         {
             Enemy enemy = hit.GetComponent<Enemy>();

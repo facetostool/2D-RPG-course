@@ -186,12 +186,24 @@ public class EntityStats : MonoBehaviour
         yield return new WaitForSeconds(duration);
         isVulnerable = true;
     }
+
+    public void TakeArrowDamage(int dmg, Transform dmgSource)
+    {
+        entity.SetupKnockDirection(dmgSource);
+        if (IsAttackMissed())
+        {
+            fx.PopupTextFX("Evaded", fx.defaultPopupTextColor, fx.defaultPopupTextSize);
+            return;
+        }
+        
+        TakePhysicalDamage(dmg, false);
+    }
     
     public virtual void DoDamage(EntityStats target, Transform dmgSource)
     {
         target.entity.SetupKnockDirection(dmgSource);
         
-        if (IsAttackMissed(target))
+        if (target.IsAttackMissed())
         {
             target.EvasionEffect(this, target);
             return;
@@ -346,9 +358,9 @@ public class EntityStats : MonoBehaviour
         TakeDamage(dmg);
     }
     
-    protected bool IsAttackMissed(EntityStats target)
+    public bool IsAttackMissed()
     {
-        int totalTargetEvasion = target.GetEvadeChance();
+        int totalTargetEvasion = GetEvadeChance();
         
         if (isShocked)
             totalTargetEvasion += 20;
@@ -356,7 +368,6 @@ public class EntityStats : MonoBehaviour
         int hitChance = Random.Range(0, 100);
         if (hitChance >= totalTargetEvasion) return false;
         
-        entity.fx.PopupTextFX("Evaded", Color.white, entity.fx.defaultPopupTextSize);
         return true;
     }
     

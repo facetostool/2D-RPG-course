@@ -15,7 +15,8 @@ MonoBehaviour:
   itemType: 1
   itemName: Electric clow
   icon: {fileID: 367297872, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
-  dropChance: 100
+  guid: 946438425b39be64d93661ae4a22e5e9
+  dropChance: 5
   equipmentType: 2
   effects:
   - {fileID: 11400000, guid: 66e4549b978232e449cd7756394b548d, type: 2}
@@ -62,3 +63,4 @@ MonoBehaviour:
     baseValue: 5
     modifiers: 
   craftMaterials: []
+  cooldown: 0

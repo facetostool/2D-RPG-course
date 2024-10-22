@@ -15,7 +15,8 @@ MonoBehaviour:
   itemType: 1
   itemName: Freeze Armor
   icon: {fileID: 288293509, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
-  dropChance: 100
+  guid: fd6239834330c0a41852fddea398311f
+  dropChance: 5
   equipmentType: 1
   effects:
   - {fileID: 11400000, guid: cb3971806aec02d4d938670b25ec65eb, type: 2}

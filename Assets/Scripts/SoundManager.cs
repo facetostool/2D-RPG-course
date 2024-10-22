@@ -67,6 +67,17 @@ public enum SfxEffect
     SuccessSkillLearn = 52,
     CraftFail = 53,
     SkillFail = 54,
+    SlimeBite = 55,
+    SlimeDie = 56,
+    SlimeSpawn = 57,
+    SlimeDieMid = 58,
+    SlimeDieSmall = 59,
+    SlimeBiteMid = 60,
+    SlimeBiteSmall = 61,
+    ArcherDie = 62,
+    ArcherJump = 63,
+    ArcherBowLoading = 64,
+    ArcherBowRelease = 65,
 }
 public class SoundManager : MonoBehaviour
 {

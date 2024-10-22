@@ -619,7 +619,7 @@ MonoBehaviour:
   attackCheckRadius: 1.1
   knockedForce: {x: 4, y: 3}
   knockedDuration: 0.1
-  knockDirection: 0
+  knockedDirection: 0
   isKnocked: 0
   stunnedDirection: {x: 8, y: 3}
   stunnedDuration: 1
@@ -627,16 +627,22 @@ MonoBehaviour:
   stunnedKnockDuration: 0.2
   attackMinCooldown: 0.1
   attackMaxCooldown: 0.2
-  canBeStunned: 0
-  idleStateTime: 2
-  battleNoDetectionTime: 3
-  detectionDistance: 4
+  attackDistance: 2.5
+  detectionDistance: 5
   whatIsPlayer:
     serializedVersion: 2
     m_Bits: 64
   playerCheck: {fileID: 8435122365141388999}
   moveBattleMultiplayer: 1
-  attackDistance: 2.5
+  canBeStunned: 0
+  idleStateTime: 2
+  battleNoDetectionTime: 3
+  detectionDistance: 5
+  whatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 64
+  playerCheck: {fileID: 8435122365141388999}
+  moveBattleMultiplayer: 1
 --- !u!114 &4541651985234930100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -653,10 +659,7 @@ MonoBehaviour:
   itemsToDrop:
   - {fileID: 11400000, guid: af37036c6aa81ad40aea5ecad1168463, type: 2}
   - {fileID: 11400000, guid: 26a3d88e3a2104ef49dfee592804ac6c, type: 2}
-  - {fileID: 11400000, guid: d88dada000976934882f80d5b63bab62, type: 2}
-  - {fileID: 11400000, guid: 6e2e5503256e087479a9e05219dcf8d9, type: 2}
-  - {fileID: 11400000, guid: b6d493ce6da720145a6d0ce9f3a4c548, type: 2}
-  itemsToDropAmount: 2
+  itemsToDropAmount: 1
 --- !u!1 &4886921346138847975
 GameObject:
   m_ObjectHideFlags: 0
@@ -880,6 +883,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flashMaterial: {fileID: 2100000, guid: 126c72f5e9798d24e9a40681e489a8cc, type: 2}
   flashTime: 0.15
+  onHitParticles: {fileID: 1674596248427696160}
   chillColors:
   - {r: 0.2471698, g: 0.5357995, b: 1, a: 1}
   - {r: 0.41320753, g: 0.7039605, b: 1, a: 1}
@@ -892,14 +896,6 @@ MonoBehaviour:
   burningParticles: {fileID: 6753907682875111858}
   chillParticles: {fileID: 6278153575584970432}
   shockParticles: {fileID: 2883854830197636844}
-  onHitParticles: {fileID: 1674596248427696160}
-  dustParticles: {fileID: 0}
-  imageFrequency: 0
-  disappearSpeed: 0
-  imageFXPrefab: {fileID: 0}
-  shakeAmplitude: 0
-  swordCatchShake: {x: 0, y: 0}
-  strongHitShake: {x: 0, y: 0}
   popupTextPrefab: {fileID: 2105534542472921725, guid: c2edfdefc56bff744abbde42decb5fe5, type: 3}
   defaultPopupTextColor: {r: 1, g: 1, b: 1, a: 1}
   critPopupTextColor: {r: 0.60784316, g: 0.2, b: 0, a: 1}

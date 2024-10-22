@@ -15,7 +15,8 @@ MonoBehaviour:
   itemType: 1
   itemName: Damage flask
   icon: {fileID: 404454020, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
-  dropChance: 100
+  guid: 5691c6272232def48bd4a81a22d55db1
+  dropChance: 5
   equipmentType: 3
   effects:
   - {fileID: 11400000, guid: cc07480d520615c41ba2ba9b5e22583e, type: 2}

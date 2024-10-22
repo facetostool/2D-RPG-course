@@ -31,27 +31,43 @@ public class PlayerStateCounterAttack : PlayerState
             return;
         }
         
-        Collider2D[] hits = Physics2D.OverlapCircleAll(player.attackCheck.position, player.attackCheckRadius);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(player.attackCheck.position, player.ScaledAttackRadius());
         foreach (var hit in hits)
         {
+            ArrowController arrow = hit.GetComponent<ArrowController>();
+            if (arrow)
+            {
+                arrow.Flip();
+                SuccessfulCounterAttack();
+            }
+            
             Enemy enemy = hit.GetComponent<Enemy>();
             if (enemy)
             {
                 if (enemy.canBeStunned)
                 {
-                    SoundManager.instance.PlaySFX(SfxEffect.PlayerAttack1);
-                    
-                    stateTime = 10;
-                    enemy.Stun();
-                    player.skills.parry.Heal();
-                    if (canCreateClone)
-                    {
-                        player.skills.parry.CreateClone(enemy);
-                        canCreateClone = false;
-                    }
-                    player.animator.SetBool("SuccessCounterAttack", true);
+                    SuccessfulCounterAttack();
+                    CounterAttackEffects(enemy);
                 }
             }
+        }
+    }
+
+    private void SuccessfulCounterAttack()
+    {
+        stateTime = 10;
+        SoundManager.instance.PlaySFX(SfxEffect.PlayerAttack1);
+        player.animator.SetBool("SuccessCounterAttack", true);
+    }
+
+    private void CounterAttackEffects(Enemy enemy)
+    {
+        enemy.Stun();
+        player.skills.parry.Heal();
+        if (canCreateClone)
+        {
+            player.skills.parry.CreateClone(enemy);
+            canCreateClone = false;
         }
     }
 

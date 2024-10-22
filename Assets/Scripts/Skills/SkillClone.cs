@@ -91,7 +91,7 @@ public class SkillClone : Skill
     
     public void OnHitAttackTrigger(Enemy enemy)
     {
-        enemy.StartCoroutine("Knockout");
+        enemy.Knock();
         PlayerStats playerStats = (PlayerStats)player.stats;
 
         playerStats.DoCloneDamage((EnemyStats)enemy.stats, attackDmgMultiplier);

@@ -15,7 +15,8 @@ MonoBehaviour:
   itemType: 1
   itemName: Wooden Sword
   icon: {fileID: 1025091068, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
-  dropChance: 100
+  guid: b6d493ce6da720145a6d0ce9f3a4c548
+  dropChance: 5
   equipmentType: 2
   effects: []
   strength:
@@ -65,3 +66,4 @@ MonoBehaviour:
     amount: 1
   - itemData: {fileID: 11400000, guid: 26a3d88e3a2104ef49dfee592804ac6c, type: 2}
     amount: 1
+  cooldown: 0

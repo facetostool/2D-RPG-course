@@ -13,6 +13,7 @@ public class SlimeStateAttack : SlimeState
         base.Enter();
         
         slime.SetVelocity(0,0);
+        slime.PlayBiteEffect();
         // SoundManager.instance.PlaySFX(SfxEffect.SlimeAttack1, slime.transform,  0.3f);
     }
 

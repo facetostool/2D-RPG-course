@@ -5,6 +5,7 @@ using UnityEngine;
 public class SkeletonStateStunned : SkeletonState
 {
     float knockbackTime;
+    
     public SkeletonStateStunned(Enemy _enemy, EnemyStateMachine _stateMachine, string _anim, Skeleton _skeleton) : base(_enemy, _stateMachine, _anim, _skeleton)
     {
         

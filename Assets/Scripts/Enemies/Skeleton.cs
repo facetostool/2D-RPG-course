@@ -22,17 +22,6 @@ public class Skeleton : Enemy
 
     #endregion
 
-    #region PlayerDetection
-
-    [Header("Player Detection")]
-    [SerializeField] public float detectionDistance;
-    [SerializeField] public LayerMask whatIsPlayer;
-    [SerializeField] public Transform playerCheck;
-    [SerializeField] public float moveBattleMultiplayer;
-    [SerializeField] public float attackDistance;
-    
-    #endregion
-
     protected override void Awake()
     {
         base.Awake();
@@ -64,11 +53,6 @@ public class Skeleton : Enemy
         
         Gizmos.DrawLine(playerCheck.position, new Vector3(playerCheck.position.x + detectionDistance*faceDir, playerCheck.position.y));
         Gizmos.DrawLine(playerCheck.position, new Vector3(playerCheck.position.x + attackDistance*faceDir, playerCheck.position.y));
-    }
-
-    public RaycastHit2D PlayerDetectionRaycast()
-    {
-        return Physics2D.Raycast(playerCheck.position, Vector2.right, detectionDistance*faceDir, whatIsPlayer);
     }
 
     public override void Stun()

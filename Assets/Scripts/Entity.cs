@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Entity : MonoBehaviour
 {
@@ -28,7 +29,7 @@ public class Entity : MonoBehaviour
     [Header("Knocked info")]
     [SerializeField] public Vector2 knockedForce;
     [SerializeField] public float knockedDuration;
-    public float knockDirection;
+    [FormerlySerializedAs("knockDirection")] public float knockedDirection;
     public bool isKnocked;
     
     private float defaultAlpha;
@@ -37,7 +38,7 @@ public class Entity : MonoBehaviour
     
     protected virtual void Awake()
     {
-        
+       
     }
 
     protected virtual void Start()
@@ -97,12 +98,17 @@ public class Entity : MonoBehaviour
     }
 
     #region Collisions
+    
+    public float ScaledAttackRadius()
+    {
+        return attackCheckRadius * transform.localScale.x;
+    }
 
     public virtual void OnDrawGizmos()
     {
         Gizmos.DrawLine(groundCheck.position, new Vector3(groundCheck.position.x, groundCheck.position.y - groundCheckDistance));
         Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance*faceDir, wallCheck.position.y));
-        Gizmos.DrawWireSphere(attackCheck.position, attackCheckRadius);
+        Gizmos.DrawWireSphere(attackCheck.position, ScaledAttackRadius());
     }
 
     public bool IsGroundDetected()
@@ -119,18 +125,28 @@ public class Entity : MonoBehaviour
 
     #region Knock
 
-    public void SetupKnockDirection(Transform dmgSource)
+    public void Knock()
     {
-        knockDirection = dmgSource.position.x > transform.position.x ? -1 : 1;
+        StartCoroutine(Knockout(knockedForce, knockedDirection, knockedDuration));
     }
     
-    public IEnumerator Knockout()
+    public void Knock(Vector2 force, float direction, float duration)
+    {
+        StartCoroutine(Knockout(force, direction, duration));
+    }
+
+    public void SetupKnockDirection(Transform dmgSource)
+    {
+        knockedDirection = dmgSource.position.x > transform.position.x ? -1 : 1;
+    }
+    
+    public IEnumerator Knockout(Vector2 force, float direction, float duration)
     {
         isKnocked = true;
-        rb.velocity = new Vector2(knockedForce.x * knockDirection, knockedForce.y);
-        yield return new WaitForSeconds(knockedDuration);
+        GetComponent<Rigidbody2D>().velocity = new Vector2(force.x * direction, force.y); // I have to use GetComponent here because I'm using a coroutine and I can't use the rb property because it's not initiated yet (coroutine starts before Start method)
+        yield return new WaitForSeconds(duration);
         isKnocked = false;
-        rb.velocity = new Vector2(0, 0);
+        GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
     }
 
     #endregion

@@ -20,12 +20,12 @@ public class PlayerStateKnocked : PlayerState
     {
         base.Update();
         
-        player.rb.velocity = new Vector2(player.knockedForce.x * player.knockDirection, player.knockedForce.y);
+        player.rb.velocity = new Vector2(player.knockedForce.x * player.knockedDirection, player.knockedForce.y);
         player.animator.SetFloat("yVelocity", player.rb.velocity.y);
         if (stateTime <= 0)
         {
             stateMachine.ChangeState(player.stateIdle);
-            return; return;
+            return;
         }
         
     }
